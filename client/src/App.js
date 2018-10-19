@@ -38,21 +38,6 @@ const reducer = (state = initialState, action) => {
 
 const store = createStore(reducer);
 
-// class App extends Component {
-//   render() {
-//     return (
-//       <Provider store={store}>
-//         <div className="App">
-//           <h1>Login here:</h1>
-//           <Login />
-//           <Product />
-          
-//         </div>
-//       </Provider>
-//     );
-//   }
-// }
-
 const App = () => (
   <Router>
     <Provider store={store}>
