@@ -6,7 +6,9 @@ import * as serviceWorker from './serviceWorker';
 // redux
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
+import { loadState, saveState } from './localstorage';
 
+const persistedState = loadState();
 
 const initialState = {
     username: '',
@@ -37,7 +39,14 @@ const reducer = (state = initialState, action) => {
     }
 }
   
-const store = createStore(reducer);
+const store = createStore(
+    reducer,
+    persistedState
+);
+
+store.subscribe(() => {
+    saveState(store.getState());
+})
 
 
 ReactDOM.render(
