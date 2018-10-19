@@ -4,5 +4,8 @@
   "main": "index.js",
   "repository": "https://github.com/nicklascschmidt/threadauction.git",
   "author": "Nicklas",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "expect": "^23.6.0"
+  }
 }
