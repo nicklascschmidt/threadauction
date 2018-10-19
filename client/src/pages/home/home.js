@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import Login from '../login/login';
+import PrettyHome from './homeStyles';
 
 class Home extends Component {
     render() {
         return (
-            <div>
-                <Login />
-            </div>
+            <PrettyHome>
+             hello world this is the home page
+            </PrettyHome>
         )
     }
 }
