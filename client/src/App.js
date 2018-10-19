@@ -12,10 +12,6 @@ import Signup from './pages/signup';
 import CreateAuction from './pages/createAuction';
 
 
-// test
-import ProductSwitch from './pages/productSwitch';
-
-
 class App extends React.Component {
   render() {
     return (

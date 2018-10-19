@@ -1,11 +1,25 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 class Signup extends React.Component {
     render() {
         return (
-            <h2>This is the signup page.</h2>
+            <div>
+                <h2>This is the signup page.</h2>
+                <div>sup I'm a different component</div>
+                <div>{this.props.username}</div>
+            </div>
         )
     }
 }
 
-export default Signup;
+function mapStateToProps(state) {
+    console.log('Product: mapStateToProps state',state);
+    return {
+      username: state.username,
+      password: state.password,
+      isLoggedIn: true
+    };
+}
+
+export default connect(mapStateToProps)(Signup);

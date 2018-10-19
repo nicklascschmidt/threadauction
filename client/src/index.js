@@ -13,17 +13,24 @@ const initialState = {
     password: '',
     isLoggedIn: false
 }
-  
+
 const reducer = (state = initialState, action) => {
     console.log('action',action);
     console.log('state',state);
     switch(action.type) {
       case 'USER_LOGIN_REQUEST':
-        console.log('global state updated');
+        console.log('global state updated - user logged in');
         return {
           username: action.payload.username,
           password: action.payload.password,
           isLoggedIn: action.payload.isLoggedIn
+        }
+      case 'USER_LOGOUT_REQUEST':
+        console.log('global state updated - user logged out');
+        return {
+            username: '',
+            password: '',
+            isLoggedIn: false
         }
       default:
         return state;
