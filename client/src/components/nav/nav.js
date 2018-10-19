@@ -7,11 +7,11 @@ class Nav extends React.Component {
     render() {
         return (
             <PrettyNav>
-              <Link className='logo' to='/home'>Thread Auction</Link>
-              <Link to='/login'>Login</Link>
-              <Link to='/signup'>Signup</Link>
-              <Link to='/logout'>Logout</Link>
-              <Link to='/userProfile'>Profile</Link>
+                <Link className='logo' to='/'>Thread Auction</Link>
+                <Link to='/create-auction'>Create Auction</Link>
+                <Link to='/login'>Login</Link>
+                <Link to='/signup'>Signup</Link>
+                <Link to='/profile'>Profile</Link>
             </PrettyNav>
         )
     }
