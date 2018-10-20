@@ -35,6 +35,8 @@ const reducer = (state = initialState, action) => {
       case 'USER_LOGOUT_REQUEST':
         console.log('global state updated - user logged out');
         return {
+            firstName: '',
+            lastName: '',
             username: '',
             password: '',
             email: '',
@@ -47,6 +49,8 @@ const reducer = (state = initialState, action) => {
       case 'USER_SIGNUP_REQUEST':
         console.log('global state updated - user logged out');
         return {
+            firstName: action.payload.firstName,
+            lastName: action.payload.lastName,
             username: action.payload.username,
             password: action.payload.password,
             email: action.payload.email,

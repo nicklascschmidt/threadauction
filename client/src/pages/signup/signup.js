@@ -8,6 +8,8 @@ class Signup extends React.Component {
         super(props)
 
         this.state = {
+            firstName: '',
+            lastName: '',
             username: '',
             password: '',
             email: '',
@@ -16,9 +18,15 @@ class Signup extends React.Component {
             stateUSA: '',
             zip: '',
             submitted: false,
-            
+            loading: false,
             errorArray: []
         }
+    }
+
+    componentDidMount = () => {
+        this.setState({
+            submitted: false
+        });
     }
 
     handleChange = (event) => {
@@ -27,27 +35,39 @@ class Signup extends React.Component {
         this.setState({
             [name]: value
         });
+
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
 
-        this.setState({
-            submitted: true
-        }, this.sendToReduxStore);
+        this.setState({loading: true}, () => {
+            // run validate user inputs call
+            // if validation succeeds
+            // save to database
+            // when database save succeds, send to redux store and set state to
+            // {submitted: true, loading : false}
+            // send to store
+            this.setState({
+                submitted: true
+            }, this.sendToReduxStore);
+
+        })
     }
 
     sendToReduxStore = () => {
-        const { username, password, email, address, city, stateUSA, zip } = this.state;
+        const { firstName, lastName, username, password, email, address, city, stateUSA, zip } = this.state;
 
         const reduxData = {
+            firstName: firstName,
+            lastName: lastName,
             username: username,
             password: password,
             email: email,
             address: address,
             city: city,
             stateUSA: stateUSA,
-            zip: zip
+            zip: parseInt(zip)
         }
         console.log('reduxData',reduxData);
 
@@ -80,85 +100,129 @@ class Signup extends React.Component {
             type: 'USER_SIGNUP_REQUEST',
             payload: data
         });
-        this.setState({
-            submitted: false
-        });
 
         // bring user to login page
         window.location = '/login';
     }
 
+    displayErrors = () => {
+        return this.state.errorArray.map((errorMsg , n) => {
+            return <p key={n}>{errorMsg}</p>
+        })
+    }
+
 
     
     render() {
+       
         return (
-            <div>
-                <h2>This is the signup page.</h2>
+            <div className='container'>
                 <h3>Please fill out the information below.</h3>
-                {/* <h4>{this.state.errorArray
-                    .map(errorMessage => <span>{errorMessage}</span>)
-                .reduce((prev, curr) => [prev, ', ', curr])}</h4> */}
-                <h4>Errors: {this.state.errorArray.map(err => {
-                    return <p>{err}</p>
-                })}</h4>
+                {this.state.submitted ? <div className='error-box'>{this.displayErrors()}</div> : ''}
+                {/* {this.state.submitted ? <div className='error-box'>{this.displayErrors()}</div> : <div className='error-box'>odgoidfgads</div>} */}
 
                 <form>
-                    <h4>User Info</h4>
-                    <label>Username: </label>
-                    <input
-                        type="text"
-                        name="username"
-                        value={this.state.username}
-                        onChange={event => this.handleChange(event)}
-                    />
-                    <label>Password: </label>
-                    <input
-                        type="text"
-                        name="password"
-                        value={this.state.password}
-                        onChange={event => this.handleChange(event)}
-                    />
-                    <label>Email: </label>
-                    <input
-                        type="text"
-                        name="email"
-                        value={this.state.email}
-                        onChange={event => this.handleChange(event)}
-                    />
-                    <h4>Shipping Info</h4>
-                    <label>Address: </label>
-                    <input
-                        type="text"
-                        name="address"
-                        value={this.state.address}
-                        onChange={event => this.handleChange(event)}
-                    />
-                    <label>City: </label>
-                    <input
-                        type="text"
-                        name="city"
-                        value={this.state.city}
-                        onChange={event => this.handleChange(event)}
-                    />
-                    <label>State: </label>
-                    <input
-                        type="text"
-                        name="stateUSA"
-                        value={this.state.stateUSA}
-                        onChange={event => this.handleChange(event)}
-                    />
-                    <label>Zip: </label>
-                    <input
-                        type="text"
-                        name="zip"
-                        value={this.state.zip}
-                        onChange={event => this.handleChange(event)}
-                    />
+                    <div className='row form-style'>
+                        <div className='col-6'>
+                            <div>
+                                <h4>User Info</h4>
+                                <span>First name: </span>
+                                <input
+                                    type="text"
+                                    name="firstName"
+                                    value={this.state.firstName}
+                                    onChange={event => this.handleChange(event)}
+                                />
+                            </div>
+                            <div>
+                                <span>Last name: </span>
+                                <input
+                                    type="text"
+                                    name="lastName"
+                                    value={this.state.lastName}
+                                    onChange={event => this.handleChange(event)}
+                                />
+                            </div>
+                            <div>
+                                <span>Username: </span>
+                                <input
+                                    type="text"
+                                    name="username"
+                                    value={this.state.username}
+                                    onChange={event => this.handleChange(event)}
+                                />
+                            </div>
+                            <div>
+                                <span>Password: </span>
+                                <input
+                                    type="text"
+                                    name="password"
+                                    value={this.state.password}
+                                    onChange={event => this.handleChange(event)}
+                                />
+                            </div>
+                            <div>
+                                <span>Email: </span>
+                                <input
+                                    type="text"
+                                    name="email"
+                                    value={this.state.email}
+                                    onChange={event => this.handleChange(event)}
+                                />
+                            </div>
+                        </div>
+                        <div className='col-6'>
+                            <h4>Shipping Info</h4>
+                            <div>
+                                <span>Address: </span>
+                                <input
+                                    type="text"
+                                    name="address"
+                                    value={this.state.address}
+                                    onChange={event => this.handleChange(event)}
+                                />
+                            </div>
+                            <div>
+                                <span>City: </span>
+                                <input
+                                    type="text"
+                                    name="city"
+                                    value={this.state.city}
+                                    onChange={event => this.handleChange(event)}
+                                />
+                            </div>
+                            <div>
+                                <span>State: </span>
+                                <input
+                                    type="text"
+                                    name="stateUSA"
+                                    value={this.state.stateUSA}
+                                    onChange={event => this.handleChange(event)}
+                                />
+                            </div>
+                            <div>
+                                <span>Zip: </span>
+                                <input
+                                    type="text"
+                                    name="zip"
+                                    value={this.state.zip}
+                                    onChange={event => this.handleChange(event)}
+                                />
+                            </div>
+                        </div>
+                    </div>
                     <br></br>
-                    <button onClick={this.handleSubmit}>submit</button>
-
+                    <div className='align-center'>
+                        {this.state.loading ? 'Loading' : <button className='btn btn-primary submit-button' onClick={this.handleSubmit}>submit</button>}
+                    </div>
+                    
                 </form>
+
+                <br></br>
+
                 <h4>Testing Redux data 123...</h4>
+                <p>First name: {this.props.firstName}</p>
+                <p>Last name: {this.props.lastName}</p>
                 <p>Username: {this.props.username}</p>
                 <p>Password: {this.props.password}</p>
                 <p>Email: {this.props.email}</p>
@@ -173,6 +237,8 @@ class Signup extends React.Component {
 
 function mapStateToProps(state) {
     return {
+        firstName: state.firstName,
+        lastName: state.lastName,
         username: state.username,
         password: state.password,
         email: state.email,
