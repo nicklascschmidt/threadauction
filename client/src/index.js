@@ -13,6 +13,11 @@ const persistedState = loadState();
 const initialState = {
     username: '',
     password: '',
+    email: '',
+    address: '',
+    city: '',
+    stateUSA: '',
+    zip: '',
     isLoggedIn: false
 }
 
@@ -32,7 +37,23 @@ const reducer = (state = initialState, action) => {
         return {
             username: '',
             password: '',
+            email: '',
+            address: '',
+            city: '',
+            stateUSA: '',
+            zip: '',
             isLoggedIn: false
+        }
+      case 'USER_SIGNUP_REQUEST':
+        console.log('global state updated - user logged out');
+        return {
+            username: action.payload.username,
+            password: action.payload.password,
+            email: action.payload.email,
+            address: action.payload.address,
+            city: action.payload.city,
+            stateUSA: action.payload.stateUSA,
+            zip: action.payload.zip
         }
       default:
         return state;
