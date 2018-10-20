@@ -1,5 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import * as Styles from './login-style';
+import { Card } from '../../components/form/form'; // input too
+import { Button } from '../../components/button/buttons';
 
 
 class Login extends React.Component {
@@ -27,7 +30,6 @@ class Login extends React.Component {
         this.setState({
             submitted: true
         }, this.sendToReduxStore);
-
     }
 
     sendToReduxStore = () => {
@@ -60,25 +62,34 @@ class Login extends React.Component {
     render() {
         return (
             <div>
-                <form>
-                    <input
-                        type="text"
-                        name="username"
-                        value={this.state.username}
-                        onChange={event => this.handleChange(event)}
-                    />
-                    <input
-                        type="text"
-                        name="password"
-                        value={this.state.password}
-                        onChange={event => this.handleChange(event)}
-                    />
-                    <button onClick={this.handleSubmit}>submit</button>
-                </form>
-                <p>State user: {this.state.username}</p>
-                <p>State pw: {this.state.password}</p>
-                <p>Global props user: {this.props.username}</p>
-                <p>Global props pw: {this.props.password}</p>
+                <Styles.Wrapper>
+                    <Card>
+                        <form>
+                            <label for="">Username: </label>
+                            <input
+                                type="text"
+                                name="username"
+                                value={this.state.username}
+                                onChange={event => this.handleChange(event)}
+                            />
+                            <br></br>
+                            <label for="">Password: </label>
+                            <input
+                                type="text"
+                                name="password"
+                                value={this.state.password}
+                                onChange={event => this.handleChange(event)}
+                            />
+                            <br></br>
+                            <button onClick={this.handleSubmit}>submit</button>
+                            {/* <Button onClick={this.handleSubmit}>submit</Button> */}
+                        </form>
+                    </Card>
+                    <p>State user: {this.state.username}</p>
+                    <p>State pw: {this.state.password}</p>
+                    <p>Global props user: {this.props.username}</p>
+                    <p>Global props pw: {this.props.password}</p>
+                </Styles.Wrapper>
             </div>
         )
     }
