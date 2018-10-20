@@ -1,0 +1,16 @@
+.error-box {
+  border: 3px solid red;
+  padding: 1rem;
+}
+
+.form-style {
+  padding: 1rem;
+}
+
+.submit-button {
+  width: 10rem;
+}
+
+.align-center {
+  text-align: center;
+}
