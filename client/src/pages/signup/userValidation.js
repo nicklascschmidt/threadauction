@@ -1,9 +1,22 @@
 
 
 export const validateInputs = (data) => {
-  console.log('this s h i t is happening!');
 
   let errorArray = [];
+
+  // FIRST NAME VALIDATION
+  if (data.firstName.length > 30 || data.firstName.length < 1) {
+    errorArray.push('First name must be under 30 characters.');
+  } else {
+    errorArray.push('First name looks good!');
+  }
+  
+  // LAST NAME VALIDATION
+  if (data.lastName.length > 30 || data.lastName.length < 1) {
+    errorArray.push('Last name must be under 30 characters.');
+  } else {
+    errorArray.push('Last name looks good!');
+  }
 
   // USERNAME VALIDATION
   if (data.username.length > 20 || data.username.length < 3) {
