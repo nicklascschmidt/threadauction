@@ -19,7 +19,8 @@ class Signup extends React.Component {
             zip: '',
             submitted: false,
             loading: false,
-            errorArray: []
+            errorArray: [],
+            isError: null
         }
     }
 
@@ -41,24 +42,13 @@ class Signup extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
 
-        this.setState({loading: true}, () => {
-            // run validate user inputs call
-            // if validation succeeds
-            // save to database
-            // when database save succeds, send to redux store and set state to
-            // {submitted: true, loading : false}
-            // send to store
-            this.setState({
-                submitted: true
-            }, this.sendToReduxStore);
-
-        })
+        this.setState({loading: true}, this.saveInputs());
     }
 
-    sendToReduxStore = () => {
+    saveInputs = () => {
+        
         const { firstName, lastName, username, password, email, address, city, stateUSA, zip } = this.state;
-
-        const reduxData = {
+        const userData = {
             firstName: firstName,
             lastName: lastName,
             username: username,
@@ -67,27 +57,43 @@ class Signup extends React.Component {
             address: address,
             city: city,
             stateUSA: stateUSA,
-            zip: parseInt(zip)
+            zip: zip
         }
-        console.log('reduxData',reduxData);
+        console.log('saveInputs userData',userData);
 
-        if (this.state.submitted) {
-            // this.loginAcceptedOrDenied(reduxData);
-            this.validateUserInputs(reduxData);
-            // validateInputs(reduxData);
+        const errorObject = this.validateUserInputs(userData);
+        console.log('validateUserInputs returned errorObject',errorObject);
+
+        // if validateUserInputs returns an error, then show to the user. Else, run sendUserDataToDb.
+        if (errorObject.isError) {
+            console.log('WOAH we got an error. Do not send data to db');
+            this.setState({
+                errorArray: errorObject.errorArray,
+                isError: true
+            });
+        } else {
+            this.sendUserDataToDb();
         }
     }
-
 
     validateUserInputs = (data) => {
         console.log('validating inputs...');
 
-        let errorArrayPopulated = validateInputs(data);
-        console.log('errorArrayPopulated',errorArrayPopulated);
+        let errorObject = validateInputs(data);        
+        return errorObject;
+    }
 
+    sendUserDataToDb = (data) => {
+        console.log('sending user data to db....');
+        
+
+        // when database save succeds, send to redux store and set state to
+        // {submitted: true, loading : false}
+        // send to store
         this.setState({
-            errorArray: errorArrayPopulated
-        })
+            submitted: true
+        });
+        // }, this.sendToReduxStore);
 
     }
 
@@ -118,8 +124,8 @@ class Signup extends React.Component {
         return (
             <div className='container'>
                 <h3>Please fill out the information below.</h3>
-                {this.state.submitted ? <div className='error-box'>{this.displayErrors()}</div> : ''}
-                {/* {this.state.submitted ? <div className='error-box'>{this.displayErrors()}</div> : <div className='error-box'>odgoidfgads</div>} */}
+                {this.state.isError ? <div className='error-box'>{this.displayErrors()}</div> : ''}
+                {/* <div className='error-box'>{this.displayErrors()}</div> */}
 
                 <form>
                     <div className='row form-style'>
@@ -213,40 +219,14 @@ class Signup extends React.Component {
                     </div>
                     <br></br>
                     <div className='align-center'>
-                        {this.state.loading ? 'Loading' : <button className='btn btn-primary submit-button' onClick={this.handleSubmit}>submit</button>}
+                        <button className='btn btn-primary submit-button' onClick={this.handleSubmit}>submit</button>
+                        {/* {this.state.loading ? 'Loading' : <button className='btn btn-primary submit-button' onClick={this.handleSubmit}>submit</button>} */}
                     </div>
                     
                 </form>
-
-                <br></br>
-
-                <h4>Testing Redux data 123...</h4>
-                <p>First name: {this.props.firstName}</p>
-                <p>Last name: {this.props.lastName}</p>
-                <p>Username: {this.props.username}</p>
-                <p>Password: {this.props.password}</p>
-                <p>Email: {this.props.email}</p>
-                <p>Address: {this.props.address}</p>
-                <p>City: {this.props.city}</p>
-                <p>State: {this.props.stateUSA}</p>
-                <p>Zip: {this.props.zip}</p>
             </div>
         )
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        firstName: state.firstName,
-        lastName: state.lastName,
-        username: state.username,
-        password: state.password,
-        email: state.email,
-        address: state.address,
-        city: state.city,
-        stateUSA: state.stateUSA,
-        zip: state.zip
-    };
-}
-
-export default connect(mapStateToProps)(Signup);
+export default (Signup);

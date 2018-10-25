@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import PrettyNav from './navStyles';
 import { connect } from 'react-redux';
-
+import HomeNav from './HomeNav';
+import ProfileNav from './ProfileNav';
 
 class Nav extends React.Component {
     handleLogOut = () => {
@@ -15,20 +15,20 @@ class Nav extends React.Component {
     displayNavLinks = () => {
         if (this.props.username !== '') {
             return (
-                <PrettyNav>
-                    <Link className='logo' to='/'>Thread Auction</Link>
-                    <Link to='/create-auction'>Create Auction</Link>
-                    <Link to='/profile'>{this.props.username}'s Profile</Link>
-                    <Link to='/' onClick={this.handleLogOut}>Log Out</Link>
-                </PrettyNav>
-            )
-        } else if (this.props.username === '') {
-            return (
-                <PrettyNav>
-                    <Link className='logo' to='/'>Thread Auction</Link>
-                    <Link to='/login'>Login</Link>
-                    <Link to='/signup'>Signup</Link>
-                </PrettyNav>
+                <ProfileNav>
+                   <Link className='logo' to='/'>Thread Auction</Link>
+                   <Link className='create' to='/create-auction'>Create Auction</Link>
+                   <Link className='welcome' to='/profile'>{this.props.username}'s Profile</Link>
+                   <Link className='logout' to='/' onClick={this.handleLogOut}>Log Out</Link>
+               </ProfileNav>
+           )
+       } else if (this.props.username === '') {
+           return (
+               <HomeNav>
+                   <Link className='logo' to='/'>Thread Auction</Link>
+                   <Link className='login' to='/login' className='login'>Login</Link>
+                   <Link className='signup' to='/signup' className='signup'>Signup</Link>
+               </HomeNav>
             )
         } else {
             return (
