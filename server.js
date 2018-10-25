@@ -31,14 +31,13 @@ app.use(bodyParser.json());
 
 
 // Static directory
-app.use(express.static("public"));
+app.use(express.static("client/build"));
 
 // Routes
 // =============================================================
-require("./routes/Auction-routes.js")(app);
-require("./routes/User-routes.js")(app);
+// require("./routes/Auction-routes.js")(app);
+require("./routes/api-routes/user-routes.js")(app);
 
-// require('./routes/api-routes')(app);
 // require('./routes/html-routes2')(app);
 
 // app.use((req, res, next) => {

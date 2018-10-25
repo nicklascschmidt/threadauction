@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as Styles from './login-style';
 import { Card } from '../../components/form/form'; // input too
 import { Button } from '../../components/button/buttons';
-
+import axios from 'axios';
 
 class Login extends React.Component {
     constructor(props) {
@@ -12,7 +12,8 @@ class Login extends React.Component {
         this.state = {
             username: '',
             password: '',
-            submitted: false
+            submitted: false,
+            dbData: []
         }
     }
 
@@ -59,9 +60,22 @@ class Login extends React.Component {
         });
     }
 
+    dbButtonClick = () => {
+        console.log('db button clicked...');
+        axios.get(`/api/user`)
+            .then(res => {
+                console.log(res);
+
+                // this.setState({ dbData }, () => {
+                //     console.log(this.state.posts);
+                // });
+            });
+    }
+
     render() {
         return (
             <div>
+                <button onClick={this.dbButtonClick}>db button</button>
                 <Styles.Wrapper>
                     <Card>
                         <form>
