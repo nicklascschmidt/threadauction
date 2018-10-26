@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './signup-style.css';
 import { validateInputs } from './userValidation';
+import axios from 'axios';
+import { ThemeConsumer } from 'styled-components';
 
 class Signup extends React.Component {
     constructor(props) {
@@ -49,15 +51,15 @@ class Signup extends React.Component {
         
         const { firstName, lastName, username, password, email, address, city, stateUSA, zip } = this.state;
         const userData = {
-            firstName: firstName,
-            lastName: lastName,
-            username: username,
-            password: password,
-            email: email,
-            address: address,
-            city: city,
-            stateUSA: stateUSA,
-            zip: zip
+            firstName: firstName.toString(),
+            lastName: lastName.toString(),
+            username: username.toString(),
+            password: password.toString(),
+            email: email.toString(),
+            address: address.toString(),
+            city: city.toString(),
+            stateUSA: stateUSA.toString(),
+            zip: zip.toString()
         }
         console.log('saveInputs userData',userData);
 
@@ -72,7 +74,7 @@ class Signup extends React.Component {
                 isError: true
             });
         } else {
-            this.sendUserDataToDb();
+            this.sendUserDataToDb(userData);
         }
     }
 
@@ -85,14 +87,25 @@ class Signup extends React.Component {
 
     sendUserDataToDb = (data) => {
         console.log('sending user data to db....');
-        
 
+        axios.post('/api/user/create', data)
+            .then(resp => {
+                console.log(resp.data);
+                if (resp.status === 200) {
+                    console.log('success');
+                } else {
+                    // not so much
+                }
+                this.setState({
+                    submitted: true
+                });
+            }).catch(err => {
+                alert("There was a problem saving your account");
+            })
         // when database save succeds, send to redux store and set state to
         // {submitted: true, loading : false}
         // send to store
-        this.setState({
-            submitted: true
-        });
+        
         // }, this.sendToReduxStore);
 
     }

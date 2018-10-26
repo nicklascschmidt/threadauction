@@ -36,7 +36,7 @@ app.use(express.static("client/build"));
 // Routes
 // =============================================================
 // require("./routes/Auction-routes.js")(app);
-require("./routes/api-routes/user-routes.js")(app);
+require("./routes/api-routes/api-routes.js")(app);
 
 // require('./routes/html-routes2')(app);
 
@@ -52,7 +52,7 @@ if (process.env.NODE_ENV === "production") {
 
 // Syncing our sequelize models and then starting our Express app
 // =============================================================
-db.sequelize.sync({ force: true }).then(function() {
+db.sequelize.sync(/*{ force: true }*/).then(function() {
   app.listen(PORT, function() {
     console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
   });

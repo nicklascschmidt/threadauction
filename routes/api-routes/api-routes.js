@@ -1,8 +1,8 @@
-var db = require('../models');
+var db = require('../../models');
 
 module.exports = app => {
-	app.get('/api/userData', (req, res) => {
-		db['userData'].findAll({}).then(dbUserData => {
+	app.get('/api/user', (req, res) => {
+		db.User.findAll({}).then(dbUserData => {
 			res.json(dbUserData);
 		});
 	});
@@ -17,16 +17,24 @@ module.exports = app => {
 		});
 	});
 
-	app.post('/api/userData/create', (req, res) => {
-		console.log(req['body']);
-		db['userData'].create({
-            email: req['body']['email'],
-            username: req['body']['username'],
-			password: req['body']['password'],
-			firstName: req['body']['firstName'],
-			lastName: req['body']['lastName']
+
+	app.post('/api/user/create', (req, res) => {
+		console.log('req.body',req.body);
+		db.User.create({
+			firstName: req.body.firstName,
+			lastName: req.body.lastName,
+			username: req.body.username,
+			password: req.body.password,
+			email: req.body.email,
+			address: req.body.address,
+			city: req.body.city,
+			stateUSA: req.body.stateUSA,
+			zip: req.body.zip
 		}).then(dbUserData => {
 			res.json(dbUserData);
+		}).catch(err => {
+			console.log(err);
+			res.sendStatus(500)
 		});
   });
 };

@@ -7,7 +7,7 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
     },
 
-    first_name: {
+    firstName: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
 
-    last_name: {
+    lastName: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -33,7 +33,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
 
-    userName: {
+    username: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
@@ -60,7 +60,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
     },
 
-    state: {
+    stateUSA: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -68,8 +68,8 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
 
-    zipcode: {
-      type: DataTypes.INTEGER,
+    zip: {
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         len: [5],
