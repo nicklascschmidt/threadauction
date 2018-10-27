@@ -35,7 +35,9 @@ app.use(express.static("client/build"));
 
 // Routes
 // =============================================================
-require("./routes/api-routes/api-routes.js")(app);
+// require("./routes/api-routes/api-routes.js")(app);
+require("./routes/api-routes/login-routes.js")(app);
+require("./routes/api-routes/signup-routes.js")(app);
 
 
 // app.use((req, res, next) => {

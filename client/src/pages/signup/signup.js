@@ -55,7 +55,7 @@ class Signup extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
 
-        this.setState({loading: true}, this.saveInputs());
+        this.setState({loading: true}, () => this.saveInputs());
     }
 
     saveInputs = () => {
@@ -84,7 +84,7 @@ class Signup extends React.Component {
                 errorArray: errorObject.errorArray,
                 isError: true,
                 loading: false
-            });
+            },() => console.log(this.state));
         } else {
             this.sendUserDataToDb(userData);
         }
