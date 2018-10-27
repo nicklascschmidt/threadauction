@@ -1,7 +1,8 @@
 import React from 'react';
 import './createAuction-style.css';
-import { validateInputs } from './userValidation';
 import axios from 'axios';
+import { validateUserInputs } from './userValidation';
+import { connect } from 'react-redux';
 
 
 class CreateAuction extends React.Component {
@@ -15,7 +16,6 @@ class CreateAuction extends React.Component {
             category: '',
             startingPrice: '',
             minBidIncrement: '',
-            createdAt: '',
 
             submitted: false,
             loading: false,
@@ -30,9 +30,8 @@ class CreateAuction extends React.Component {
             description: '',
             gender: '',
             category: '',
-            startingPrice: '',
-            minBidIncrement: '',
-            createdAt: '',
+            startingPrice: 10,
+            minBidIncrement: 5,
             
             submitted: false,
             loading: false,
@@ -41,12 +40,30 @@ class CreateAuction extends React.Component {
         });
     }
 
-    handleChange = (event) => {
+    handleInputChange = (event) => {
         const { name, value } = event.target;
         this.setState({
             [name]: value
         });
+    }
 
+    handleRadioButtonChange = (event) => {
+        this.setState({
+            gender: event.target.value
+        }, () => {console.log(this.state)})
+    }
+
+    handleDropdownChange = (event) => {
+        this.setState({
+            category: event.target.value
+        }, () => {console.log(this.state)})
+    }
+
+    handleSliderChange = (event) => {
+        const { id, value } = event.target;
+        this.setState({
+            [id]: value
+        });
     }
 
     handleSubmit = (event) => {
@@ -56,48 +73,47 @@ class CreateAuction extends React.Component {
     }
 
     saveInputs = () => {
-        
-        const { firstName, lastName, username, password, email, address, city, stateUSA, zip } = this.state;
-        const userData = {
-            firstName: firstName.toString(),
-            lastName: lastName.toString(),
-            username: username.toString(),
-            password: password.toString(),
-            email: email.toString(),
-            address: address.toString(),
-            city: city.toString(),
-            stateUSA: stateUSA.toString(),
-            zip: zip.toString()
-        }
-        console.log('saveInputs userData',userData);
 
-        const errorObject = this.validateUserInputs(userData);
+        const { title, description, gender, category, startingPrice, minBidIncrement } = this.state;
+        const itemData = {
+            userId: this.props.userId,
+            title: title.toString(),
+            description: description.toString(),
+            gender: gender.toString(),
+            category: category.toString(),
+            startingPrice: startingPrice,
+            minBidIncrement: minBidIncrement
+        }
+        console.log('saveInputs itemData',itemData);
+
+        const errorObject = validateUserInputs(itemData);
         console.log('validateUserInputs returned errorObject',errorObject);
+
+        this.setState({
+            errorArray: errorObject.errorArray,
+            isError: errorObject.isError
+        }, () => {
+            console.log(this.state);
+            this.displayErrors();
+        });
 
         // if validateUserInputs returns an error, then show to the user. Else, run sendUserDataToDb.
         if (errorObject.isError) {
             console.log('WOAH we got an error. Do not send data to db');
             this.setState({
-                errorArray: errorObject.errorArray,
-                isError: true,
                 loading: false
-            },() => console.log(this.state));
+            });
         } else {
-            this.sendUserDataToDb(userData);
+            console.log('send that s h i t to the DB!');
+            this.sendUserDataToDb(itemData);
         }
     }
 
-    validateUserInputs = (data) => {
-        console.log('validating inputs...');
-
-        let errorObject = validateInputs(data);        
-        return errorObject;
-    }
 
     sendUserDataToDb = (data) => {
         console.log('sending user data to db....');
 
-        axios.post('/api/user/create', data)
+        axios.post('/api/auction/create', data)
             .then(resp => {
                 console.log(resp.data);
                 if (resp.status === 200) {
@@ -109,11 +125,12 @@ class CreateAuction extends React.Component {
                         isError: false
                     });
                 } else {
-                    console.log('front end /api/user/create error');
+                    console.log('front end /api/auction/create error');
                 }
             }).catch(err => {
+                console.log(err);
                 this.setState({
-                    errorArray: ['There was a problem saving your account']
+                    errorArray: ['There was a problem saving your auction.']
                 });
             });
         
@@ -122,7 +139,8 @@ class CreateAuction extends React.Component {
     componentDidUpdate = () => {
         if (this.state.submitted) {
             // bring user to login page
-            window.location = '/login';
+            // window.location = '/login';
+            console.log('~~~~~~SUBMITTED~~~~~~');
         }
     }
 
@@ -131,15 +149,6 @@ class CreateAuction extends React.Component {
         return this.state.errorArray.map((errorMsg , n) => {
             return <p key={n}>{errorMsg}</p>
         })
-    }
-
-    handleRadioButtonChange = (event) => {
-        console.log('event.target',event.target);
-        console.log('event.target.value',event.target.value);
-        
-        this.setState({
-            gender: event.target.value
-        }, () => {console.log(this.state)})
     }
 
     
@@ -172,28 +181,22 @@ class CreateAuction extends React.Component {
                         </div>
                         <div>
                             <span>Gender: </span>
-                            <input
-                                type="text"
-                                name="gender"
-                                value={this.state.gender}
-                                onChange={event => this.handleInputChange(event)}
-                            />
                             <ul>
                                 <li>
-                                    <label for="male">
-                                        <input type="radio" id="male" name="male" value="M" onChange={event => this.handleRadioButtonChange(event)}/>
+                                    <label htmlFor="male">
+                                        <input type="radio" id="male" name="gender" value="M" onChange={event => this.handleRadioButtonChange(event)}/>
                                          Male
                                     </label>
                                 </li>
                                 <li>
-                                    <label for="female">
-                                        <input type="radio" id="female" name="female" value="F" onChange={event => this.handleRadioButtonChange(event)}/>
+                                    <label htmlFor="female">
+                                        <input type="radio" id="female" name="gender" value="F" onChange={event => this.handleRadioButtonChange(event)}/>
                                          Female
                                     </label>
                                 </li>
                                 <li>
-                                    <label for="unisex">
-                                        <input type="radio" id="unisex" name="unisex" value="U" onChange={event => this.handleRadioButtonChange(event)}/>
+                                    <label htmlFor="unisex">
+                                        <input type="radio" id="unisex" name="gender" value="U" onChange={event => this.handleRadioButtonChange(event)}/>
                                          Unisex
                                     </label>
                                 </li>
@@ -201,30 +204,32 @@ class CreateAuction extends React.Component {
                         </div>
                         <div>
                             <span>Category: </span>
-                            <input
-                                type="text"
-                                name="category"
-                                value={this.state.category}
-                                onChange={event => this.handleChange(event)}
-                            />
+                            <select name="category" size="3" onChange={event => this.handleDropdownChange(event)}>
+                                <option value="">Select Category</option>
+
+                                <option value="shirts">Shirts</option>
+                                <option value="longSleeves">Long-sleeves / Sweaters</option>
+                                <option value="jackets">Jackets</option>
+
+                                <option value="shorts">Shorts</option>
+                                <option value="pants">Pants</option>
+                                <option value="underwear">Underwear / Delicates</option>
+                                <option value="skirts">Skirts</option>
+                                <option value="dresses">Dresses</option>
+
+                                <option value="shoes">Shoes</option>
+                                <option value="hats">Hats</option>
+                                <option value="socks">Socks</option>
+                                <option value="other"></option>
+                            </select>
                         </div>
                         <div>
-                            <span>Starting Price: </span>
-                            <input
-                                type="text"
-                                name="startingPrice"
-                                value={this.state.startingPrice}
-                                onChange={event => this.handleChange(event)}
-                            />
+                            <div>Starting Price: ${this.state.startingPrice}</div>
+                            <input type="range" min="1" max="300" value={this.state.startingPrice} className="slider" id="startingPrice" onChange={event => this.handleSliderChange(event)} />
                         </div>
                         <div>
-                            <span>Minimum Bid Increment: </span>
-                            <input
-                                type="text"
-                                name="minBidIncrement"
-                                value={this.state.minBidIncrement}
-                                onChange={event => this.handleChange(event)}
-                            />
+                            <div>Minimum Bid Increment: ${this.state.minBidIncrement}</div>
+                            <input type="range" min="1" max="20" value={this.state.minBidIncrement} className="slider" id="minBidIncrement" onChange={event => this.handleSliderChange(event)} />
                         </div>
                     </div>
                     <br></br>
@@ -239,4 +244,14 @@ class CreateAuction extends React.Component {
     }
 }
 
-export default CreateAuction;
+
+function mapStateToProps(state) {
+    console.log('Product: mapStateToProps state',state);
+    return {
+      username: state.username,
+      userId: state.userId,
+      isLoggedIn: true
+    };
+}
+
+export default connect(mapStateToProps)(CreateAuction);

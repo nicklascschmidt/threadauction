@@ -5,6 +5,7 @@ module.exports = app => {
 	app.post('/api/user/create', (req, res) => {
 		console.log('req.body',req.body);
 		db.User.create({
+
 			firstName: req.body.firstName,
 			lastName: req.body.lastName,
 			username: req.body.username,
@@ -14,8 +15,9 @@ module.exports = app => {
 			city: req.body.city,
 			stateUSA: req.body.stateUSA,
 			zip: req.body.zip
-		}).then(dbUserData => {
-			res.json(dbUserData);
+			
+		}).then(data => {
+			res.json(data);
 		}).catch(err => {
 			console.log(err);
 			res.sendStatus(500)
