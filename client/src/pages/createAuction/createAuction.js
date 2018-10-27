@@ -133,6 +133,15 @@ class CreateAuction extends React.Component {
         })
     }
 
+    handleRadioButtonChange = (event) => {
+        console.log('event.target',event.target);
+        console.log('event.target.value',event.target.value);
+        
+        this.setState({
+            gender: event.target.value
+        }, () => {console.log(this.state)})
+    }
+
     
     render() {
        
@@ -150,7 +159,7 @@ class CreateAuction extends React.Component {
                                 type="text"
                                 name="title"
                                 value={this.state.title}
-                                onChange={event => this.handleChange(event)}
+                                onChange={event => this.handleInputChange(event)}
                             />
                         </div>
                         <div>
@@ -158,7 +167,7 @@ class CreateAuction extends React.Component {
                             <textarea
                                 name="description"
                                 value={this.state.description}
-                                onChange={event => this.handleChange(event)}
+                                onChange={event => this.handleInputChange(event)}
                             />
                         </div>
                         <div>
@@ -167,25 +176,25 @@ class CreateAuction extends React.Component {
                                 type="text"
                                 name="gender"
                                 value={this.state.gender}
-                                onChange={event => this.handleChange(event)}
+                                onChange={event => this.handleInputChange(event)}
                             />
                             <ul>
                                 <li>
                                     <label for="male">
-                                        <input type="radio" id="male" name="male" value="M"/>
-                                        Male
+                                        <input type="radio" id="male" name="male" value="M" onChange={event => this.handleRadioButtonChange(event)}/>
+                                         Male
                                     </label>
                                 </li>
                                 <li>
                                     <label for="female">
-                                        <input type="radio" id="female" name="female" value="F"/>
-                                        Female
+                                        <input type="radio" id="female" name="female" value="F" onChange={event => this.handleRadioButtonChange(event)}/>
+                                         Female
                                     </label>
                                 </li>
                                 <li>
                                     <label for="unisex">
-                                        <input type="radio" id="unisex" name="unisex" value="U"/>
-                                        Unisex
+                                        <input type="radio" id="unisex" name="unisex" value="U" onChange={event => this.handleRadioButtonChange(event)}/>
+                                         Unisex
                                     </label>
                                 </li>
                             </ul>
