@@ -28,12 +28,23 @@ class Signup extends React.Component {
 
     componentDidMount = () => {
         this.setState({
-            submitted: false
+            firstName: '',
+            lastName: '',
+            username: '',
+            password: '',
+            email: '',
+            address: '',
+            city: '',
+            stateUSA: '',
+            zip: '',
+            submitted: false,
+            loading: false,
+            errorArray: [],
+            isError: null
         });
     }
 
     handleChange = (event) => {
-        console.log('signup handleChange');
         const { name, value } = event.target;
         this.setState({
             [name]: value
@@ -71,7 +82,8 @@ class Signup extends React.Component {
             console.log('WOAH we got an error. Do not send data to db');
             this.setState({
                 errorArray: errorObject.errorArray,
-                isError: true
+                isError: true,
+                loading: false
             });
         } else {
             this.sendUserDataToDb(userData);
@@ -93,43 +105,36 @@ class Signup extends React.Component {
                 console.log(resp.data);
                 if (resp.status === 200) {
                     console.log('success');
+                    this.setState({
+                        submitted: true,
+                        loading: false,
+                        errorArray: [],
+                        isError: false
+                    });
                 } else {
-                    // not so much
+                    console.log('front end /api/user/create error');
                 }
-                this.setState({
-                    submitted: true
-                });
             }).catch(err => {
-                alert("There was a problem saving your account");
-            })
-        // when database save succeds, send to redux store and set state to
-        // {submitted: true, loading : false}
-        // send to store
+                this.setState({
+                    errorArray: ['There was a problem saving your account']
+                });
+            });
         
-        // }, this.sendToReduxStore);
-
     }
 
-
-    loginAcceptedOrDenied = (data) => {
-        // check db for login data here
-        data.isLoggedIn = true;
-
-        this.props.dispatch({
-            type: 'USER_SIGNUP_REQUEST',
-            payload: data
-        });
-
-        // bring user to login page
-        window.location = '/login';
+    componentDidUpdate = () => {
+        if (this.state.submitted) {
+            // bring user to login page
+            window.location = '/login';
+        }
     }
+
 
     displayErrors = () => {
         return this.state.errorArray.map((errorMsg , n) => {
             return <p key={n}>{errorMsg}</p>
         })
     }
-
 
     
     render() {
@@ -138,7 +143,6 @@ class Signup extends React.Component {
             <div className='container'>
                 <h3>Please fill out the information below.</h3>
                 {this.state.isError ? <div className='error-box'>{this.displayErrors()}</div> : ''}
-                {/* <div className='error-box'>{this.displayErrors()}</div> */}
 
                 <form>
                     <div className='row form-style'>
@@ -232,8 +236,8 @@ class Signup extends React.Component {
                     </div>
                     <br></br>
                     <div className='align-center'>
-                        <button className='btn btn-primary submit-button' onClick={this.handleSubmit}>submit</button>
-                        {/* {this.state.loading ? 'Loading' : <button className='btn btn-primary submit-button' onClick={this.handleSubmit}>submit</button>} */}
+                        {/* <button className='btn btn-primary submit-button' onClick={this.handleSubmit}>submit</button> */}
+                        {this.state.loading ? 'Loading...' : <button className='btn btn-primary submit-button' onClick={this.handleSubmit}>submit</button>}
                     </div>
                     
                 </form>

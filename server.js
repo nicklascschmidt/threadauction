@@ -35,10 +35,8 @@ app.use(express.static("client/build"));
 
 // Routes
 // =============================================================
-// require("./routes/Auction-routes.js")(app);
 require("./routes/api-routes/api-routes.js")(app);
 
-// require('./routes/html-routes2')(app);
 
 // app.use((req, res, next) => {
 // 	res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
@@ -52,6 +50,7 @@ if (process.env.NODE_ENV === "production") {
 
 // Syncing our sequelize models and then starting our Express app
 // =============================================================
+// only force=true if we want to add columns or reset the data in the db
 db.sequelize.sync(/*{ force: true }*/).then(function() {
   app.listen(PORT, function() {
     console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);

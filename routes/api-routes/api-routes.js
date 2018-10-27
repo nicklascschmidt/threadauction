@@ -10,12 +10,27 @@ module.exports = app => {
 	app.post('/api/userData', (req, res) => {
 		db['userData'].findOne({
 			where: {
-				username: req['body']['username']
+				username: req.body.username
 			}
 		}).then(dbUserData => {
 			res.json(dbUserData);
 		});
 	});
+
+	app.get('/api/user/login', (req, res) => {
+		console.log('req.query',req.query);
+		db.User.findOne({
+			where: {
+				username: req.query.username,
+				password: req.query.password
+			}
+		}).then(data => {
+			res.json(data);
+		}).catch(err => {
+			console.log(err);
+			res.sendStatus(500);
+		})
+	})
 
 
 	app.post('/api/user/create', (req, res) => {
@@ -36,5 +51,8 @@ module.exports = app => {
 			console.log(err);
 			res.sendStatus(500)
 		});
-  });
+	});
+	
+
+
 };

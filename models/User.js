@@ -1,5 +1,7 @@
 module.exports = function(sequelize, DataTypes) {
-  var User = sequelize.define("User", {
+    const sequelizeTransforms = require('sequelize-transforms');
+ 
+    const User = sequelize.define("User", {
 
     id: {
       type: DataTypes.INTEGER,
@@ -11,18 +13,18 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [2,35],
-        isAlpha: true
-      }
+        len: [2,35]
+      },
+      trim: true
     },
 
     lastName: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [2,35],
-        isAlpha: true
-      }
+        len: [2,35]
+      },
+      trim: true
     },
 
     email: {
@@ -30,7 +32,9 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       validate: {
         isEmail: true, 
-      }
+      },
+      trim: true,
+      lowercase: true
     },
 
     username: {
@@ -39,7 +43,8 @@ module.exports = function(sequelize, DataTypes) {
       unique: true,
       validate: {
         len: [3,20],
-      }
+      },
+      trim: true
     },
 
     password: {
@@ -47,17 +52,20 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       validate: {
         len: [8,20],
-        }
+      },
+      trim: true
     },
 
     address: {
       type: DataTypes.STRING,
       allowNull: false,
+      trim: true
     },
 
     city: {
       type: DataTypes.STRING,
       allowNull: false,
+      trim: true
     },
 
     stateUSA: {
@@ -65,7 +73,8 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       validate: {
         len: [2],
-      }
+      },
+      trim: true
     },
 
     zip: {
@@ -73,7 +82,8 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       validate: {
         len: [5],
-      }
+      },
+      trim: true
     },
    
   });
@@ -85,6 +95,9 @@ module.exports = function(sequelize, DataTypes) {
       }
     });
   }; 
+
+  sequelizeTransforms(User);
+
 
   return User;
 };

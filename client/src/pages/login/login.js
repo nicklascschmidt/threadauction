@@ -4,6 +4,7 @@ import * as Styles from './login-style';
 import { Card } from '../../components/form/form'; // input too
 import { Button } from '../../components/button/buttons';
 import axios from 'axios';
+import './login-style';
 
 class Login extends React.Component {
     constructor(props) {
@@ -12,13 +13,27 @@ class Login extends React.Component {
         this.state = {
             username: '',
             password: '',
+            loading: false,
             submitted: false,
-            dbData: []
+            errorMsg: null,
+            isError: null,
+            sendToRedux: false,
+            sendToReduxData: null
         }
     }
 
+    componentDidMount = () => {
+        this.setState({
+            loading: false,
+            submitted: false,
+            errorMsg: null,
+            isError: null,
+            sendToRedux: false,
+            sendToReduxData: null
+        })
+    }
+
     handleChange = (event) => {
-        console.log('login handleChange');
         const { name, value } = event.target;
         this.setState({
             [name]: value
@@ -28,58 +43,110 @@ class Login extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
 
-        this.setState({
-            submitted: true
-        }, this.sendToReduxStore);
-    }
-
-    sendToReduxStore = () => {
         const { username, password } = this.state;
-
-        const reduxData = {
+        const userData = {
             username: username,
             password: password
         }
-        console.log('reduxData',reduxData);
+        console.log('userData',userData);
 
-        if (this.state.submitted) {
-            this.loginAcceptedOrDenied(reduxData);
-        }
+        this.setState({
+            loading: true
+        });
+
+        this.checkDbForUsernameAndPassword(userData);
+
     }
 
-    loginAcceptedOrDenied = (data) => {
-        // check db for login data here
-        data.isLoggedIn = true;
+    sendToReduxStore = (data) => {
+        console.log('sending to redux store...');
+
+        const userLogin = {
+            username: data.username
+        };
 
         this.props.dispatch({
             type: 'USER_LOGIN_REQUEST',
-            payload: data
+            payload: userLogin
         });
+
         this.setState({
-            submitted: false
+            submitted: true,
+            loading: false,
+            errorArray: [],
+            isError: false,
+            sendToRedux: false,
+            sendToReduxData: null
         });
     }
 
-    dbButtonClick = () => {
-        console.log('db button clicked...');
-        axios.get(`/api/user`)
-            .then(res => {
-                console.log(res);
+    componentDidUpdate = () => {
+        if (this.state.sendToRedux) {
+            this.sendToReduxStore(this.state.sendToReduxData);
+        }
 
-                // this.setState({ dbData }, () => {
-                //     console.log(this.state.posts);
-                // });
-            });
+        if (this.state.submitted) {
+            console.log('user data submitted');
+
+            // bring user to home page
+            window.location = '/';
+        }
     }
+
+
+    checkDbForUsernameAndPassword = (data) => {
+        
+        axios.get('/api/user/login', {
+            params: data
+        })
+        .then(resp => {
+            console.log('resp.data',resp.data);
+
+            if (resp.status === 200) {
+                console.log('success');
+
+                this.setState({
+                    loading: false
+                });
+
+                if (resp.data === null) {
+                    console.log('resp.data is null');
+                    this.setState({
+                        errorMsg: `We couldn\'t find your profile. Please check your username and password and try again.`,
+                        isError: true
+                    });
+                } else {
+                    // return an object to pass into redux
+                    this.setState({
+                        errorMsg: null,
+                        isError: false,
+                        sendToRedux: true,
+                        sendToReduxData: resp.data
+                    });
+                    return
+                }
+            } else {
+                console.log('front end /api/user/create error');
+            }
+
+        }).catch(err => {
+            this.setState({
+                errorMsg: `We ran into an issue trying to find your account.`,
+                isError: true
+            });
+            console.log(err);
+        });
+
+    }
+
 
     render() {
         return (
             <div>
-                <button onClick={this.dbButtonClick}>db button</button>
                 <Styles.Wrapper>
                     <Card>
                         <form>
-                            <label for="">Username: </label>
+                            <label>Username: </label>
                             <input
                                 type="text"
                                 name="username"
@@ -87,7 +154,7 @@ class Login extends React.Component {
                                 onChange={event => this.handleChange(event)}
                             />
                             <br></br>
-                            <label for="">Password: </label>
+                            <label>Password: </label>
                             <input
                                 type="text"
                                 name="password"
@@ -95,14 +162,10 @@ class Login extends React.Component {
                                 onChange={event => this.handleChange(event)}
                             />
                             <br></br>
-                            <button onClick={this.handleSubmit}>submit</button>
-                            {/* <Button onClick={this.handleSubmit}>submit</Button> */}
+                            {this.state.loading ? 'Loading...' : <button onClick={this.handleSubmit}>submit</button>}
                         </form>
                     </Card>
-                    <p>State user: {this.state.username}</p>
-                    <p>State pw: {this.state.password}</p>
-                    <p>Global props user: {this.props.username}</p>
-                    <p>Global props pw: {this.props.password}</p>
+                    {this.state.isError ? <div className='error-box'><p>{this.state.errorMsg}</p></div> : ''}
                 </Styles.Wrapper>
             </div>
         )
@@ -110,10 +173,8 @@ class Login extends React.Component {
 }
 
 function mapStateToProps(state) {
-    console.log('Login: mapStateToProps state',state);
     return {
       username: state.username,
-      password: state.password,
       isLoggedIn: true
     };
 }
