@@ -1,9 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import './signup-style.css';
 import { validateInputs } from './userValidation';
 import axios from 'axios';
-import { ThemeConsumer } from 'styled-components';
 
 class Signup extends React.Component {
     constructor(props) {
@@ -246,4 +244,4 @@ class Signup extends React.Component {
     }
 }
 
-export default (Signup);
+export default Signup;
