@@ -2,7 +2,7 @@ module.exports = function(sequelize, DataTypes) {
   const sequelizeTransforms = require('sequelize-transforms');
    
   const Auction = sequelize.define("Auction", {
-  
+
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -11,12 +11,20 @@ module.exports = function(sequelize, DataTypes) {
 
     title: {
       type: DataTypes.STRING,
+      validate: {
+        len: [1,100]
+      },
       allowNull: false,
+      trim: true
     },
 
     description: {
       type: DataTypes.TEXT("tiny"),
       allowNull: false,
+      validate: {
+        len: [1,1000]
+      },
+      trim: true
     },
       
     gender: {
@@ -38,11 +46,11 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-  
+
     createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
-    },
+    }
 
 
   });

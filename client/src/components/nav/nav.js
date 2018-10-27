@@ -13,7 +13,7 @@ class Nav extends React.Component {
     }
 
     displayNavLinks = () => {
-        if (this.props.username !== '') {
+        if (this.props.username !== null) {
             return (
                 <ProfileNav>
                    <Link className='logo' to='/'>Thread Auction</Link>
@@ -22,7 +22,7 @@ class Nav extends React.Component {
                    <Link className='logout' to='/' onClick={this.handleLogOut}>Log Out</Link>
                </ProfileNav>
            )
-       } else if (this.props.username === '') {
+       } else if (this.props.username === null) {
            return (
                <HomeNav>
                    <Link className='logo' to='/'>Thread Auction</Link>

@@ -11,7 +11,8 @@ import { loadState, saveState } from './localstorage';
 const persistedState = loadState();
 
 const initialState = {
-    username: '',
+    username: null,
+    userId: null,
     isLoggedIn: false
 }
 
@@ -21,12 +22,14 @@ const reducer = (state = initialState, action) => {
         console.log('global state updated - user logged in');
         return {
           username: action.payload.username,
+          userId: action.payload.userId,
           isLoggedIn: action.payload.isLoggedIn
         }
       case 'USER_LOGOUT_REQUEST':
         console.log('global state updated - user logged out');
         return {
-            username: '',
+            username: null,
+            userId: null,
             isLoggedIn: false
         }
       default:
