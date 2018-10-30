@@ -61,13 +61,14 @@ class Login extends React.Component {
     sendToReduxStore = (data) => {
         console.log('sending to redux store...');
 
-        const userLogin = {
-            username: data.username
+        const userData = {
+            username: data.username,
+            userId: data.id
         };
 
         this.props.dispatch({
             type: 'USER_LOGIN_REQUEST',
-            payload: userLogin
+            payload: userData
         });
 
         this.setState({
@@ -89,7 +90,7 @@ class Login extends React.Component {
             console.log('user data submitted');
 
             // bring user to home page
-            window.location = '/';
+            // window.location = '/';
         }
     }
 
@@ -156,7 +157,7 @@ class Login extends React.Component {
                             <br></br>
                             <label>Password: </label>
                             <input
-                                type="text"
+                                type="password"
                                 name="password"
                                 value={this.state.password}
                                 onChange={event => this.handleChange(event)}
@@ -175,6 +176,7 @@ class Login extends React.Component {
 function mapStateToProps(state) {
     return {
       username: state.username,
+      userId: state.id,
       isLoggedIn: true
     };
 }

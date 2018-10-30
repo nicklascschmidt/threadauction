@@ -15,6 +15,6 @@ module.exports = app => {
 			console.log(err);
 			res.sendStatus(500);
 		})
-	})
+	});
 	
 };
