@@ -1,13 +1,12 @@
 module.exports = function(sequelize, DataTypes) {
   const sequelizeTransforms = require('sequelize-transforms');
 
-   
   const Auction = sequelize.define("Auction", {
 
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
-      primaryKey: true,
+      primaryKey: true
     },
 
     title: {

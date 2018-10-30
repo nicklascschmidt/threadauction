@@ -5,7 +5,7 @@ module.exports = function(app) {
         console.log(req.body);
 
         db.Auction.create({
-            UserId: req.body.UserId,
+            UserId: req.body.userId,
             title: req.body.title,
             description: req.body.description,
             createdAt: req.body.createdAt,
