@@ -38,6 +38,7 @@ app.use(express.static("client/build"));
 // require("./routes/api-routes/api-routes.js")(app);
 require("./routes/api-routes/login-routes.js")(app);
 require("./routes/api-routes/signup-routes.js")(app);
+require("./routes/api-routes/auction-routes.js")(app);
 
 
 // app.use((req, res, next) => {
