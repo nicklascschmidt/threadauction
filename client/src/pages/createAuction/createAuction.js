@@ -141,6 +141,16 @@ class CreateAuction extends React.Component {
             // bring user to login page
             // window.location = '/login';
             console.log('~~~~~~SUBMITTED~~~~~~');
+            this.setState({
+                title: '',
+                description: '',
+                gender: '',
+                category: '',
+
+                startingPrice: 10,
+                minBidIncrement: 5,
+                submitted: false
+            })
         }
     }
 
@@ -148,6 +158,13 @@ class CreateAuction extends React.Component {
     displayErrors = () => {
         return this.state.errorArray.map((errorMsg , n) => {
             return <p key={n}>{errorMsg}</p>
+        })
+    }
+
+    handleSubmitTest = (event) => {
+        event.preventDefault();
+        this.setState({
+            category: ''
         })
     }
 
@@ -184,19 +201,19 @@ class CreateAuction extends React.Component {
                             <ul>
                                 <li>
                                     <label htmlFor="male">
-                                        <input type="radio" id="male" name="gender" value="M" onChange={event => this.handleRadioButtonChange(event)}/>
+                                        <input type="radio" id="male" name="gender" value="M" checked={this.state.gender === 'M'} onChange={event => this.handleRadioButtonChange(event)}/>
                                          Male
                                     </label>
                                 </li>
                                 <li>
                                     <label htmlFor="female">
-                                        <input type="radio" id="female" name="gender" value="F" onChange={event => this.handleRadioButtonChange(event)}/>
+                                        <input type="radio" id="female" name="gender" value="F" checked={this.state.gender === 'F'} onChange={event => this.handleRadioButtonChange(event)}/>
                                          Female
                                     </label>
                                 </li>
                                 <li>
                                     <label htmlFor="unisex">
-                                        <input type="radio" id="unisex" name="gender" value="U" onChange={event => this.handleRadioButtonChange(event)}/>
+                                        <input type="radio" id="unisex" name="gender" value="U" checked={this.state.gender === 'U'} onChange={event => this.handleRadioButtonChange(event)}/>
                                          Unisex
                                     </label>
                                 </li>
@@ -204,7 +221,7 @@ class CreateAuction extends React.Component {
                         </div>
                         <div>
                             <span>Category: </span>
-                            <select name="category" size="3" onChange={event => this.handleDropdownChange(event)}>
+                            <select name="category" size="3" value={this.state.category} onChange={event => this.handleDropdownChange(event)}>
                                 <option value="">Select Category</option>
 
                                 <option value="shirts">Shirts</option>
@@ -220,7 +237,7 @@ class CreateAuction extends React.Component {
                                 <option value="shoes">Shoes</option>
                                 <option value="hats">Hats</option>
                                 <option value="socks">Socks</option>
-                                <option value="other"></option>
+                                <option value="other">Other</option>
                             </select>
                         </div>
                         <div>
@@ -234,8 +251,8 @@ class CreateAuction extends React.Component {
                     </div>
                     <br></br>
                     <div className='align-center'>
-                        {/* <button className='btn btn-primary submit-button' onClick={this.handleSubmit}>submit</button> */}
                         {this.state.loading ? 'Loading...' : <button className='btn btn-primary submit-button' onClick={this.handleSubmit}>submit</button>}
+                        {/* <button className='btn btn-primary submit-button' onClick={this.handleSubmitTest}>test</button> */}
                     </div>
                     
                 </form>
