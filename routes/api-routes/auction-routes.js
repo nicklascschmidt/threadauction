@@ -33,6 +33,24 @@ module.exports = function(app) {
             res.sendStatus(500);
         })
     });
+
+    app.get("/api/auction/all", (req, res) => {
+        // console.log("req.query", req.query);
+        console.log('req.body',req.body);
+        
+        db.Auction.findAll({
+            // where: {
+            //     id: req.query.auctionId,
+            // }
+        }).then(data => {
+            res.json(data);
+        }).catch(err => {
+            console.log(err);
+            res.sendStatus(500);
+        })
+    });
+
+    
 	
 	
 };

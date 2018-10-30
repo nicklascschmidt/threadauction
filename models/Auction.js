@@ -26,6 +26,15 @@ module.exports = function(sequelize, DataTypes) {
       },
       trim: true
     },
+
+    imgLink: {
+      type: DataTypes.STRING,
+      validate: {
+        len: [1,255]
+      },
+      allowNull: false,
+      trim: true
+    },
       
     gender: {
       type: DataTypes.STRING,
