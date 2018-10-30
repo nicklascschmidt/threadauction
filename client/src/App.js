@@ -10,6 +10,7 @@ import Login from './pages/login';
 import NotFound from './pages/notFound';
 import Signup from './pages/signup';
 import CreateAuction from './pages/createAuction';
+import Product from './pages/product';
 
 
 class App extends React.Component {
@@ -20,10 +21,16 @@ class App extends React.Component {
           <Nav />
           <Switch>
             <Route exact path="/" component={Home} />
+            <Route exact path="/product" component={Product} />
             <Route exact path="/profile" component={UserProfile} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={Signup} />
             <Route exact path="/create-auction" component={CreateAuction} />
+
+            <Route path="/product/:auctionId" component={Product} />
+
+
+
 
             <Route component={NotFound} />
           </Switch>

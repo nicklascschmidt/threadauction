@@ -20,11 +20,11 @@ module.exports = function(app) {
     });
 
 
-    app.get("api/auction/ID", (req, res) => {
+    app.get("/api/auction/id", (req, res) => {
         console.log("req.query", req.query);
         db.Auction.findOne({
             where: {
-                id: req.query.id,
+                id: req.query.auctionId,
             }
         }).then(data => {
             res.json(data);

@@ -12,6 +12,7 @@ class CreateAuction extends React.Component {
         this.state = {
             title: '',
             description: '',
+            imgLink: '',
             gender: '',
             category: '',
             startingPrice: '',
@@ -28,6 +29,7 @@ class CreateAuction extends React.Component {
         this.setState({
             title: '',
             description: '',
+            imgLink: '',
             gender: '',
             category: '',
             startingPrice: 10,
@@ -73,8 +75,8 @@ class CreateAuction extends React.Component {
     }
 
     saveInputs = () => {
-
-        const { title, description, gender, category, startingPrice, minBidIncrement } = this.state;
+        // pineapple
+        const { title, description, imgLink, gender, category, startingPrice, minBidIncrement } = this.state;
         const itemData = {
             userId: this.props.userId,
             title: title.toString(),
@@ -178,8 +180,8 @@ class CreateAuction extends React.Component {
 
                 <form>
                     <div className='form-style'>
+                        <h4>Item Info</h4>
                         <div>
-                            <h4>Item Info</h4>
                             <span>Title: </span>
                             <input
                                 type="text"
@@ -193,6 +195,15 @@ class CreateAuction extends React.Component {
                             <textarea
                                 name="description"
                                 value={this.state.description}
+                                onChange={event => this.handleInputChange(event)}
+                            />
+                        </div>
+                        <div>
+                            <span>Image Link: </span>
+                            <input
+                                type="text"
+                                name="imgLink"
+                                value={this.state.imgLink}
                                 onChange={event => this.handleInputChange(event)}
                             />
                         </div>
