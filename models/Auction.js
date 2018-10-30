@@ -1,5 +1,6 @@
 module.exports = function(sequelize, DataTypes) {
   const sequelizeTransforms = require('sequelize-transforms');
+
    
   const Auction = sequelize.define("Auction", {
 
@@ -36,7 +37,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
     },
-
+    
     startingPrice: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -66,7 +67,7 @@ module.exports = function(sequelize, DataTypes) {
         }
       });
     };
-
+ 
   return Auction;
 };
-  
+
