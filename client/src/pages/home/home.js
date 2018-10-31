@@ -5,14 +5,13 @@ import { Link } from "react-router-dom";
 import ProductListing from '../../components/productListing/productListing';
 import axios from 'axios';
 import './home-style.css';
+import moment from 'moment';
 
 class Home extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            auctionId: 1,
-            auctionId2: 2,
 
             productObjectArray: [],
 
@@ -30,24 +29,32 @@ class Home extends Component {
             areProductsPulled: false,
         }
     }
-    
+
    
     componentDidMount = () => {
-        // this.showProducts();
         this.pullAllProductsFromDb();
-        
+        this.setState({
+            productObjectArray: [],
+            errorArray: [],
+            isError: null,
+            areProductsPulled: false,
+        })
     }
-
+    
     componentDidUpdate = () => {
-        if (this.state.areProductsPulled) {
+        if (this.state.areProductsPulled === true) {
             console.log('Products pulled!!');
+
             this.setState({
                 areProductsPulled: false
+            }, () => {
+                // this.showProducts();
             })
         }
     }
 
     pullAllProductsFromDb = () => {
+        console.log('pulling products from db...');
         // will need params later for filtering
 
 
@@ -69,6 +76,8 @@ class Home extends Component {
                     areProductsPulled: true,
                 }, () => {
                     console.log('this.state',this.state);
+                    this.showProducts();
+
                 });
                 
 
@@ -99,8 +108,20 @@ class Home extends Component {
     }
 
     showProducts = () => {
+        console.log('showing products...');
         const productObjectArrayMapped = this.state.productObjectArray.map( (product) => {
             console.log(product);
+
+            const createdAt = product.createdAt;
+            const momentCreatedAt = moment(new Date(createdAt));
+            const endDate = moment(createdAt).add(7,'days');
+            const momentEndDate = moment(new Date(endDate));
+            const momentNow = moment(new Date());
+            
+            const momentTimeRemaining = momentNow.diff(momentCreatedAt);
+            const durationTimeRemaining = moment.duration(momentTimeRemaining);
+            console.log('durationTimeRemaining',durationTimeRemaining);
+
             return (
                 <ProductListing
                     key={product}
@@ -113,6 +134,7 @@ class Home extends Component {
                     category={product.category}
                     startingPrice={product.startingPrice}
                     minBidIncrement={product.minBidIncrement}
+                    durationTimeRemaining={durationTimeRemaining}
                 />
             )
         })
@@ -122,8 +144,7 @@ class Home extends Component {
     render() {
         return (
             <Styled.BootstrapContainer>
-                <Link className='logo' to={`/product/${this.state.auctionId2}`} component={Product}>/product/:auctionId 2</Link>
-                {this.showProducts()}
+                <this.showProducts />
             </Styled.BootstrapContainer>
         )
     }

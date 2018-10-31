@@ -11,7 +11,16 @@ class ProductListing extends React.Component {
     }
   }
 
+  showTime = (time) => {
+    let days = time.days();
+    let hours = time.hours();
+    let minutes = time.minutes();
+
+    return <p>Time left: {days}d {hours}h {minutes}m</p>
+  }
+
   render() {
+    console.log('this.props.durationTimeRemaining',this.props.durationTimeRemaining);
     return (
       <div>
         <Link to={`/product/${this.props.auctionId}`} component={Product}>
@@ -26,6 +35,7 @@ class ProductListing extends React.Component {
         <p>Category: {this.props.category}</p>
         <p>Starting Price: {this.props.startingPrice}</p>
         <p>Minimum Bid Increment: {this.props.minBidIncrement}</p>
+        {this.showTime(this.props.durationTimeRemaining)}
 
       </div>
     )

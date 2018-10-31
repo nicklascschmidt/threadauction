@@ -21,14 +21,11 @@ class App extends React.Component {
           <Nav />
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route exact path="/product" component={Product} />
+            <Route path="/product/:auctionId" component={Product} />
             <Route exact path="/profile" component={UserProfile} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={Signup} />
             <Route exact path="/create-auction" component={CreateAuction} />
-
-            <Route path="/product/:auctionId" component={Product} />
-
 
 
 
