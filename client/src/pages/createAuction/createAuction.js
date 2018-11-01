@@ -75,7 +75,6 @@ class CreateAuction extends React.Component {
     }
 
     saveInputs = () => {
-        // pineapple
         const { title, description, imgLink, gender, category, startingPrice, minBidIncrement } = this.state;
         const itemData = {
             userId: this.props.userId,
@@ -160,13 +159,6 @@ class CreateAuction extends React.Component {
     displayErrors = () => {
         return this.state.errorArray.map((errorMsg , n) => {
             return <p key={n}>{errorMsg}</p>
-        })
-    }
-
-    handleSubmitTest = (event) => {
-        event.preventDefault();
-        this.setState({
-            category: ''
         })
     }
 
@@ -263,7 +255,6 @@ class CreateAuction extends React.Component {
                     <br></br>
                     <div className='align-center'>
                         {this.state.loading ? 'Loading...' : <button className='btn btn-primary submit-button' onClick={this.handleSubmit}>submit</button>}
-                        {/* <button className='btn btn-primary submit-button' onClick={this.handleSubmitTest}>test</button> */}
                     </div>
                     
                 </form>

@@ -12,79 +12,81 @@ class Home extends Component {
         super(props)
 
         this.state = {
-
             productObjectArray: [],
-
-            // title: '',
-            // description: '',
-            // gender: '',
-            // category: '',
-            // startingPrice: '',
-            // minBidIncrement: '',
-
-            // submitted: false,
-            // loading: false,
-            errorArray: [],
+            gender: '',
+            category: '',
+            errorMsg: '',
             isError: null,
-            areProductsPulled: false,
         }
+
+        this.handleGenderChange = this.handleGenderChange.bind(this);
+        this.handleCategoryChange = this.handleCategoryChange.bind(this);
+        this.pullProductsFromDb = this.pullProductsFromDb.bind(this);
+        this.showProducts = this.showProducts.bind(this);
     }
 
-   
     componentDidMount = () => {
-        this.pullAllProductsFromDb();
+        this.pullProductsFromDb();
         this.setState({
             productObjectArray: [],
-            errorArray: [],
+            gender: '',
+            category: '',
+            errorMsg: '',
             isError: null,
-            areProductsPulled: false,
         })
     }
     
-    componentDidUpdate = () => {
-        if (this.state.areProductsPulled === true) {
-            console.log('Products pulled!!');
-
-            this.setState({
-                areProductsPulled: false
-            }, () => {
-                // this.showProducts();
-            })
-        }
+    handleGenderChange = (event) => {
+        this.setState({
+            gender: event.target.value
+        }, () => {
+            console.log(this.state);
+            this.pullProductsFromDb();
+        })
+    }
+    handleCategoryChange = (event) => {
+        this.setState({
+            category: event.target.value
+        }, () => {
+            console.log(this.state);
+            this.pullProductsFromDb();
+        })
     }
 
-    pullAllProductsFromDb = () => {
-        console.log('pulling products from db...');
-        // will need params later for filtering
 
+    pullProductsFromDb = () => {
+        console.log('pulling filtered products from db...');
 
-        // const auctionData = {
-        //     auctionId: auctionId
-        // };
+        let filterObj = {
+            gender: this.state.gender,
+            category: this.state.category
+        };
 
-        axios.get('/api/auction/all', {
-            // params: auctionData
+        axios.get('/api/auction', {
+            params: filterObj
         })
         .then(resp => {
             console.log('resp.data',resp.data);
-
             if (resp.status === 200) {
                 console.log('success');
 
                 this.setState({
                     productObjectArray: resp.data,
-                    areProductsPulled: true,
                 }, () => {
                     console.log('this.state',this.state);
                     this.showProducts();
-
                 });
-                
 
-                if (resp.data === null) {
+                if (resp.data.length === 0) {
+                    console.log('resp.data is empty');
+                    this.setState({
+                        errorMsg: `No products to show. Please try filtering for other products.`,
+                        isError: true
+                    });
+                } else if (resp.data === null) {
                     console.log('resp.data is null');
                     this.setState({
-                        errorMsg: `Error loading products. Please reload the page.`,
+                        errorMsg: `We ran into an error loading the products. Please try again.`,
                         isError: true
                     });
                 } else {
@@ -92,10 +94,9 @@ class Home extends Component {
                         errorMsg: null,
                         isError: false
                     });
-                    return
                 }
             } else {
-                console.log('front end /api/auction/all error');
+                console.log('front end /api/auction error');
             }
 
         }).catch(err => {
@@ -110,7 +111,7 @@ class Home extends Component {
     showProducts = () => {
         console.log('showing products...');
         const productObjectArrayMapped = this.state.productObjectArray.map( (product) => {
-            console.log(product);
+            // console.log('prod',product);
 
             const createdAt = product.createdAt;
             const momentCreatedAt = moment(new Date(createdAt));
@@ -120,11 +121,11 @@ class Home extends Component {
             
             const momentTimeRemaining = momentNow.diff(momentCreatedAt);
             const durationTimeRemaining = moment.duration(momentTimeRemaining);
-            console.log('durationTimeRemaining',durationTimeRemaining);
+            // console.log('durationTimeRemaining',durationTimeRemaining);
 
             return (
                 <ProductListing
-                    key={product}
+                    key={product.title}
                     auctionId={product.id}
                     className='plain-box'
                     imgLink={product.imgLink}
@@ -144,7 +145,45 @@ class Home extends Component {
     render() {
         return (
             <Styled.BootstrapContainer>
-                <this.showProducts />
+                <div>
+                    <h3>Filter</h3>
+                    <div>
+                        <span>Gender: </span>
+                        <select name="gender" size="3" value={this.state.gender} onChange={event => this.handleGenderChange(event)}>
+                            <option value="">None</option>
+
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                            <option value="U">Unisex</option>
+
+                        </select>
+                    </div>
+                    <div>
+                        <span>Category: </span>
+                        <select name="category" size="3" value={this.state.category} onChange={event => this.handleCategoryChange(event)}>
+                            <option value="">None</option>
+
+                            <option value="shirts">Shirts</option>
+                            <option value="longSleeves">Long-sleeves / Sweaters</option>
+                            <option value="jackets">Jackets</option>
+
+                            <option value="shorts">Shorts</option>
+                            <option value="pants">Pants</option>
+                            <option value="underwear">Underwear / Delicates</option>
+                            <option value="skirts">Skirts</option>
+                            <option value="dresses">Dresses</option>
+
+                            <option value="shoes">Shoes</option>
+                            <option value="hats">Hats</option>
+                            <option value="socks">Socks</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+
+                </div>
+                {this.state.isError ? this.state.errorMsg : ''}
+                {this.showProducts()}
             </Styled.BootstrapContainer>
         )
     }

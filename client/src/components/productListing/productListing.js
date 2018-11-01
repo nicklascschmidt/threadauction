@@ -20,11 +20,10 @@ class ProductListing extends React.Component {
   }
 
   render() {
-    console.log('this.props.durationTimeRemaining',this.props.durationTimeRemaining);
     return (
       <div>
         <Link to={`/product/${this.props.auctionId}`} component={Product}>
-          <img src={this.props.imgLink} height='150px' width='150px' alt='Image...' />
+          <img src={this.props.imgLink} height='150px' width='150px' alt=''/>
         </Link>
         <Link to={`/product/${this.props.auctionId}`} component={Product}>
           <h3>Title: {this.props.title}</h3>

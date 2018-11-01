@@ -34,23 +34,42 @@ module.exports = function(app) {
         })
     });
 
-    app.get("/api/auction/all", (req, res) => {
-        // console.log("req.query", req.query);
-        console.log('req.body',req.body);
+    
+    app.get("/api/auction", (req, res) => {
+        console.log("req.query", req.query);
         
-        db.Auction.findAll({
-            // where: {
-            //     id: req.query.auctionId,
-            // }
-        }).then(data => {
+        let whereObj = {};
+        if (req.query.gender === undefined && req.query.category === undefined) {
+            console.log('~~ no filters ~~',whereObj);
+            whereObj.where = {}
+        } else if (req.query.gender !== '' && req.query.category !== '') {
+            console.log('~~ filter query and category ~~',whereObj);
+            whereObj.where = {
+                gender: req.query.gender,
+                category: req.query.category,
+            }
+        } else if (req.query.gender !== '') {
+            console.log('~~ filter gender only ~~',whereObj);
+            whereObj.where = {
+                gender: req.query.gender,
+            }
+        } else if (req.query.category !== '') {
+            console.log('~~ filter category only ~~',whereObj);
+            whereObj.where = {
+                category: req.query.category,
+            }
+        } else {
+            console.log('~~ no filters ~~',whereObj);
+            whereObj.where = {}
+        }
+
+        db.Auction.findAll(whereObj)
+        .then(data => {
             res.json(data);
         }).catch(err => {
             console.log(err);
             res.sendStatus(500);
         })
     });
-
-    
-	
 	
 };
