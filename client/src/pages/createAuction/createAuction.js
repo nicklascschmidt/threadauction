@@ -23,6 +23,7 @@ class CreateAuction extends React.Component {
             errorArray: [],
             isError: null
         }
+        
     }
 
     componentDidMount = () => {
