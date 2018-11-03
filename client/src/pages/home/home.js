@@ -4,7 +4,6 @@ import CategoryForm from "../../components/form/CategoryForm";
 import PrettyHome from "./homeStyles";
 import axios from "axios";
 import ProductListing from '../../components/productListing/productListing';
-import axios from 'axios';
 import moment from 'moment';
 
 
@@ -40,7 +39,7 @@ class Home extends Component {
   handleGenderChange = event => {
     this.setState(
       {
-        gender: event.target.value
+        gender: event.value
       },
       () => {
         console.log(this.state);
@@ -48,10 +47,12 @@ class Home extends Component {
       }
     );
   };
+
   handleCategoryChange = event => {
+    console.log(`~~~~~~~~~~~ event ~~~~~~~~~~~`,event);
     this.setState(
       {
-        category: event.target.value
+        category: event.value
       },
       () => {
         console.log(this.state);
@@ -163,12 +164,12 @@ class Home extends Component {
             <h3>Filter</h3>
           <div className="genderForm">
             <span>Gender: </span>
-            <GenderForm />
+            <GenderForm gender={this.state.gender} handleGenderChange={this.handleGenderChange.bind(this)}/>
           </div>
 
           <div className="categoryForm">
             <span>Category: </span>
-            <CategoryForm />
+            <CategoryForm category={this.state.category} handleCategoryChange={this.handleCategoryChange.bind(this)}/>
           </div>
       
         {this.state.isError ? this.state.errorMsg : ""}

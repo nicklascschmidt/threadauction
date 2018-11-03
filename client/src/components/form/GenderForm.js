@@ -1,27 +1,36 @@
 import React from 'react';
 import Select from 'react-select';
- 
+
 const options = [
-  { value: '', label: 'None' },
-  { value: 'M', label: 'Male' },
-  { value: 'F', label: 'Female' },
-  { value: 'U', label: 'Unisex' }
+ { value: '', label: 'None' },
+ { value: 'M', label: 'Male' },
+ { value: 'F', label: 'Female' },
+ { value: 'U', label: 'Unisex' }
 ];
- 
+
+
 class GenderForm extends React.Component {
-  state = {
-    selectedOption: null,
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      gender: props.gender || {}
+    }
   }
-  handleChange = (selectedOption) => {
-    this.setState({ selectedOption });
-    console.log(`Option selected:`, selectedOption);
+  
+
+  handleGenderChange = newObj => {
+    // console.log('New value',newObj);
+    this.setState({gender: newObj}, () => {
+      console.log(this.state)
+      this.props.handleGenderChange(newObj)
+    })
   }
+
   render() {
-    const { selectedOption } = this.state;
- 
     return (
       <Select
-        value={selectedOption}
+        value={this.state.gender}
         onChange={this.handleGenderChange}
         options={options}
       />

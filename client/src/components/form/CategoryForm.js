@@ -16,21 +16,31 @@ const options = [
   { value: 'socks', label: 'Socks' },
   { value: 'other', label: 'Other' }
 ];
- 
+
 class CategoryForm extends React.Component {
-  state = {
-    selectedOption: null,
+  constructor(props) {
+    super(props);
+    console.log("Constructing");
+    console.log(props);
+    this.state = {
+      category: props.category || {}
+    }
   }
-  handleChange = (selectedOption) => {
-    this.setState({ selectedOption });
-    console.log(`Option selected:`, selectedOption);
+  
+
+  handleCategoryChange = newObj => {
+    console.log('New value',newObj);
+    this.setState({category: newObj}, () => {
+      this.props.handleCategoryChange(newObj)
+    })
   }
+
   render() {
-    const { selectedOption } = this.state;
- 
+    console.log('this.props',this.props);
+    console.log('Category: ' + this.state.category)
     return (
       <Select
-        value={selectedOption}
+        value={this.state.category}
         onChange={this.handleCategoryChange}
         options={options}
       />

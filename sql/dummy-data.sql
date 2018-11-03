@@ -1,0 +1,48 @@
+INSERT INTO "User" (id, firstName, lastName, email, username, password, address, city, stateUSA, zip)
+VALUES 
+    (1, "Tamila", "Torab", "Tamila@gmail.com", "Tamila123", "1234567Ta", "121 Fake st", "ca", 90211),
+    (2, "Nick", "Chen Schmidt", "Nick@gmail.com", "ncsauce", "pw1234567", "82 Fake st", "nj", 07041),
+    (3, "Jason", "Dark", "Jason@gmail.com", "Jason123", "123Ja", "3434 Fake st", "ny", 99384),
+    (4, "Tony", "McDonald", "Tony@gmail.com", "Tony23", "65656Ta", "463 Fake st", "de", 93201),
+    (5, "James", "blah", "James@gmail.com", "James123", "7676Ta", "1323 Fake st", "az", 92322),
+    (6, "Susan", "Something else", "Susan@gmail.com", "susan123", "4545Ta", "45 Fake st", "ak", 90212),
+    (7, "Albert", "something", "Albert@gmail.com", "Albert123", "3232Ta", "156 super Fake st", "Al", 90210);
+INSERT INTO "Auction" (id, title, description, imgLink, gender, category, startingPrice, minBidIncrement, createdAt)
+VALUES 
+    (1, "casual dress", "dearcase women's long sleeve casual loose t-shirt dress", "", "female", "dresses", 22, 5, 2018-10-25 05:44:10),
+    (2, "shirt blouse", "MOLERANI Women's Casual Long Sleeve Round Neck Loose Tunic T Shirt Blouse Tops", "", "female", "tops, tees & blouses", 18, 2, 2018-10-26 05:08:10),
+    (3, "wear to work pants", "Briggs New York Women's All Around Comfort Pant", "", "female", "pants", 32, 4, 2018-10-27 05:09:10),
+    (4, "women's shrug", "Sufiya Womens Long Sleeve Short Cardigan Slim Fitted Cropped Open Front Bolero Shrug", "", "female", "sweaters", 40, 6, 2018-10-28 05:10:10),
+    (5, "Women's skinny jean", "Signature by Levi Strauss & Co. Gold Label Women's Modern Skinny Jeans", "", "female", "jeans", 34, 3, 2018-10-29 05:11:10),
+    (6, "Women's sports bra", "MIRITY Women Racerback Sports Bras - High Impact Workout Gym Activewear Bra", "", "female", "active", 7, 2, 2018-10-25 05:15:10),
+    (7, "Women's wallet", "Dante Women's RFID Blocking Real Leather Zip Around Wallet Clutch Large Travel Purse Wristlet", "", "female", "wallets", 30, 4, 2018-11-25 05:17:10),
+    (8, "Scarleton handbags", "Scarleton Stylish Reversible Tote Bag H1842", "", "female", "handbags", 50, 15, 2018-12-25 05:07:10),
+    (9, "Women's night out skirt", "(XS-28) Rainy Night in London - Black or Gray Gothic Steampunk Victorian Skirt", "", "female", "skirts", 36, 15, 2018-10-02 05:18:10),
+    (10, "Celebrity pink short", "Celebrity Pink Jeans Women's 3 inches Mid Rise Fray Cuff Denim Short", "", "female", "shorts", 28, 9, 2018-10-25 03:07:10),
+    (11, "Leggings Depot leggings", "Leggings Depot Buttery Soft Basic Solid 45 COLORS Best Seller Leggings Pants Carry 1000+ Print Designsa", "", "female", "leggings", 9, 1, 2018-09-25 03:07:10),
+    (12, "Dream Pairs high hell shoe", "DREAM PAIRS Oppointed-Ankle Women's Pointed Toe Ankle Strap D'Orsay High Heel Stiletto Pumps Shoes.", "", "female", "shoes", 55, 15, 2018-10-25 01:17:10),
+    (13, "Ray-Ban Sunglasses", "Classic aviator sunglasses for women feature a metal frame and durable polycarbonate lens", "", "female", "accessories", 112, 14, 2018-01-25 05:07:10),
+    (14, "Douremfia women fleece", "Douremifa Womens Fleece Hooded Pullover Sweatshirt Casual Loose 1/4 Zip Jacket Coat with Pockets", "", "female", "hoodies & sweatshirts", 70, 15, 2018-11-20 04:07:10),
+    (15, "Women's plus size cocktail dress", "Noctflos Lace V Neck Fit & Flare Cocktail Tea Dress Women Party Wedding", "", "female", "plus size", 150, 30, 2018-10-14 01:07:10),
+    (16, "Men's Van Heusen shirt", "Van Heusen Men's Poplin Regular Fit Solid Point Collar Dress Shirt", "", "male", "shirts", 100, 30, 2018-05-25 02:07:10),
+    (17, "Nike men's hoodie", "Nike Men's Air Jordan Jumpman Full-Zip Fleece Basketball Hoodie", "", "male", "hoodies & sweatshirts", 160, 20, 2018-10-25 02:33:10),
+    (18, "Dockers Men's sweater" , "Dockers Men's Quarter Zip Sweater Fleece", "", "male", "sweater", 32, 17, 2018-10-25 01:17:10),
+    (19, "Men's gioberti jacket", "Gioberti Mens Sherpa Lined Pull Zip Fleece Hoodie Jacket", "", "male", "jacket", 44, 13, 2018-10-25 03:27:10),
+    (20, "Men's chapion life pants", "Champion LIFE Men's French Terry Jogger", "", "male", "pants", 10, 2, 2018-10-25 04:37:10),
+    (21, "Levi's jean", "Levi's Men's 559 Relaxed Straight Fit Jean", "", "male", "jeans", 36, 18, 2018-10-25 09:47:10),
+    (22, "Hethcode men's short", "HETHCODE Men's Casual Classic Fit Hybrid Submersible Chino Walk Shorts", "", "male", "shorts", 42, 19, 2018-10-25 01:57:10),
+    (23, "Active t-shirt", "5 Pack: Men’s Dry-Fit Moisture Wicking Active Athletic Crew T-Shirt", "", "male", "active", 29, 6, 2018-10-25 03:49:10),
+    (24, "Men's Reaction suit", "Kenneth Cole REACTION Men's Techni-Cole Stretch Slim Fit Suit Separate (Blazer, Pant, and Vest)", "", "male", "suits", 300, 32, 2018-10-25 01:27:10),
+    (25, "Boss t-shirt", "Boss Crew 3 Pack Mens T-Shirt Multi", "", "male", "t-shirts & tanks", 37, 8, 2018-10-25 09:59:10),
+    (26, "Men's Oxford", "Men's Dress Shoes - Lace up Derbies Classic Wingtip Shoes Full Brogue Black Brown", "", "male", "shoes", 45, 9, 2018-10-25 08:32:10),
+    (27, "Colombia sweater", "Columbia Men's Steens Mountain Big & Tall Full Zip 2.0", "", "male", "plus size", 108, 28, 2018-10-25 04:53:10),
+    (28, "STAR LAB Sweatshirt", "fresh tees Star Laboratories S.T.A.R. Labs Hooded Sweatshirt for men and women", "", "unisex", "sweatshirts", 25, 10, 2018-10-25 08:04:10),
+    (29, "Hanes Unisex sweatpants", "Hanes unisex Ecosmart Fleece Sweatpant", "", "unisex", "sweatpants", 50, 13, 2018-10-25 07:19:10),
+    (30, "Bella Canvas hoodie", "Bella Canvas unisex Poly Cotton Fleece Full Zip Hoodie  3739", "", "unisex", "hoodies", 10, 2, 2018-10-25 04:39:10),
+    (31, "Bella Canvas t-shirt", "Bella Canvas Unisex Jersey Short Sleeve Tee", "", "unisex", "t-shirts", 27, 19, 2018-10-25 05:40:10),
+    (32, "Women's hat", "a winter hat for cold weather", "", "unisex", "jackets", 10, 2, 2018-10-25 03:29:10),
+    (33, "Women's hat", "a winter hat for cold weather", "", "unisex", "active", 10, 2, 2018-10-25 02:20:10),
+    (34, "Women's hat", "a winter hat for cold weather", "", "unisex", "plus size", 10, 2, 2018-10-25 01:10:10),
+   
+   SELECT FROM *
+--    HOW TO DO TABLE ASSOCIATIONS? HAS MANY AND BLONGS TO?!

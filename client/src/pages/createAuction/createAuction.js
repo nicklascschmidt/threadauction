@@ -3,6 +3,8 @@ import './createAuction-style.css';
 import axios from 'axios';
 import { validateUserInputs } from './userValidation';
 import { connect } from 'react-redux';
+import CategoryForm from "../../components/form/CategoryForm";
+
 
 
 class CreateAuction extends React.Component {
@@ -56,9 +58,11 @@ class CreateAuction extends React.Component {
         }, () => {console.log(this.state)})
     }
 
-    handleDropdownChange = (event) => {
+    handleCategoryChange = (event) => {
+        console.log('handleCategoryChange: ')
+        console.log(event);
         this.setState({
-            category: event.target.value
+            category: event.value
         }, () => {console.log(this.state)})
     }
 
@@ -76,11 +80,13 @@ class CreateAuction extends React.Component {
     }
 
     saveInputs = () => {
+        console.log('~~~~~~~~~~', this.state);
         const { title, description, imgLink, gender, category, startingPrice, minBidIncrement } = this.state;
         const itemData = {
             userId: this.props.userId,
             title: title.toString(),
             description: description.toString(),
+            imgLink: imgLink.toString(),
             gender: gender.toString(),
             category: category.toString(),
             startingPrice: startingPrice,
@@ -146,12 +152,15 @@ class CreateAuction extends React.Component {
             this.setState({
                 title: '',
                 description: '',
+                imgLink: '',
                 gender: '',
                 category: '',
 
                 startingPrice: 10,
                 minBidIncrement: 5,
                 submitted: false
+            }, () => {
+                this.handleCategoryChange({ value: this.state.category});
             })
         }
     }
@@ -225,24 +234,7 @@ class CreateAuction extends React.Component {
                         </div>
                         <div>
                             <span>Category: </span>
-                            <select name="category" size="3" value={this.state.category} onChange={event => this.handleDropdownChange(event)}>
-                                <option value="">Select Category</option>
-
-                                <option value="shirts">Shirts</option>
-                                <option value="longSleeves">Long-sleeves / Sweaters</option>
-                                <option value="jackets">Jackets</option>
-
-                                <option value="shorts">Shorts</option>
-                                <option value="pants">Pants</option>
-                                <option value="underwear">Underwear / Delicates</option>
-                                <option value="skirts">Skirts</option>
-                                <option value="dresses">Dresses</option>
-
-                                <option value="shoes">Shoes</option>
-                                <option value="hats">Hats</option>
-                                <option value="socks">Socks</option>
-                                <option value="other">Other</option>
-                            </select>
+                            <CategoryForm category={this.state.category} handleCategoryChange={this.handleCategoryChange.bind(this)}/>
                         </div>
                         <div>
                             <div>Starting Price: ${this.state.startingPrice}</div>
