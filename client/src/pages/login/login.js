@@ -89,7 +89,7 @@ class Login extends React.Component {
       console.log("user data submitted");
 
       // bring user to home page
-      // window.location = '/';
+      window.location = '/';
     }
   };
 

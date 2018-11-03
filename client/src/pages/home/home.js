@@ -2,12 +2,11 @@ import React, { Component } from "react";
 import GenderForm from "../../components/form/GenderForm";
 import CategoryForm from "../../components/form/CategoryForm";
 import PrettyHome from "./homeStyles";
-import Product from "../product/product";
-import { Link } from "react-router-dom";
-import ProductListing from "../../components/productListing/productListing";
 import axios from "axios";
+import ProductListing from '../../components/productListing/productListing';
+import axios from 'axios';
+import moment from 'moment';
 
-import moment from "moment";
 
 class Home extends Component {
   constructor(props) {
@@ -115,47 +114,50 @@ class Home extends Component {
           errorMsg: `Error loading products. Please reload the page.`,
           isError: true
         });
-        console.log(err);
       });
-  };
+    }
+    
+
+  calculateTimeRemaining = (createdAt) => {
+      const momentCreatedAt = moment(new Date(createdAt));
+      const endDate = moment(createdAt).add(7,'days');
+      const momentEndDate = moment(new Date(endDate));
+      const momentNow = moment(new Date());
+      
+      const momentTimeRemaining = momentNow.diff(momentCreatedAt);
+      const durationTimeRemaining = moment.duration(momentTimeRemaining);
+      // console.log('durationTimeRemaining',durationTimeRemaining);
+      
+      return durationTimeRemaining;
+  }
 
   showProducts = () => {
-    console.log("showing products...");
-    const productObjectArrayMapped = this.state.productObjectArray.map(
-      product => {
-        // console.log('prod',product);
+      console.log('showing products...');
+      const productObjectArrayMapped = this.state.productObjectArray.map( (product) => {
+          // console.log('prod',product);
 
-        const createdAt = product.createdAt;
-        const momentCreatedAt = moment(new Date(createdAt));
-        const endDate = moment(createdAt).add(7, "days");
-        const momentEndDate = moment(new Date(endDate));
-        const momentNow = moment(new Date());
+          let durationTimeRemaining = this.calculateTimeRemaining(product.createdAt);
 
-        const momentTimeRemaining = momentNow.diff(momentCreatedAt);
-        const durationTimeRemaining = moment.duration(momentTimeRemaining);
-        // console.log('durationTimeRemaining',durationTimeRemaining);
+          return (
+              <ProductListing
+                  key={product.title}
+                  auctionId={product.id}
+                  imgLink={product.imgLink}
+                  title={product.title}
+                  description={product.description}
+                  gender={product.gender}
+                  category={product.category}
+                  startingPrice={product.startingPrice}
+                  minBidIncrement={product.minBidIncrement}
+                  durationTimeRemaining={durationTimeRemaining}
+              />
+          )
+      })
+      return <div>{productObjectArrayMapped}</div>
+  }
 
-        return (
-          <ProductListing
-            key={product.title}
-            auctionId={product.id}
-            className="plain-box"
-            imgLink={product.imgLink}
-            title={product.title}
-            description={product.description}
-            gender={product.gender}
-            category={product.category}
-            startingPrice={product.startingPrice}
-            minBidIncrement={product.minBidIncrement}
-            durationTimeRemaining={durationTimeRemaining}
-          />
-        );
-      }
-    );
-    return <div>{productObjectArrayMapped}</div>;
-  };
 
-  render() {
+  render () {
     return (
       <PrettyHome>
             <h3>Filter</h3>
