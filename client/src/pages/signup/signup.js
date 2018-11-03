@@ -1,5 +1,5 @@
 import React from 'react';
-import './signup-style.css';
+import SignupForm from './SignupStyle';
 import { validateInputs } from './userValidation';
 import axios from 'axios';
 
@@ -138,108 +138,118 @@ class Signup extends React.Component {
     render() {
        
         return (
-            <div className='container'>
-                <h3>Please fill out the information below.</h3>
+            
+            <SignupForm>
+                <h3 className="fillOut">Please fill out the information below.</h3>
                 {this.state.isError ? <div className='error-box'>{this.displayErrors()}</div> : ''}
 
                 <form>
-                    <div className='row form-style'>
-                        <div className='col-6'>
+                       <div className="userInfo">
+                            <p className="userInfoHead">User Info</p>
                             <div>
-                                <h4>User Info</h4>
-                                <span>First name: </span>
                                 <input
                                     type="text"
+                                    placeholder="First name"
                                     name="firstName"
                                     value={this.state.firstName}
                                     onChange={event => this.handleChange(event)}
                                 />
                             </div>
                             <div>
-                                <span>Last name: </span>
+                               
                                 <input
                                     type="text"
+                                    placeholder="Last name"
                                     name="lastName"
                                     value={this.state.lastName}
                                     onChange={event => this.handleChange(event)}
                                 />
                             </div>
                             <div>
-                                <span>Username: </span>
+                                
                                 <input
                                     type="text"
+                                    placeholder="Username"
                                     name="username"
                                     value={this.state.username}
                                     onChange={event => this.handleChange(event)}
                                 />
                             </div>
                             <div>
-                                <span>Password: </span>
+                                
                                 <input
                                     type="text"
+                                    placeholder="Password"
                                     name="password"
                                     value={this.state.password}
                                     onChange={event => this.handleChange(event)}
                                 />
                             </div>
                             <div>
-                                <span>Email: </span>
+                                
                                 <input
                                     type="text"
+                                    placeholder="Email"
                                     name="email"
                                     value={this.state.email}
                                     onChange={event => this.handleChange(event)}
                                 />
                             </div>
                         </div>
-                        <div className='col-6'>
-                            <h4>Shipping Info</h4>
+
+                        <div className='shippingInfo'>
+                            <p className="shippingInfoHead">Shipping Info</p>
                             <div>
-                                <span>Address: </span>
+                                
                                 <input
                                     type="text"
+                                    placeholder="Address"
                                     name="address"
                                     value={this.state.address}
                                     onChange={event => this.handleChange(event)}
                                 />
                             </div>
                             <div>
-                                <span>City: </span>
+                               
                                 <input
                                     type="text"
+                                    placeholder="City"
                                     name="city"
                                     value={this.state.city}
                                     onChange={event => this.handleChange(event)}
                                 />
                             </div>
                             <div>
-                                <span>State: </span>
+                            
                                 <input
                                     type="text"
+                                    placeholder="State"
                                     name="stateUSA"
                                     value={this.state.stateUSA}
                                     onChange={event => this.handleChange(event)}
                                 />
                             </div>
                             <div>
-                                <span>Zip: </span>
+                              
                                 <input
                                     type="text"
+                                    placeholder="Zip"
                                     name="zip"
                                     value={this.state.zip}
                                     onChange={event => this.handleChange(event)}
                                 />
                             </div>
                         </div>
-                    </div>
+                   
                     <br></br>
-                    <div className='align-center'>
+                    <div className='buttonDiv'>
                         {/* <button className='btn btn-primary submit-button' onClick={this.handleSubmit}>submit</button> */}
-                        {this.state.loading ? 'Loading...' : <button className='btn btn-primary submit-button' onClick={this.handleSubmit}>submit</button>}
+                        {this.state.loading ? 'Loading...' : <button className='submitBtn' onClick={this.handleSubmit}>submit</button>}
                     </div>
                     
                 </form>
-            </div>
+            </SignupForm>
+        
         )
     }
 }
