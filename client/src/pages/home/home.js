@@ -161,12 +161,12 @@ class Home extends Component {
             <h3>Filter</h3>
           <div className="genderForm">
             <span>Gender: </span>
-            <GenderForm />
+            <GenderForm {...this.handleGenderChange} />
           </div>
 
           <div className="categoryForm">
             <span>Category: </span>
-            <CategoryForm />
+            <CategoryForm {...this.handleCategoryChange} />
           </div>
       
         {this.state.isError ? this.state.errorMsg : ""}

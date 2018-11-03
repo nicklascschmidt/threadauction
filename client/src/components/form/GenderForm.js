@@ -10,18 +10,14 @@ const options = [
  
 class GenderForm extends React.Component {
   state = {
-    selectedOption: null,
+    gender: "",
   }
-  handleChange = (selectedOption) => {
-    this.setState({ selectedOption });
-    console.log(`Option selected:`, selectedOption);
-  }
+
   render() {
-    const { selectedOption } = this.state;
- 
+    
     return (
       <Select
-        value={selectedOption}
+        value={options.value}
         onChange={this.handleGenderChange}
         options={options}
       />
