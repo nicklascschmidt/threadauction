@@ -1,6 +1,11 @@
 import styled from 'styled-components';
 
 const PrettyHome = styled('div')`
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+
         display: flex;
         flex-direction: column;
         align-items: center;
