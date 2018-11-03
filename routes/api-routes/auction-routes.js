@@ -8,6 +8,7 @@ module.exports = function(app) {
             UserId: req.body.userId,
             title: req.body.title,
             description: req.body.description,
+            imgLink: req.body.imgLink,
             createdAt: req.body.createdAt,
             category: req.body.category,
             gender: req.body.gender,

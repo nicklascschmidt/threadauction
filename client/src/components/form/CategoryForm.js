@@ -16,8 +16,9 @@ const options = [
   { value: 'socks', label: 'Socks' },
   { value: 'other', label: 'Other' }
 ];
- 
+
 class CategoryForm extends React.Component {
+<<<<<<< HEAD
   state = {
     category: "",
   }
@@ -27,6 +28,31 @@ class CategoryForm extends React.Component {
     return (
       <Select
         value={options.value}
+=======
+  constructor(props) {
+    super(props);
+    console.log("Constructing");
+    console.log(props);
+    this.state = {
+      category: props.category || {}
+    }
+  }
+  
+
+  handleCategoryChange = newObj => {
+    console.log('New value',newObj);
+    this.setState({category: newObj}, () => {
+      this.props.handleCategoryChange(newObj)
+    })
+  }
+
+  render() {
+    console.log('this.props',this.props);
+    console.log('Category: ' + this.state.category)
+    return (
+      <Select
+        value={this.state.category}
+>>>>>>> ff5b5ccff0917fc508f275fcd9239a3851c868d9
         onChange={this.handleCategoryChange}
         options={options}
       />

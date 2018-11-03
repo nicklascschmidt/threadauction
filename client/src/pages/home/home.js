@@ -2,12 +2,10 @@ import React, { Component } from "react";
 import GenderForm from "../../components/form/GenderForm";
 import CategoryForm from "../../components/form/CategoryForm";
 import PrettyHome from "./homeStyles";
-import Product from "../product/product";
-import { Link } from "react-router-dom";
-import ProductListing from "../../components/productListing/productListing";
 import axios from "axios";
+import ProductListing from '../../components/productListing/productListing';
+import moment from 'moment';
 
-import moment from "moment";
 
 class Home extends Component {
   constructor(props) {
@@ -41,7 +39,7 @@ class Home extends Component {
   handleGenderChange = event => {
     this.setState(
       {
-        gender: event.target.value
+        gender: event.value
       },
       () => {
         console.log(this.state);
@@ -49,10 +47,12 @@ class Home extends Component {
       }
     );
   };
+
   handleCategoryChange = event => {
+    console.log(`~~~~~~~~~~~ event ~~~~~~~~~~~`,event);
     this.setState(
       {
-        category: event.target.value
+        category: event.value
       },
       () => {
         console.log(this.state);
@@ -115,58 +115,69 @@ class Home extends Component {
           errorMsg: `Error loading products. Please reload the page.`,
           isError: true
         });
-        console.log(err);
       });
-  };
+    }
+    
+
+  calculateTimeRemaining = (createdAt) => {
+      const momentCreatedAt = moment(new Date(createdAt));
+      const endDate = moment(createdAt).add(7,'days');
+      const momentEndDate = moment(new Date(endDate));
+      const momentNow = moment(new Date());
+      
+      const momentTimeRemaining = momentNow.diff(momentCreatedAt);
+      const durationTimeRemaining = moment.duration(momentTimeRemaining);
+      // console.log('durationTimeRemaining',durationTimeRemaining);
+      
+      return durationTimeRemaining;
+  }
 
   showProducts = () => {
-    console.log("showing products...");
-    const productObjectArrayMapped = this.state.productObjectArray.map(
-      product => {
-        // console.log('prod',product);
+      console.log('showing products...');
+      const productObjectArrayMapped = this.state.productObjectArray.map( (product) => {
+          // console.log('prod',product);
 
-        const createdAt = product.createdAt;
-        const momentCreatedAt = moment(new Date(createdAt));
-        const endDate = moment(createdAt).add(7, "days");
-        const momentEndDate = moment(new Date(endDate));
-        const momentNow = moment(new Date());
+          let durationTimeRemaining = this.calculateTimeRemaining(product.createdAt);
 
-        const momentTimeRemaining = momentNow.diff(momentCreatedAt);
-        const durationTimeRemaining = moment.duration(momentTimeRemaining);
-        // console.log('durationTimeRemaining',durationTimeRemaining);
+          return (
+              <ProductListing
+                  key={product.title}
+                  auctionId={product.id}
+                  imgLink={product.imgLink}
+                  title={product.title}
+                  description={product.description}
+                  gender={product.gender}
+                  category={product.category}
+                  startingPrice={product.startingPrice}
+                  minBidIncrement={product.minBidIncrement}
+                  durationTimeRemaining={durationTimeRemaining}
+              />
+          )
+      })
+      return <div>{productObjectArrayMapped}</div>
+  }
 
-        return (
-          <ProductListing
-            key={product.title}
-            auctionId={product.id}
-            className="plain-box"
-            imgLink={product.imgLink}
-            title={product.title}
-            description={product.description}
-            gender={product.gender}
-            category={product.category}
-            startingPrice={product.startingPrice}
-            minBidIncrement={product.minBidIncrement}
-            durationTimeRemaining={durationTimeRemaining}
-          />
-        );
-      }
-    );
-    return <div>{productObjectArrayMapped}</div>;
-  };
 
-  render() {
+  render () {
     return (
       <PrettyHome>
             <h3>Filter</h3>
           <div className="genderForm">
             <span>Gender: </span>
+<<<<<<< HEAD
             <GenderForm {...this.handleGenderChange} />
+=======
+            <GenderForm gender={this.state.gender} handleGenderChange={this.handleGenderChange.bind(this)}/>
+>>>>>>> ff5b5ccff0917fc508f275fcd9239a3851c868d9
           </div>
 
           <div className="categoryForm">
             <span>Category: </span>
+<<<<<<< HEAD
             <CategoryForm {...this.handleCategoryChange} />
+=======
+            <CategoryForm category={this.state.category} handleCategoryChange={this.handleCategoryChange.bind(this)}/>
+>>>>>>> ff5b5ccff0917fc508f275fcd9239a3851c868d9
           </div>
       
         {this.state.isError ? this.state.errorMsg : ""}
