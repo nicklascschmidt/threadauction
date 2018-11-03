@@ -119,25 +119,10 @@ class Home extends Component {
     }
     
 
-  calculateTimeRemaining = (createdAt) => {
-      const momentCreatedAt = moment(new Date(createdAt));
-      const endDate = moment(createdAt).add(7,'days');
-      const momentEndDate = moment(new Date(endDate));
-      const momentNow = moment(new Date());
-      
-      const momentTimeRemaining = momentNow.diff(momentCreatedAt);
-      const durationTimeRemaining = moment.duration(momentTimeRemaining);
-      // console.log('durationTimeRemaining',durationTimeRemaining);
-      
-      return durationTimeRemaining;
-  }
-
   showProducts = () => {
       console.log('showing products...');
       const productObjectArrayMapped = this.state.productObjectArray.map( (product) => {
           // console.log('prod',product);
-
-          let durationTimeRemaining = this.calculateTimeRemaining(product.createdAt);
 
           return (
               <ProductListing
@@ -150,7 +135,7 @@ class Home extends Component {
                   category={product.category}
                   startingPrice={product.startingPrice}
                   minBidIncrement={product.minBidIncrement}
-                  durationTimeRemaining={durationTimeRemaining}
+                  createdAt={product.createdAt}
               />
           )
       })
