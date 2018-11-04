@@ -1,9 +1,9 @@
 import React from 'react';
-import './createAuction-style.css';
 import axios from 'axios';
 import { validateUserInputs } from './userValidation';
 import { connect } from 'react-redux';
 import CategoryForm from "../../components/form/CategoryForm";
+import AuctionStyle from "./CreateAuctionStyle"
 
 
 

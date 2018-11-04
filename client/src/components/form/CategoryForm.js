@@ -18,6 +18,17 @@ const options = [
 ];
 
 class CategoryForm extends React.Component {
+<<<<<<< HEAD
+  state = {
+    category: "",
+  }
+
+  render() {
+ 
+    return (
+      <Select
+        value={options.value}
+=======
   constructor(props) {
     super(props);
     // console.log("Constructing");
@@ -41,6 +52,7 @@ class CategoryForm extends React.Component {
     return (
       <Select
         value={this.state.category}
+>>>>>>> ff5b5ccff0917fc508f275fcd9239a3851c868d9
         onChange={this.handleCategoryChange}
         options={options}
       />

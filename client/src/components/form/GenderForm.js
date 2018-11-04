@@ -10,6 +10,17 @@ const options = [
 
 
 class GenderForm extends React.Component {
+<<<<<<< HEAD
+  state = {
+    gender: "",
+  }
+
+  render() {
+    
+    return (
+      <Select
+        value={options.value}
+=======
   constructor(props) {
     super(props);
 
@@ -31,6 +42,7 @@ class GenderForm extends React.Component {
     return (
       <Select
         value={this.state.gender}
+>>>>>>> ff5b5ccff0917fc508f275fcd9239a3851c868d9
         onChange={this.handleGenderChange}
         options={options}
       />
