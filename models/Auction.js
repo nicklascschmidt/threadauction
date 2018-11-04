@@ -19,7 +19,7 @@ module.exports = function(sequelize, DataTypes) {
     },
 
     description: {
-      type: DataTypes.TEXT("tiny"),
+      type: DataTypes.TEXT("medium"),
       allowNull: false,
       validate: {
         len: [1,1000]

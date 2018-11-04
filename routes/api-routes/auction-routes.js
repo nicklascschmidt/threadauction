@@ -16,6 +16,9 @@ module.exports = function(app) {
             startingPrice: req.body.startingPrice,
         }).then(function(results) {
             res.json(results);
+        }).catch(err => {
+            console.log(err);
+            res.sendStatus(500);
         });
 
     });

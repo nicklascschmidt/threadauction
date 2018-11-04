@@ -4,6 +4,7 @@ import axios from 'axios';
 import * as Styles from './product-style';
 import moment from 'moment';
 import { validateUserInputs } from './bidValidation';
+import ErrorBox from '../../components/box/errorBox';
 
 
 class Product extends React.Component {
@@ -11,12 +12,14 @@ class Product extends React.Component {
         super(props)
 
         this.state = {
+            auctionId: '',
             title: '',
             imgLink: '',
             description: '',
             gender: '',
             category: '',
             startingPrice: '',
+            currentHighestBid: '',
             minBidIncrement: '',
             createdAt: '',
 
@@ -25,7 +28,8 @@ class Product extends React.Component {
             submitted: false,
             loading: false,
             errorArray: [],
-            isDbError: null
+            isDbError: null,
+            isValidationError: null
         }
         this.pullProductDataFromDb = this.pullProductDataFromDb.bind(this);
         this.calculateTimeRemaining = this.calculateTimeRemaining.bind(this);
@@ -37,13 +41,15 @@ class Product extends React.Component {
         console.log('auctionId from URL',this.props.match.params.auctionId);
         console.log('auctionId from URL',this.props);
 
-        const auctionId = this.props.match.params.auctionId;
-        this.pullProductDataFromDb(auctionId);
         this.setState({
+            auctionId: this.props.match.params.auctionId,
             loading: true,
             errorArray: [],
             isDbError: null
+        }, () => {
+            this.pullProductDataFromDb(this.state.auctionId);
         })
+
     }
 
     pullProductDataFromDb = (auctionId) => {
@@ -53,6 +59,7 @@ class Product extends React.Component {
             auctionId: auctionId
         };
 
+        // pull auction data
         axios.get('/api/auction/id', {
             params: auctionData
         })
@@ -98,10 +105,54 @@ class Product extends React.Component {
             });
             console.log(err);
         });
+
+        // pull bid data currentHighestBid
+        axios.get('/api/bid/highestBid', {
+            params: auctionData
+        })
+        .then(resp => {
+            console.log('front end -- resp.data',resp.data);
+
+            if (resp.status === 200) {
+                console.log('success');
+
+                
+                this.setState({
+                    currentHighestBid: resp.data,
+                    loading: false
+                });
+
+
+                if (resp.data === null) {
+                    console.log('resp.data is null');
+                    // no bids on this product - set state as empty
+                    console.log('no existing bids');
+                    this.setState({
+                        currentHighestBid: '',
+                        loading: false
+                    });
+                } else {
+                    this.setState({
+                        errorMsg: null,
+                        isDbError: false
+                    });
+                    return
+                }
+            } else {
+                console.log('front end /api/auction/id error');
+            }
+
+        }).catch(err => {
+            this.setState({
+                errorMsg: `We ran into an issue trying to find the bid. Please reload the page.`,
+                isDbError: true
+            });
+            console.log(err);
+        });
     }
 
     calculateTimeRemaining = (type) => {
-        console.log('calculating time remaining...');
+        // console.log('calculating time remaining...');
 
         let createdAt = this.state.createdAt;
 
@@ -127,12 +178,12 @@ class Product extends React.Component {
     }
     
     showTime = (time) => {
-        console.log('showing time...');
+        // console.log('showing time...');
 
         let days = time.days();
         let hours = time.hours();
         let minutes = time.minutes();
-        console.log(days,hours,minutes);
+        // console.log(days,hours,minutes);
     
         return <span>{days}d {hours}h {minutes}m</span>
     }
@@ -141,67 +192,129 @@ class Product extends React.Component {
         event.preventDefault();
         console.log('placing bid...');
 
-        // this.setState({loading: true}, () => this.validateBid());
-        this.validateBid(this.state);
+        this.setState({loading: true}, () => this.validateBid(this.state));
     }
 
 
-
-    validateBid = (userBid) => {
+    validateBid = (userBidObj) => {
         console.log('validating bid...');
-        console.log('this.state',this.state);
-        let errorObj = validateUserInputs(userBid);
+
+        let errorObj = validateUserInputs(userBidObj);
         console.log('errorObj',errorObj);
+        this.setState({
+            errorArray: errorObj.errorArray,
+            isValidationError: errorObj.isValidationError
+        })
+
+        let bidData = {
+            userId: this.props.userId,
+            auctionId: this.state.auctionId,
+            bidAmount: parseInt(this.state.userBid),
+            bidSubmitTime: Date.now()
+        }
+
+        // if validateBid returns an error, then show to the user. Else, run sendUserBidToDb.
+        if (errorObj.isValidationError) {
+            console.log('WOAH we got an error. Do not send data to db');
+            this.setState({
+                loading: false
+            });
+        } else {
+            console.log('send that s h i t to the DB!');
+            this.sendUserBidToDb(bidData);
+        }
+    }
+
+    sendUserBidToDb = (data) => {
+        console.log('sending user data to db....');
+
+        axios.post('/api/bid/create', data)
+            .then(resp => {
+                console.log(resp.data);
+                if (resp.status === 200) {
+                    console.log('success');
+                    this.setState({
+                        submitted: true,
+                        loading: false,
+                        errorArray: [],
+                        isError: false
+                    });
+                } else {
+                    console.log('front end /api/bid/create error');
+                }
+            }).catch(err => {
+                console.log(err);
+                this.setState({
+                    errorArray: ['There was a problem saving your bid.']
+                });
+            });
+        
+    }
+
+    displayErrors = () => {
+        return this.state.errorArray.map((errorMsg , n) => {
+            return <p key={n}>{errorMsg}</p>
+        })
     }
 
     handleChange = (event) => {
         const { name, value } = event.target;
         this.setState({
-            [name]: parseInt(value)
+            [name]: value
         })
+    }
+
+    componentDidUpdate = () => {
+        if (this.state.submitted) {
+            // window.location = '/login';
+            console.log('~~~~~~SUBMITTED~~~~~~');
+            this.setState({
+                userBid: '',
+                submitted: false
+            }, () => {
+                this.pullProductDataFromDb(this.state.auctionId);
+            });
+        }
     }
     
     render() {
         return (
             <Styles.Wrapper>
-                {this.state.loading ? 
-                    <h3>{this.state.isDbError ? this.state.errorMsg : 'Loading...'}</h3>
-                : (
-                <div>
-                    <h1>Product Detail</h1>
-                    <img src={this.state.imgLink} height='150px' width='150px' alt=''/>
-                    <p>title: {this.state.title}</p>
-                    <p>description: {this.state.description}</p>
-                    <p>gender: {this.state.gender}</p>
-                    <p>Category: {this.state.category}</p>
-                    <p>Starting Price: {this.state.startingPrice}</p>
-                    <p>Minimum Bid Increment: {this.state.minBidIncrement}</p>
-                    <p>Created At: {this.calculateTimeRemaining('createdAt')}</p>
-                    <p>Time Remaining: {this.calculateTimeRemaining('durationTimeRemaining')}</p>
-                    
-                    
-                    {this.props.username ?
-                        <form>
-                            <div>
-                                <span>Bid Amount ($): </span>
-                                <input
-                                    type="text"
-                                    name="userBid"
-                                    value={this.state.userBid}
-                                    onChange={event => this.handleChange(event)}
-                                />
-                            </div>
-                            <button onClick={this.handlePlaceBid}>Place Bid</button>
-                        </form>
-                    :
-                        <h5>Please sign in to a place bid.</h5>
-                    }
-                    
-                </div>
-                
-                
-                )
-                }
+                {this.state.isDbError ? <h3>{this.state.errorMsg}</h3> : (
+                    <div>
+                        <h1>Product Detail</h1>
+                        <img src={this.state.imgLink} height='150px' width='150px' alt=''/>
+                        <p>title: {this.state.title}</p>
+                        <p>description: {this.state.description}</p>
+                        <p>gender: {this.state.gender}</p>
+                        <p>Category: {this.state.category}</p>
+                        <p>Starting Price: {this.state.startingPrice}</p>
+                        <p>Current Highest Bid: {this.state.currentHighestBid}</p>
+                        <p>Minimum Bid Increment: {this.state.minBidIncrement}</p>
+                        <p>Created At: {this.calculateTimeRemaining('createdAt')}</p>
+                        <p>Time Remaining: {this.calculateTimeRemaining('durationTimeRemaining')}</p>
+                        
+                        {this.state.isValidationError ? <ErrorBox >{this.displayErrors()}</ErrorBox> : ''}
+
+                        {this.props.username ?
+                            <form>
+                                <div>
+                                    <span>Bid Amount ($): </span>
+                                    <input
+                                        type="text"
+                                        name="userBid"
+                                        value={this.state.userBid}
+                                        onChange={event => this.handleChange(event)}
+                                    />
+                                </div>
+                                <button onClick={this.handlePlaceBid}>Place Bid</button>
+                            </form>
+                        :
+                            <h5>Please sign in to a place bid.</h5>
+                        }
+                        
+                    </div>
+            )}
             </Styles.Wrapper>
         )
     }

@@ -1,12 +1,12 @@
-INSERT INTO "User" (id, firstName, lastName, email, username, password, address, city, stateUSA, zip)
+INSERT INTO Users (id, firstName, lastName, email, username, password, address, city, stateUSA, zip)
 VALUES 
-    (1, "Tamila", "Torab", "Tamila@gmail.com", "Tamila123", "1234567Ta", "121 Fake st", "ca", 90211),
-    (2, "Nick", "Chen Schmidt", "Nick@gmail.com", "ncsauce", "pw1234567", "82 Fake st", "nj", 07041),
-    (3, "Jason", "Dark", "Jason@gmail.com", "Jason123", "123Ja", "3434 Fake st", "ny", 99384),
-    (4, "Tony", "McDonald", "Tony@gmail.com", "Tony23", "65656Ta", "463 Fake st", "de", 93201),
-    (5, "James", "blah", "James@gmail.com", "James123", "7676Ta", "1323 Fake st", "az", 92322),
-    (6, "Susan", "Something else", "Susan@gmail.com", "susan123", "4545Ta", "45 Fake st", "ak", 90212),
-    (7, "Albert", "something", "Albert@gmail.com", "Albert123", "3232Ta", "156 super Fake st", "Al", 90210);
+    (1, "Tamila", "Torab", "Tamila@gmail.com", "Tamila123", "1234567Ta", "121 Fake st", "fake city", "ca", 90211),
+    (2, "Nick", "Chen Schmidt", "Nick@gmail.com", "ncsauce", "pw1234567", "82 Fake st", "fake city", "nj", 07041),
+    (3, "Jason", "Dark", "Jason@gmail.com", "Jason123", "123Ja", "3434 Fake st", "fake city", "ny", 99384),
+    (4, "Tony", "McDonald", "Tony@gmail.com", "Tony23", "65656Ta", "463 Fake st", "fake city", "de", 93201),
+    (5, "James", "blah", "James@gmail.com", "James123", "7676Ta", "1323 Fake st", "fake city", "az", 92322),
+    (6, "Susan", "Something else", "Susan@gmail.com", "susan123", "4545Ta", "45 Fake st", "fake city", "ak", 90212),
+    (7, "Albert", "something", "Albert@gmail.com", "Albert123", "3232Ta", "156 super Fake st", "fake city", "al", 90210);
 INSERT INTO "Auction" (id, title, description, imgLink, gender, category, startingPrice, minBidIncrement, createdAt)
 VALUES 
     (1, "casual dress", "dearcase women's long sleeve casual loose t-shirt dress", "", "female", "dresses", 22, 5, 2018-10-25 05:44:10),

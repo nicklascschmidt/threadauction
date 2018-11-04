@@ -31,8 +31,8 @@ class CategoryForm extends React.Component {
 =======
   constructor(props) {
     super(props);
-    console.log("Constructing");
-    console.log(props);
+    // console.log("Constructing");
+    // console.log(props);
     this.state = {
       category: props.category || {}
     }
@@ -40,15 +40,15 @@ class CategoryForm extends React.Component {
   
 
   handleCategoryChange = newObj => {
-    console.log('New value',newObj);
+    // console.log('New value',newObj);
     this.setState({category: newObj}, () => {
       this.props.handleCategoryChange(newObj)
     })
   }
 
   render() {
-    console.log('this.props',this.props);
-    console.log('Category: ' + this.state.category)
+    // console.log('this.props',this.props);
+    // console.log('Category: ' + this.state.category)
     return (
       <Select
         value={this.state.category}
