@@ -2,6 +2,8 @@ import React from 'react';
 import SignupForm from './SignupStyle';
 import { validateInputs } from './userValidation';
 import axios from 'axios';
+import ErrorBox from '../../components/box/errorBox';
+
 
 class Signup extends React.Component {
     constructor(props) {
@@ -141,7 +143,7 @@ class Signup extends React.Component {
             
             <SignupForm>
                 <h3 className="fillOut">Please fill out the information below.</h3>
-                {this.state.isError ? <div className='error-box'>{this.displayErrors()}</div> : ''}
+                {this.state.isError ? <ErrorBox className='error-box'>{this.displayErrors()}</ErrorBox> : ''}
 
                 <form>
                        <div className="userInfo">
@@ -243,7 +245,6 @@ class Signup extends React.Component {
                    
                     <br></br>
                     <div className='buttonDiv'>
-                        {/* <button className='btn btn-primary submit-button' onClick={this.handleSubmit}>submit</button> */}
                         {this.state.loading ? 'Loading...' : <button className='submitBtn' onClick={this.handleSubmit}>submit</button>}
                     </div>
                     

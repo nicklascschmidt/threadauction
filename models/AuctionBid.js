@@ -1,5 +1,6 @@
 module.exports = function(sequelize, DataTypes) {
-  var AuctionBids = sequelize.define("AuctionBids", {
+  
+  const AuctionBid = sequelize.define("AuctionBid", {
 
     id: {
       type: DataTypes.INTEGER,
@@ -7,7 +8,7 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
     },
 
-      bids: {
+    bidAmount: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -19,19 +20,20 @@ module.exports = function(sequelize, DataTypes) {
     
   });
 
-  AuctionBids.associate = function(models) {
+
+  AuctionBid.associate = function(models) {
       
-      AuctionBids.belongsTo(models.Auction, {
+      AuctionBid.belongsTo(models.Auction, {
         foreignKey: {
           allowNull: false
         }
       }),
-      AuctionBids.belongsTo(models.User, {
+      AuctionBid.belongsTo(models.User, {
         foreignKey: {
           allowNull: false
         }
       })
     };
 
-  return AuctionBids;
+  return AuctionBid;
 };

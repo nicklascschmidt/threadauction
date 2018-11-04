@@ -1,3 +1,5 @@
+import { isRegExp } from "util";
+import { isError } from "util";
 
 
 export const validateUserInputs = (data) => {
@@ -7,62 +9,54 @@ export const validateUserInputs = (data) => {
     let errorArray = [];
     let isValidationError = false;
 
-    // category: "pants"
-    // createdAt: "2018-10-31T01:02:51.000Z"
-    // description: "long↵big waist↵whatever123~"
+    // auctionId: "3"
+    // category: "shirts"
+    // createdAt: "2018-11-03T22:41:22.000Z"
+    // currentHighestBid: 25
+    // description: "asdfasdf"
     // errorArray: []
     // errorMsg: null
-    // gender: "M"
-    // imgLink: "https://i.imgur.com/cN8VWWE.jpg"
+    // gender: "F"
+    // imgLink: "https://www.dhresource.com/0x0s/f2-albu-g5-M00-AC-B9-rBVaI1gr-hOAWMBrAALpoqNDEH0249.jpg/mix-sizes-and-colors-kids-red-t-shirts-wholesale.jpg"
     // isDbError: false
-    // loading: false
-    // minBidIncrement: 17
-    // startingPrice: 90
+    // isValidationError: null
+    // loading: true
+    // minBidIncrement: 5
+    // startingPrice: 10
     // submitted: false
-    // title: "some pants"
-    // userBid: "3"
+    // title: "sdfasdf"
+    // userBid: "14"
 
     // bid has to be...
-    // < 10x the item price
+    // a number
+    // < $10K
     // > current bid
-    // > starting price
+    // > starting price + min bid increment
     // 
 
 
 
-    // if (data.userBid < 1) {
-    //     errorArray.push('Please enter an item title.');
-    //     isError = true;
-    // } else if (data.title.length > 100) {
-    //     errorArray.push('Item title is too long.');
-    //     isError = true;
-    // } else {
-    //     // do nothing
-    // }
+    let userBidNum = parseInt(data.userBid);
 
-    // if (data.description.length < 1) {
-    //     errorArray.push('Please enter an item description.');
-    //     isError = true;
-    // } else if (data.description.length > 1000) {
-    //     errorArray.push('Item description is too long.');
-    //     isError = true;
-    // } else {
-    //     // do nothing
-    // }
+    // if userBidNum isn't a number
+    if (!userBidNum) {
+        errorArray.push('Please enter a valid bid amount.');
+        isValidationError = true;
+    }
+    
+    if (userBidNum > 10000) {
+        errorArray.push('Please enter an amount under $10,000.');
+        isValidationError = true;
+    }
 
-    // if (data.gender === '') {
-    //     errorArray.push('Please choose an item gender.');
-    //     isError = true;
-    // } else {
-    //     // do nothing
-    // }
-
-    // if (data.category === '') {
-    //     errorArray.push('Please choose a category.');
-    //     isError = true;
-    // } else {
-    //     // do nothing
-    // }
+    
+    let currentPrice = data.currentHighestBid > data.startingPrice ? data.currentHighestBid : data.startingPrice;
+    let minBidAmount = currentPrice + data.minBidIncrement;
+    if (userBidNum < minBidAmount) {
+        errorArray.push('Please enter an amount higher than the current price + the minimum bid increment.');
+        isValidationError = true;
+    }
+    
 
 
     let errorObject = {

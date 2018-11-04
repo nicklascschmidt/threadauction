@@ -59,8 +59,6 @@ class CreateAuction extends React.Component {
     }
 
     handleCategoryChange = (event) => {
-        console.log('handleCategoryChange: ')
-        console.log(event);
         this.setState({
             category: event.value
         }, () => {console.log(this.state)})
@@ -80,7 +78,7 @@ class CreateAuction extends React.Component {
     }
 
     saveInputs = () => {
-        console.log('~~~~~~~~~~', this.state);
+        // console.log('~~~~~~~~~~', this.state);
         const { title, description, imgLink, gender, category, startingPrice, minBidIncrement } = this.state;
         const itemData = {
             userId: this.props.userId,
@@ -92,17 +90,16 @@ class CreateAuction extends React.Component {
             startingPrice: startingPrice,
             minBidIncrement: minBidIncrement
         }
-        console.log('saveInputs itemData',itemData);
+        // console.log('saveInputs itemData',itemData);
 
         const errorObject = validateUserInputs(itemData);
-        console.log('validateUserInputs returned errorObject',errorObject);
+        // console.log('validateUserInputs returned errorObject',errorObject);
 
         this.setState({
             errorArray: errorObject.errorArray,
             isError: errorObject.isError
         }, () => {
             console.log(this.state);
-            this.displayErrors();
         });
 
         // if validateUserInputs returns an error, then show to the user. Else, run sendUserDataToDb.
@@ -146,7 +143,6 @@ class CreateAuction extends React.Component {
 
     componentDidUpdate = () => {
         if (this.state.submitted) {
-            // bring user to login page
             // window.location = '/login';
             console.log('~~~~~~SUBMITTED~~~~~~');
             this.setState({
