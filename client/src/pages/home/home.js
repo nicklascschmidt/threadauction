@@ -4,7 +4,6 @@ import CategoryForm from "../../components/form/CategoryForm";
 import PrettyHome from "./homeStyles";
 import axios from "axios";
 import ProductListing from '../../components/productListing/productListing';
-import moment from 'moment';
 
 
 class Home extends Component {
@@ -149,20 +148,12 @@ class Home extends Component {
             <h3>Filter</h3>
           <div className="genderForm">
             <span>Gender: </span>
-<<<<<<< HEAD
-            <GenderForm {...this.handleGenderChange} />
-=======
             <GenderForm gender={this.state.gender} handleGenderChange={this.handleGenderChange.bind(this)}/>
->>>>>>> ff5b5ccff0917fc508f275fcd9239a3851c868d9
           </div>
 
           <div className="categoryForm">
             <span>Category: </span>
-<<<<<<< HEAD
-            <CategoryForm {...this.handleCategoryChange} />
-=======
             <CategoryForm category={this.state.category} handleCategoryChange={this.handleCategoryChange.bind(this)}/>
->>>>>>> ff5b5ccff0917fc508f275fcd9239a3851c868d9
           </div>
       
         {this.state.isError ? this.state.errorMsg : ""}

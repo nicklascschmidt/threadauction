@@ -61,12 +61,12 @@ const AuctionStyle = styled("div")`
     }
     .selectGender {
       margin-bottom: 30px;
-      ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-      }
+      list-style: none;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+
 
       li {
         float: left;

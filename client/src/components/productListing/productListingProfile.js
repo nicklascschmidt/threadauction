@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import Product from '../../pages/product/product';
 import { calculateCreatedAt, calculateTimeRemaining, showDurationTimeRemaining } from '../timeConverter/timeConverter';
 
-class ProductListing extends React.Component {
+
+class ProductListingProfile extends React.Component {
   constructor(props) {
     super(props)
-
   }
 
   showTimeRemaining = (createdAt) => {
@@ -32,12 +32,7 @@ class ProductListing extends React.Component {
           <h3>Title: {this.props.title}</h3>
         </Link>
 
-        <p>Description: {this.props.description}</p>
-        <p>Gender: {this.props.gender}</p>
-        <p>Category: {this.props.category}</p>
         <p>Starting Price: {this.props.startingPrice}</p>
-        <p>Minimum Bid Increment: {this.props.minBidIncrement}</p>
-
         <p>Created At: {calculateCreatedAt(this.props.createdAt)}</p>
         <p>{this.showTimeRemaining(this.props.createdAt)}</p>
 
@@ -46,5 +41,5 @@ class ProductListing extends React.Component {
   }
 }
 
-export default ProductListing;
+export default ProductListingProfile;
 

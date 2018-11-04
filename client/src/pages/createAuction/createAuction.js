@@ -3,7 +3,8 @@ import axios from 'axios';
 import { validateUserInputs } from './userValidation';
 import { connect } from 'react-redux';
 import CategoryForm from "../../components/form/CategoryForm";
-import AuctionStyle from "./CreateAuctionStyle"
+import AuctionStyle from "./CreateAuctionStyle";
+import ErrorBox from '../../components/box/errorBox';
 
 
 
@@ -172,14 +173,14 @@ class CreateAuction extends React.Component {
     render() {
        
         return (
-            <div className='container'>
+            <AuctionStyle>
                 <h3>Please fill out the information below.</h3>
-                {this.state.isError ? <div className='error-box'>{this.displayErrors()}</div> : ''}
+                {this.state.isError ? <ErrorBox >{this.displayErrors()}</ErrorBox> : ''}
 
                 <form>
-                    <div className='form-style'>
+                    <div className='theForm'>
                         <h4>Item Info</h4>
-                        <div>
+                        <div className="title">
                             <span>Title: </span>
                             <input
                                 type="text"
@@ -188,7 +189,7 @@ class CreateAuction extends React.Component {
                                 onChange={event => this.handleInputChange(event)}
                             />
                         </div>
-                        <div>
+                        <div className="description">
                             <span>Description: </span>
                             <textarea
                                 name="description"
@@ -196,7 +197,7 @@ class CreateAuction extends React.Component {
                                 onChange={event => this.handleInputChange(event)}
                             />
                         </div>
-                        <div>
+                        <div className="ImageLink">
                             <span>Image Link: </span>
                             <input
                                 type="text"
@@ -205,25 +206,25 @@ class CreateAuction extends React.Component {
                                 onChange={event => this.handleInputChange(event)}
                             />
                         </div>
-                        <div>
+                        <div className="genderList">
                             <span>Gender: </span>
-                            <ul>
+                            <ul className="selectGender">
                                 <li>
                                     <label htmlFor="male">
                                         <input type="radio" id="male" name="gender" value="M" checked={this.state.gender === 'M'} onChange={event => this.handleRadioButtonChange(event)}/>
-                                         Male
+                                        Male
                                     </label>
                                 </li>
                                 <li>
                                     <label htmlFor="female">
                                         <input type="radio" id="female" name="gender" value="F" checked={this.state.gender === 'F'} onChange={event => this.handleRadioButtonChange(event)}/>
-                                         Female
+                                        Female
                                     </label>
                                 </li>
                                 <li>
                                     <label htmlFor="unisex">
                                         <input type="radio" id="unisex" name="gender" value="U" checked={this.state.gender === 'U'} onChange={event => this.handleRadioButtonChange(event)}/>
-                                         Unisex
+                                        Unisex
                                     </label>
                                 </li>
                             </ul>
@@ -242,12 +243,12 @@ class CreateAuction extends React.Component {
                         </div>
                     </div>
                     <br></br>
-                    <div className='align-center'>
+                    <div className='AuctionSubmit'>
                         {this.state.loading ? 'Loading...' : <button className='btn btn-primary submit-button' onClick={this.handleSubmit}>submit</button>}
                     </div>
                     
                 </form>
-            </div>
+            </AuctionStyle>
         )
     }
 }
