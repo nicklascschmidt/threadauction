@@ -73,7 +73,7 @@ class UserProfile extends React.Component {
                 if (resp.data === null) {
                     console.log('resp.data is null');
                     this.setState({
-                        errorMsg: `We couldn\'t find your profile. Please reload the page.`,
+                        errorMsg: `We couldn't find your profile. Please reload the page.`,
                         isError: true
                     });
                 } else {
@@ -157,7 +157,7 @@ class UserProfile extends React.Component {
             console.log('auction',auction);
             return (
                 <ProductListingProfile
-                    key={auction}
+                    key={auction.title}
                     auctionId={auction.id}
                     imgLink={auction.imgLink}
                     title={auction.title}

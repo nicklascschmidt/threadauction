@@ -4,10 +4,6 @@ import Product from '../../pages/product/product';
 import { calculateCreatedAt, calculateTimeRemaining, showDurationTimeRemaining } from '../timeConverter/timeConverter';
 
 class ProductListing extends React.Component {
-  constructor(props) {
-    super(props)
-
-  }
 
   showTimeRemaining = (createdAt) => {
     console.log('createdAt',createdAt);

@@ -18,6 +18,7 @@ class Nav extends React.Component {
                 <ProfileNav>
                    <Link className='logo' to='/'>Thread Auction</Link>
                    <Link className='create' to='/create-auction'>Create Auction</Link>
+                   <Link className='welcome' to='/order-history'>Order History</Link>
                    <Link className='welcome' to='/profile'>{this.props.username}'s Profile</Link>
                    <Link className='logout' to='/' onClick={this.handleLogOut}>Log Out</Link>
                </ProfileNav>

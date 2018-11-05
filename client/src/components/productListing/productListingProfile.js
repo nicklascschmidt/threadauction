@@ -10,7 +10,7 @@ class ProductListingProfile extends React.Component {
   }
 
   showTimeRemaining = (createdAt) => {
-    console.log('createdAt',createdAt);
+    // console.log('createdAt',createdAt);
     let momentTimeRemaining = calculateTimeRemaining(createdAt);
     let durationTimeRemainingObj = showDurationTimeRemaining(momentTimeRemaining);
 
@@ -22,7 +22,7 @@ class ProductListingProfile extends React.Component {
   }
 
   render() {
-    console.log('this.props',this.props)
+    // console.log('this.props',this.props)
     return (
       <div>
         <Link to={`/product/${this.props.auctionId}`} component={Product}>
