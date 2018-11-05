@@ -25,7 +25,7 @@ module.exports = function(app) {
 
 
     app.get("/api/auction/id", (req, res) => {
-        console.log("req.query", req.query);
+        console.log("finding one -- req.query", req.query);
         db.Auction.findOne({
             where: {
                 id: req.query.auctionId,
@@ -75,5 +75,6 @@ module.exports = function(app) {
             res.sendStatus(500);
         })
     });
+
 	
 };

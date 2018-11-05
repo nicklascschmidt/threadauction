@@ -2,7 +2,7 @@ import moment from 'moment';
 
 
 const calculateCreatedAt = (createdAt) => {
-  console.log('calculating createdAt...');
+  // console.log('calculating createdAt...');
   
   let momentCreatedAt = moment(new Date(createdAt));
   let displayCreatedAt = momentCreatedAt.format('MMMM Do YYYY, h:mm a');
@@ -11,7 +11,7 @@ const calculateCreatedAt = (createdAt) => {
 }
 
 const calculateTimeRemaining = (createdAt) => {
-  console.log('calculating time remaining...');
+  // console.log('calculating time remaining...');
   
   // get end date first
   let momentCreatedAt = moment(new Date(createdAt));
@@ -28,7 +28,7 @@ const calculateTimeRemaining = (createdAt) => {
 }
 
 const showDurationTimeRemaining = (momentTimeRemaining) => {
-  console.log('calculating duration time remaining...');
+  // console.log('calculating duration time remaining...');
 
   // turn into duration obj
   let durationTimeRemaining = moment.duration(momentTimeRemaining);

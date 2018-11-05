@@ -32,18 +32,21 @@ module.exports = function(app) {
             console.log(err);
             res.sendStatus(500);
         })
-        // db.AuctionBid.findAll({
-        //     where: {
-        //         AuctionId: req.query.auctionId,
-        //     }
-        // }).then(data => {
-        //     res.json(data);
-        // }).catch(err => {
-        //     console.log(err);
-        //     res.sendStatus(500);
-        // })
     });
-
     
+    app.get("/api/bid/auctionBids", (req, res) => {
+        console.log("get all bids for one auction -- req.query", req.query);
+
+        db.AuctionBid.findAll({
+            where: {
+                UserId: req.query.userId,
+            }
+        }).then(data => {
+            res.json(data);
+        }).catch(err => {
+            console.log(err);
+            res.sendStatus(500);
+        })
+    });
 	
 };

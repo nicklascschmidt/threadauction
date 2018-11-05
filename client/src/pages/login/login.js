@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import Wrapper from "./login-style";
 import { Card } from "../../components/form/form"; // input too
-import { Button } from "../../components/button/buttons";
 import axios from "axios";
 import "./login-style";
 
@@ -111,7 +110,7 @@ class Login extends React.Component {
           if (resp.data === null) {
             console.log("resp.data is null");
             this.setState({
-              errorMsg: `We couldn\'t find your profile. Please check your username and password and try again.`,
+              errorMsg: `We couldn't find your profile. Please check your username and password and try again.`,
               isError: true
             });
           } else {

@@ -84,7 +84,7 @@ class Product extends React.Component {
                 if (resp.data === null) {
                     console.log('resp.data is null');
                     this.setState({
-                        errorMsg: `We couldn\'t find the product. Please try again.`,
+                        errorMsg: `We couldn't find the product. Please try again.`,
                         isDbError: true
                     });
                 } else {
