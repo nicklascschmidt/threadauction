@@ -1,5 +1,4 @@
 
-require('dotenv').config();
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -16,8 +15,8 @@ app.use(bodyParser.json());
 
 
 // Static directory
-app.use(express.static("client/public"));
-// app.use('/static', express.static(path.join(__dirname, 'client/build/static')));
+// app.use(express.static("client/public"));
+app.use('/static', express.static(path.join(__dirname, 'client/build/static')));
 
 
 // Routes
