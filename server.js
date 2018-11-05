@@ -4,6 +4,7 @@
 
 const express = require("express");
 const bodyParser = require("body-parser");
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -17,6 +18,7 @@ app.use(bodyParser.json());
 
 // Static directory
 app.use(express.static("client/build"));
+// app.use('/static', express.static(path.join(__dirname, 'client/build/static')));
 
 
 // Routes

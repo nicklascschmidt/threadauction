@@ -4,7 +4,7 @@
     "password": "",
     "database": "Threadauction_db",
     "host": "127.0.0.1",
-    "port": 5432,
+    "port": 3306,
     "dialect": "mysql"
   },
   "test": {
@@ -16,11 +16,10 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
-    "port": 3306,
-    "dialect": "mysql"
-  }
+		"username": "bda6edf85e826d",
+		"password": "c60de4a5",
+		"database": "heroku_f96fd1426808819",
+		"host": "us-cdbr-iron-east-01.cleardb.net",
+		"dialect": "mysql"
+	}
 }
