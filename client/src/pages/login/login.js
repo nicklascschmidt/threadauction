@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import Wrapper from "./login-style";
-import { Card } from "../../components/form/form"; // input too
+
+// import { Card } from "../../components/form/form"; // input too
 import axios from "axios";
-import "./login-style";
+import Wrapper from "./login-style";
 
 class Login extends React.Component {
   constructor(props) {
@@ -140,7 +140,7 @@ class Login extends React.Component {
     return (
     
         <Wrapper>
-          <Card>
+          
             <form>
               <label>Username: </label>
               <input
@@ -164,7 +164,7 @@ class Login extends React.Component {
                 <button onClick={this.handleSubmit}>submit</button>
               )}
             </form>
-          </Card>
+          
           {this.state.isError ? (
             <div className="error-box">
               <p>{this.state.errorMsg}</p>
