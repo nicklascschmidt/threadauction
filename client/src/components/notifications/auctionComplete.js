@@ -37,34 +37,12 @@ class AuctionComplete extends React.Component {
     axios.get('/api/auction/complete')
     .then(resp => {
         console.log('These are all of the completed auctions: ',resp.data);
-        if (resp.status === 200) {
-            console.log('success');
-            this.setState({
-              completedAuctionArray: resp.data
-            }, () => {
-              this.getCompletedAuctionIds(this.state.completedAuctionArray);
-            })
-            if (resp.data === null) {
-                console.log('resp.data is null');
-                this.setState({
-                    errorMsg: `We couldn't find the product. Please try again.`,
-                    isDbError: true
-                });
-            } else {
-                this.setState({
-                    errorMsg: null,
-                    isDbError: false
-                });
-                return
-            }
-        } else {
-            console.log('front end /api/auction/id error');
-        }
-    }).catch(err => {
         this.setState({
-            errorMsg: `We ran into an issue trying to find the product. Please reload the page.`,
-            isDbError: true
-        });
+          completedAuctionArray: resp.data
+        }, () => {
+          this.getCompletedAuctionIds(this.state.completedAuctionArray);
+        })
+    }).catch(err => {
         console.log(err);
     });
   }
@@ -92,31 +70,31 @@ class AuctionComplete extends React.Component {
     for (let n=0; n<completedAuctionIdArray.length; n++) {
       bidPromises.push(new Promise( (resolve, reject) => {
         this.fetchHighestBidFromDb(completedAuctionIdArray[n])
-        .then(resp => {
-          resolve(resp.data)
-        }).catch(err => {
-          reject(err);
-        })
+          .then(resp => {
+            resolve(resp.data);
+          }).catch(err => {
+            reject(err);
+          })
       }))
     }
 
-    Promise.all(bidPromises).then(allTheDataz => {
-      console.log(allTheDataz);
+    Promise.all(bidPromises).then(bidPromiseData => {
+      const filteredArray = bidPromiseData.filter( (value) => {
+        return value != '';
+      })
       this.setState({
-        winningBidsArray: allTheDataz
+        winningBidsArray: filteredArray
       }, () => {
-
-        console.log("All the dataz has been set")
+        console.log("winningBidsArray has been set")
+        this.findUserAuctionWins(this.state.winningBidsArray);
       })
     }).catch(err => {
-      console.log('an error occurred');
-      console.log(err);
+      console.log('an error occurred: ',err);
     })
   }
 
   // Returns a promise
   fetchHighestBidFromDb(auctionId) {
-    
     const auctionData = {
       auctionId
     };
@@ -125,47 +103,32 @@ class AuctionComplete extends React.Component {
     })
   }
 
+  findUserAuctionWins(winningBidsArray) {
+    for (let n=0; n<winningBidsArray.length; n++) {
+      console.log(winningBidsArray[n]);
+      console.log(this.props.userId)
+      if (winningBidsArray[n].UserId === this.props.userId) {
+        console.log('we have a winner: ',winningBidsArray[n].AuctionId,' for: ',winningBidsArray[n].bidAmount)
+      }
+    }
+  }
+
   pullHighestBidFromDb(auctionId) {
     console.log('pulling completed auction bids...');
 
-    const auctionData = {
-      auctionId
-    };
-
+    const auctionData = { auctionId };
     axios.get('/api/bid/completedAuctionHighestBid', {
       params: auctionData
     })
     .then(resp => {
       console.log('/api/bid/completedAuctionBids -- resp.data',resp.data);
-      if (resp.status === 200) {
-          console.log('success');
-          this.setState({
-            completedAuctionsBidArray: resp.data
-          }, () => {
-            console.log('this.state.completedAuctionsBidArray',this.state.completedAuctionsBidArray);
-            // this.buildUserBidsArray(this.state.completedAuctionsBidArray);
-          })
-          if (resp.data === null) {
-              console.log('resp.data is null');
-              this.setState({
-                  errorMsg: `We couldn't find the product. Please try again.`,
-                  isDbError: true
-              });
-          } else {
-              this.setState({
-                  errorMsg: null,
-                  isDbError: false
-              });
-              return
-          }
-      } else {
-          console.log('front end /api/auction/id error');
-      }
+      this.setState({
+        completedAuctionsBidArray: resp.data
+      }, () => {
+        console.log('this.state.completedAuctionsBidArray',this.state.completedAuctionsBidArray);
+        // this.buildUserBidsArray(this.state.completedAuctionsBidArray);
+      })
     }).catch(err => {
-        this.setState({
-            errorMsg: `We ran into an issue trying to find the product. Please reload the page.`,
-            isDbError: true
-        });
         console.log(err);
     });
   }

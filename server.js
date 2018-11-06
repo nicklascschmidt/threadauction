@@ -36,7 +36,9 @@ if (process.env.NODE_ENV === "production") {
 
 
 // only force=true if we want to add columns or reset the data in the db
-db.sequelize.sync(/*{ force: true }*/).then(function() {
+const force = { force: false}
+
+db.sequelize.sync(force).then(function() {
   app.listen(PORT, function() {
     console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
   });
