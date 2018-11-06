@@ -42,6 +42,10 @@ const ProfileNav = styled('div')`
    text-decoration: none;
    color: black;
  }
+ .notification {
+   /* text-decoration: none; */
+   color: red;
+ }
 `;
 
 export default ProfileNav;

@@ -181,7 +181,7 @@ class Login extends React.Component {
 function mapStateToProps(state) {
   return {
     username: state.username,
-    userId: state.id,
+    userId: state.userId,
     isLoggedIn: true
   };
 }

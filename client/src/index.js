@@ -13,7 +13,8 @@ const persistedState = loadState();
 const initialState = {
     username: null,
     userId: null,
-    isLoggedIn: false
+    isLoggedIn: false,
+    userNotificationArray: [],
 }
 
 const reducer = (state = initialState, action) => {
@@ -23,7 +24,7 @@ const reducer = (state = initialState, action) => {
         return {
           username: action.payload.username,
           userId: action.payload.userId,
-          isLoggedIn: action.payload.isLoggedIn
+          isLoggedIn: action.payload.isLoggedIn,
         }
       case 'USER_LOGOUT_REQUEST':
         console.log('global state updated - user logged out');
@@ -31,6 +32,11 @@ const reducer = (state = initialState, action) => {
             username: null,
             userId: null,
             isLoggedIn: false
+        }
+      case 'USER_NOTIFICATION':
+        console.log('global state updated - show user notification');
+        return {
+            userNotificationArray: action.payload.userNotificationArray,
         }
       default:
         return state;

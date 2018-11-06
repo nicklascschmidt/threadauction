@@ -48,5 +48,21 @@ module.exports = function(app) {
             res.sendStatus(500);
         })
     });
+
+    app.get("/api/bid/completedAuctionBids", (req, res) => {
+        console.log("get all bids completed auctions -- req.query", req.query);
+
+        db.AuctionBid.findAll({
+            where: {
+                AuctionId: req.query.completedAuctionIdArray,
+                UserId: req.query.userId,
+            }
+        }).then(data => {
+            res.json(data);
+        }).catch(err => {
+            console.log(err);
+            res.sendStatus(500);
+        })
+    });
 	
 };

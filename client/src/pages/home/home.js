@@ -12,9 +12,9 @@ class Home extends Component {
 
     this.state = {
       productObjectArray: [],
-      gender: "",
-      category: "",
-      errorMsg: "",
+      gender: null,
+      category: null,
+      errorMsg: null,
       isError: null
     };
 

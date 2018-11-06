@@ -1,4 +1,8 @@
 var db = require("../../models/");
+var moment = require('moment');
+const { Op } = require('sequelize')
+
+
 module.exports = function(app) {
     app.post("/api/auction/create", function(req, res) {
         console.log("Auction Data:");
@@ -37,7 +41,22 @@ module.exports = function(app) {
             res.sendStatus(500);
         })
     });
-
+    
+    app.get("/api/auction/complete", (req, res) => {
+        console.log("finding one -- req.query", req.query);
+        db.Auction.findAll({
+            where: {
+                createdAt: {
+                    [Op.lte]: moment().subtract(7, 'days').toDate()
+                  }
+            }
+        }).then(data => {
+            res.json(data);
+        }).catch(err => {
+            console.log(err);
+            res.sendStatus(500);
+        })
+    });
     
     app.get("/api/auction", (req, res) => {
         console.log("req.query", req.query);

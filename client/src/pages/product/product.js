@@ -39,7 +39,6 @@ class Product extends React.Component {
 
     componentDidMount = () => {
         console.log('auctionId from URL',this.props.match.params.auctionId);
-        console.log('auctionId from URL',this.props);
 
         this.setState({
             auctionId: this.props.match.params.auctionId,
@@ -49,7 +48,6 @@ class Product extends React.Component {
         }, () => {
             this.pullProductDataFromDb(this.state.auctionId);
         })
-
     }
 
     pullProductDataFromDb = (auctionId) => {
@@ -115,13 +113,12 @@ class Product extends React.Component {
 
             if (resp.status === 200) {
                 console.log('success');
+                console.log('~~~~~~ this should be hitting!! ~~~~~~',resp.data);
 
-                
                 this.setState({
                     currentHighestBid: resp.data,
                     loading: false
                 });
-
 
                 if (resp.data === null) {
                     console.log('resp.data is null');
@@ -289,7 +286,7 @@ class Product extends React.Component {
                         <p>gender: {this.state.gender}</p>
                         <p>Category: {this.state.category}</p>
                         <p>Starting Price: {this.state.startingPrice}</p>
-                        <p>Current Highest Bid: {this.state.currentHighestBid}</p>
+                        {this.state.currentHighestBid ? <p>Current Highest Bid: {this.state.currentHighestBid}</p> : ''}
                         <p>Minimum Bid Increment: {this.state.minBidIncrement}</p>
                         <p>Created At: {this.calculateTimeRemaining('createdAt')}</p>
                         <p>Time Remaining: {this.calculateTimeRemaining('durationTimeRemaining')}</p>
