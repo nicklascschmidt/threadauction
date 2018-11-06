@@ -1,4 +1,6 @@
 var db = require("../../models");
+var sequelize = require("sequelize");
+
 module.exports = function(app) {
     app.post("/api/bid/create", function(req, res) {
         console.log("Bid Data:");
@@ -49,16 +51,17 @@ module.exports = function(app) {
         })
     });
 
-    app.get("/api/bid/completedAuctionBids", (req, res) => {
-        console.log("get all bids completed auctions -- req.query", req.query);
-
+    app.get("/api/bid/completedAuctionHighestBid", (req, res) => {
+        console.log("get highest bid -- req.query", req.query);
+        
         db.AuctionBid.findAll({
+            limit: 1,
+            order: sequelize.literal('bidAmount DESC'),
             where: {
-                AuctionId: req.query.completedAuctionIdArray,
-                UserId: req.query.userId,
+                AuctionId: req.query.auctionId,
             }
         }).then(data => {
-            res.json(data);
+            res.json(data[0]);
         }).catch(err => {
             console.log(err);
             res.sendStatus(500);

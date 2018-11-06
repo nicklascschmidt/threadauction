@@ -10,9 +10,11 @@ class AuctionComplete extends React.Component {
     this.state = {
       userNotificationArray: [],
       userBids: [],
-      completedAuctionArray: [],
-      completedAuctionsBidArray: [],
-      completedAuctionIdArray: [],
+      completedAuctionArray: [], // all completed auctions
+      completedAuctionsBidArray: [], // Bids the user placed on completed auctions
+      completedAuctionIdArray: [], // AuctionIDs of completed auctions
+      userBidsArray: [],
+      winningBidsArray: [],
 
       loading: null,
       errorArray: [],
@@ -34,7 +36,7 @@ class AuctionComplete extends React.Component {
 
     axios.get('/api/auction/complete')
     .then(resp => {
-        console.log('/api/auction/complete -- resp.data',resp.data);
+        console.log('These are all of the completed auctions: ',resp.data);
         if (resp.status === 200) {
             console.log('success');
             this.setState({
@@ -68,7 +70,7 @@ class AuctionComplete extends React.Component {
   }
 
   getCompletedAuctionIds = (completedAuctionArray) => {
-    console.log('getting completed auction IDs...',completedAuctionArray);
+    console.log('getting completed auction IDs...');
     let completedAuctionIdArray = [];
 
     completedAuctionArray.map( (auction) => {
@@ -78,19 +80,59 @@ class AuctionComplete extends React.Component {
     this.setState({
       completedAuctionIdArray: completedAuctionIdArray
     }, () => {
-      this.pullCompletedAuctionBidsFromDb(this.state.completedAuctionIdArray);
+      console.log('These are the IDs of the completed auctions',this.state.completedAuctionIdArray);
+      this.loopAuctionsForHighestBid(this.state.completedAuctionIdArray);
     })
   }
 
-  pullCompletedAuctionBidsFromDb(completedAuctionIdArray) {
-    console.log('pulling completed auction bids...',completedAuctionIdArray);
+  loopAuctionsForHighestBid(completedAuctionIdArray) {
+    console.log('Now, we\'re looping through the auction array and pulling highest bids for each one');
+
+    const bidPromises = [];
+    for (let n=0; n<completedAuctionIdArray.length; n++) {
+      bidPromises.push(new Promise( (resolve, reject) => {
+        this.fetchHighestBidFromDb(completedAuctionIdArray[n])
+        .then(resp => {
+          resolve(resp.data)
+        }).catch(err => {
+          reject(err);
+        })
+      }))
+    }
+
+    Promise.all(bidPromises).then(allTheDataz => {
+      console.log(allTheDataz);
+      this.setState({
+        winningBidsArray: allTheDataz
+      }, () => {
+
+        console.log("All the dataz has been set")
+      })
+    }).catch(err => {
+      console.log('an error occurred');
+      console.log(err);
+    })
+  }
+
+  // Returns a promise
+  fetchHighestBidFromDb(auctionId) {
+    
+    const auctionData = {
+      auctionId
+    };
+    return axios.get('/api/bid/completedAuctionHighestBid', {
+      params: auctionData
+    })
+  }
+
+  pullHighestBidFromDb(auctionId) {
+    console.log('pulling completed auction bids...');
 
     const auctionData = {
-      completedAuctionIdArray: completedAuctionIdArray,
-      userId: this.props.userId,
+      auctionId
     };
 
-    axios.get('/api/bid/completedAuctionBids', {
+    axios.get('/api/bid/completedAuctionHighestBid', {
       params: auctionData
     })
     .then(resp => {
@@ -101,6 +143,7 @@ class AuctionComplete extends React.Component {
             completedAuctionsBidArray: resp.data
           }, () => {
             console.log('this.state.completedAuctionsBidArray',this.state.completedAuctionsBidArray);
+            // this.buildUserBidsArray(this.state.completedAuctionsBidArray);
           })
           if (resp.data === null) {
               console.log('resp.data is null');
@@ -126,6 +169,7 @@ class AuctionComplete extends React.Component {
         console.log(err);
     });
   }
+
 
   // for all auction bids
   // find the max for each Auction ID
@@ -158,7 +202,6 @@ class AuctionComplete extends React.Component {
 
 
   render() {
-    console.log('~~~~~~ notification');
     return (
       <span onClick={this.callme}>
         Yo {this.props.userId}
