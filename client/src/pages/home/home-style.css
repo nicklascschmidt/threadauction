@@ -1,0 +1,17 @@
+.gender-form {
+  width: 200px;
+  flex-basis: auto;
+}
+.category-form {
+  width: 300px;
+  flex-basis: auto;
+}
+.category-align {
+  text-align: left;
+}
+.gender-align {
+  text-align: left;
+}
+.filter-margin {
+  margin: 0 0 20px 0;
+}

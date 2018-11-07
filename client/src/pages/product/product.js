@@ -226,40 +226,54 @@ class Product extends React.Component {
         return (
             <div className='container'>
                 {this.state.isDbError ? <h3>{this.state.errorMsg}</h3> : (
-                    <div className='row box-style-product'>
-                        <div className='col-4 img-container-product'>
-                            <img src={this.state.imgLink} height='300px' width='300px' alt='' className='center-block rounded img-custom-product'/>
-                        </div>
-                        <div className='col-8'>
-                            <h3>{this.state.title}</h3>
-                            <p>{this.state.description}</p>
-                            <p>Gender: {this.state.gender}</p>
-                            <p>Category: {this.state.category}</p>
-                            <p>Starting Price: {this.state.startingPrice}</p>
-                            {this.state.currentHighestBid ? <p>Current Highest Bid: {this.state.currentHighestBid}</p> : ''}
-                            <p>Minimum Bid Increment: {this.state.minBidIncrement}</p>
-                            <p>Created At: {this.calculateTimeRemaining('createdAt')}</p>
-                            <p>{this.calculateTimeRemaining('durationTimeRemaining')}</p>
+                    <div className='box-style-product'>
+                        <div className='row'>
+                            <div className='col-4'>
+                                <div className='img-container-product'>
+                                <img src={this.state.imgLink} height='300px' width='300px' alt='' className='center-block rounded img-custom-product'/>
+                                </div>
+                            </div>
+                            <div className='col-8 row'>
+                                <h3>{this.state.title}</h3>
+                                <p>{this.state.description}</p>
+                                <div className='col-7'>
+                                    <p><strong>Gender: </strong>{this.state.gender}</p>
+                                    <p><strong>Category: </strong>{this.state.category}</p>
+                                    <p><strong>Starting Price: </strong>${this.state.startingPrice}</p>
+                                    {this.state.currentHighestBid ? <p><strong>Current Highest Bid: </strong>${this.state.currentHighestBid}</p> : ''}
+                                    <p><strong>Minimum Bid Increment: </strong>${this.state.minBidIncrement}</p>
+                                    <p><strong>Posted: </strong>{this.calculateTimeRemaining('createdAt')}</p>
+                                    <p>{this.calculateTimeRemaining('durationTimeRemaining')}</p>
+                                </div>
+                                <div className='col-5'>
+                                    {this.props.username ?
+                                        <form>
+                                            <div>
+                                                <span>Bid Amount ($): </span>
+                                                <input
+                                                    className='vertical-margin'
+                                                    type="text"
+                                                    name="userBid"
+                                                    value={this.state.userBid}
+                                                    onChange={event => this.handleChange(event)}
+                                                    />
+                                            </div>
+                                            <button onClick={this.handlePlaceBid} className='btn btn-info button-style'>Place Bid</button>
+                                        </form>
+                                    :
+                                        <h5>Please sign in to a place bid.</h5>
+                                    }
+                                </div>
+                            </div>
+                            
 
-                            {this.props.username ?
-                                <form>
-                                    <div>
-                                        <span>Bid Amount ($): </span>
-                                        <input
-                                            type="text"
-                                            name="userBid"
-                                            value={this.state.userBid}
-                                            onChange={event => this.handleChange(event)}
-                                            />
-                                    </div>
-                                    <button onClick={this.handlePlaceBid}>Place Bid</button>
-                                </form>
-                            :
-                                <h5>Please sign in to a place bid.</h5>
-                            }
-                            {this.state.isValidationError ? <ErrorBox >{this.displayErrors()}</ErrorBox> : ''}
                         </div>
-                        
+                        <div className='row'>
+                            <div className='col-4'></div>
+                            <div className='col-8'>
+                                {this.state.isValidationError ? <ErrorBox >{this.displayErrors()}</ErrorBox> : ''}
+                            </div>
+                        </div>
                     </div>
             )}
             </div>

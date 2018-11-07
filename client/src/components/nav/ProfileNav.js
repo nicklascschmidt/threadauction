@@ -7,7 +7,6 @@ const ProfileNav = styled('div')`
  border-bottom: 2px solid black;
  align-items: baseline;
  justify-content: space-between;
- margin-bottom: 40px;
  @media(max-width: 700px) {
      font-size: .5rem;
      margin-top: 30px;

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import GenderForm from "../../components/form/GenderForm";
 import CategoryForm from "../../components/form/CategoryForm";
-import PrettyHome from "./homeStyles";
 import axios from "axios";
 import ProductListing from '../../components/productListing/productListing';
+import './home-style.css';
 
 class Home extends Component {
   constructor(props) {
@@ -123,16 +123,16 @@ class Home extends Component {
 
   render () {
     return (
-      <PrettyHome>
+      <div className='container'>
         <div className='row align-items-center filter-margin'>
           <h3 className="col-2">Filter</h3>
 
           <div className='col-10 d-flex justify-content-around'>
-            <div className='d-inline-block genderForm'>
+            <div className='d-inline-block gender-form'>
               <span>Gender: </span>
               <GenderForm className='d-inline-block gender-align' gender={this.state.gender} handleGenderChange={this.handleGenderChange.bind(this)}/>
             </div>
-            <div className='d-inline-block categoryForm'>
+            <div className='d-inline-block category-form'>
               <span>Category: </span>
               <CategoryForm className='d-inline-block category-align' category={this.state.category} handleCategoryChange={this.handleCategoryChange.bind(this)}/>
             </div>
@@ -143,7 +143,7 @@ class Home extends Component {
         <div className="d-flex justify-content-around align-items-start">
           {this.showProducts()}
         </div>
-      </PrettyHome>
+      </div>
     );
   }
 }
