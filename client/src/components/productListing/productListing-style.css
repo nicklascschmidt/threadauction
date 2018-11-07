@@ -30,11 +30,11 @@
   float: none;
   border: 3px solid rgb(197, 97, 97);
   margin: 10px;
-  padding: 10px 5px;
+  padding: 10px 15px;
   border-radius: 3px;
   width: 350px;
   align-items: center;
-  height: 550px
+  height: 500px
 }
 
 .hr {

@@ -15,7 +15,7 @@ class ProductListing extends React.Component {
     if (durationTimeRemainingObj.isComplete) {
       return <span>Auction Complete</span>
     } else {
-      return <span>Time Remaining: {durationTimeRemainingObj.days}d {durationTimeRemainingObj.hours}h {durationTimeRemainingObj.minutes}m</span>
+      return <span><strong>Time Remaining: </strong>{durationTimeRemainingObj.days}d {durationTimeRemainingObj.hours}h {durationTimeRemainingObj.minutes}m</span>
     }
   }
 
@@ -32,12 +32,11 @@ class ProductListing extends React.Component {
           <h5 className='product-title'>{this.props.title}</h5>
         </Link>
 
-        <p>Gender: {this.props.gender}</p>
-        <p>Category: {this.props.category}</p>
-        <p>Starting Price: {this.props.startingPrice}</p>
-        <p>Minimum Bid Increment: {this.props.minBidIncrement}</p>
+        <p><strong>Category: </strong>{this.props.category}</p>
+        <p><strong>Starting Price: </strong>${this.props.startingPrice}</p>
+        <p><strong>Minimum Bid Increment: </strong>{this.props.minBidIncrement}</p>
 
-        <p>Created At: {calculateCreatedAt(this.props.createdAt)}</p>
+        <p><strong>Posted: </strong>{calculateCreatedAt(this.props.createdAt)}</p>
         <p>{this.showTimeRemaining(this.props.createdAt)}</p>
 
       </div>

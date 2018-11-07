@@ -5,6 +5,7 @@ import * as Styles from './product-style';
 import moment from 'moment';
 import { validateUserInputs } from './bidValidation';
 import ErrorBox from '../../components/box/errorBox';
+import { calculateCreatedAt, calculateTimeRemaining, showDurationTimeRemaining } from '../../components/timeConverter/timeConverter';
 
 
 class Product extends React.Component {
@@ -32,8 +33,6 @@ class Product extends React.Component {
             isValidationError: null
         }
         this.pullProductDataFromDb = this.pullProductDataFromDb.bind(this);
-        this.calculateTimeRemaining = this.calculateTimeRemaining.bind(this);
-        this.showTime = this.showTime.bind(this);
         this.handlePlaceBid = this.handlePlaceBid.bind(this);
     }
 
@@ -51,22 +50,13 @@ class Product extends React.Component {
     }
 
     pullProductDataFromDb = (auctionId) => {
-        console.log('auctionId',auctionId);
-
-        const auctionData = {
-            auctionId: auctionId
-        };
-
+        // console.log('auctionId',auctionId);
+        const params = { auctionId };
         // pull auction data
-        axios.get('/api/auction/id', {
-            params: auctionData
-        })
+        axios.get('/api/auction/id', { params })
         .then(resp => {
-            console.log('resp.data',resp.data);
-
+            // console.log('resp.data',resp.data);
             if (resp.status === 200) {
-                console.log('success');
-
                 this.setState({
                     title: resp.data.title,
                     imgLink: resp.data.imgLink,
@@ -78,24 +68,16 @@ class Product extends React.Component {
                     createdAt: resp.data.createdAt,
                     loading: false
                 });
-
                 if (resp.data === null) {
                     console.log('resp.data is null');
                     this.setState({
                         errorMsg: `We couldn't find the product. Please try again.`,
                         isDbError: true
                     });
-                } else {
-                    this.setState({
-                        errorMsg: null,
-                        isDbError: false
-                    });
-                    return
                 }
             } else {
                 console.log('front end /api/auction/id error');
             }
-
         }).catch(err => {
             this.setState({
                 errorMsg: `We ran into an issue trying to find the product. Please reload the page.`,
@@ -105,40 +87,24 @@ class Product extends React.Component {
         });
 
         // pull bid data currentHighestBid
-        axios.get('/api/bid/highestBid', {
-            params: auctionData
-        })
+        axios.get('/api/bid/highestBid', { params })
         .then(resp => {
-            console.log('front end -- resp.data',resp.data);
-
+            // console.log('front end -- resp.data',resp.data);
             if (resp.status === 200) {
-                console.log('success');
-                console.log('~~~~~~ this should be hitting!! ~~~~~~',resp.data);
-
                 this.setState({
                     currentHighestBid: resp.data,
                     loading: false
                 });
-
                 if (resp.data === null) {
-                    console.log('resp.data is null');
-                    // no bids on this product - set state as empty
                     console.log('no existing bids');
                     this.setState({
                         currentHighestBid: '',
                         loading: false
                     });
-                } else {
-                    this.setState({
-                        errorMsg: null,
-                        isDbError: false
-                    });
-                    return
                 }
             } else {
                 console.log('front end /api/auction/id error');
             }
-
         }).catch(err => {
             this.setState({
                 errorMsg: `We ran into an issue trying to find the bid. Please reload the page.`,
@@ -165,24 +131,25 @@ class Product extends React.Component {
         
         if (type === 'durationTimeRemaining') {
             // console.log('~~~~ calc durationTimeRemaining',durationTimeRemaining);
-            return this.showTime(durationTimeRemaining);
+            return this.showTimeRemaining(this.state.createdAt);
         } else if (type === 'createdAt') {
             // console.log('~~~~ calc createdAt',displayCreatedAt);
-            return displayCreatedAt;
+            return calculateCreatedAt(this.state.createdAt);
         } else {
             return <span>error</span>
         }
     }
     
-    showTime = (time) => {
-        // console.log('showing time...');
-
-        let days = time.days();
-        let hours = time.hours();
-        let minutes = time.minutes();
-        // console.log(days,hours,minutes);
+    showTimeRemaining = (createdAt) => {
+        // console.log('createdAt',createdAt);
+        let momentTimeRemaining = calculateTimeRemaining(createdAt);
+        let durationTimeRemainingObj = showDurationTimeRemaining(momentTimeRemaining);
     
-        return <span>{days}d {hours}h {minutes}m</span>
+        if (durationTimeRemainingObj.isComplete) {
+          return <span><strong>Auction Complete</strong></span>
+        } else {
+          return <span><strong>Time Remaining: </strong>{durationTimeRemainingObj.days}d {durationTimeRemainingObj.hours}h {durationTimeRemainingObj.minutes}m</span>
+        }
     }
 
     handlePlaceBid = (event) => {
@@ -279,9 +246,8 @@ class Product extends React.Component {
             <Styles.Wrapper>
                 {this.state.isDbError ? <h3>{this.state.errorMsg}</h3> : (
                     <div>
-                        <h1>Product Detail</h1>
                         <img src={this.state.imgLink} height='150px' width='150px' alt=''/>
-                        <p>title: {this.state.title}</p>
+                        <h3>title: {this.state.title}</h3>
                         <p>description: {this.state.description}</p>
                         <p>gender: {this.state.gender}</p>
                         <p>Category: {this.state.category}</p>
@@ -289,7 +255,7 @@ class Product extends React.Component {
                         {this.state.currentHighestBid ? <p>Current Highest Bid: {this.state.currentHighestBid}</p> : ''}
                         <p>Minimum Bid Increment: {this.state.minBidIncrement}</p>
                         <p>Created At: {this.calculateTimeRemaining('createdAt')}</p>
-                        <p>Time Remaining: {this.calculateTimeRemaining('durationTimeRemaining')}</p>
+                        <p>{this.calculateTimeRemaining('durationTimeRemaining')}</p>
                         
                         {this.state.isValidationError ? <ErrorBox >{this.displayErrors()}</ErrorBox> : ''}
 
