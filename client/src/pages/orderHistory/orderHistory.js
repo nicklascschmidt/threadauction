@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import PrettyProfile from './orderHistoryStyles';
-import './orderHistory-style.css';
 import axios from 'axios';
 import ProductListingBidHistory from "../../components/productListing/productListingBidHistory";
-import { calculateCreatedAt, calculateTimeRemaining, showDurationTimeRemaining } from '../../components/timeConverter/timeConverter';
+// import PrettyProfile from './orderHistoryStyles';
+import './orderHistory-style.css';
 
 class OrderHistory extends React.Component {
     constructor(props) {
@@ -68,24 +67,23 @@ class OrderHistory extends React.Component {
     }
 
     displayBids = (bidArray,auctionArray) => {
-        // console.log('displaying bids...',bidArray,auctionArray);
+        console.log('displaying bids...',bidArray,auctionArray);
         const bidArrayMapped = bidArray.map( (bid) => {
             return (
                 <div key={bid.id}>
-                    <p>Bid Submitted At: {calculateCreatedAt(bid.bidSubmitTime)}</p>
-                    {this.findAuctionWithID(bid.AuctionId,this.state.auctionArray)}
-                    <p>Bid Amount: ${bid.bidAmount}</p>
-                    <br></br>
+                    {this.findAuctionWithID(bid,auctionArray)}
+                    {/* <p>Bid Submitted At: {calculateCreatedAt(bid.bidSubmitTime)}</p>
+                    <p>Bid Amount: ${bid.bidAmount}</p> */}
                 </div>
             )
         })
         return <div>{bidArrayMapped}</div>
     }
 
-    findAuctionWithID(auctionID,auctionArray) {
+    findAuctionWithID(bid,auctionArray) {
         // console.log('looking for the auction...',auctionID,auctionArray)
         const auctionMapped = auctionArray.map( (auction) => {
-            if (auction.id === auctionID) {
+            if (auction.id === bid.AuctionId) {
                 return (
                     <ProductListingBidHistory
                         key={auction.id}
@@ -94,6 +92,7 @@ class OrderHistory extends React.Component {
                         title={auction.title}
                         startingPrice={auction.startingPrice}
                         createdAt={auction.createdAt}
+                        bid={bid}
                     />
                 )
             }
@@ -139,14 +138,12 @@ class OrderHistory extends React.Component {
     
     render() {
         return(
-            <PrettyProfile>
-                <div>
-                    <h2>My Order History</h2>
-                    
-                    {this.state.bidArray.length > 0 ? <div>{this.displayBids(this.state.bidArray,this.state.auctionArray)}</div> : <p>No bids to show.</p>}
+            <div className='container center-content'>
+                <h2 className='margin-header'>My Bid History</h2>
+                
+                {this.state.bidArray.length > 0 ? <div>{this.displayBids(this.state.bidArray,this.state.auctionArray)}</div> : <p>No bids to show.</p>}
 
-                </div>
-            </PrettyProfile>
+            </div>
         )
     }
 }

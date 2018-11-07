@@ -1,4 +1,7 @@
-.test {
-  color: white;
-  background-color: red;
+.center-content {
+  text-align: center;
+}
+
+.margin-header {
+  margin: 0 0 20px 0;
 }
