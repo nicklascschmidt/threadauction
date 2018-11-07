@@ -22,6 +22,7 @@
     "node": "10.11.0"
   },
   "scripts": {
-    "client-start": "cd client/ && yarn start"
+    "client-start": "cd client/ && yarn start",
+    "client-build": "cd client/ && yarn build"
   }
 }

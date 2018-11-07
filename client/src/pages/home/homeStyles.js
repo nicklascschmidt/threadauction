@@ -12,7 +12,7 @@ const PrettyHome = styled('div')`
         text-align: center;
 
         .genderForm {
-            width: 20%;
+            width: 200px;
             flex-basis: auto;
             @media(max-width: 700px) {
                 width: 80%;
@@ -20,12 +20,18 @@ const PrettyHome = styled('div')`
             }
         }
         .categoryForm {
-            width: 30%;
+            width: 300px;
             flex-basis: auto;
             @media(max-width: 700px) {
                 width: 80%;
                 margin-top: 20px;
             }
+        }
+        .category-align {
+            text-align: left;
+        }
+        .gender-align {
+            text-align: left;
         }
         .filter-margin {
             margin: 0 0 20px 0;

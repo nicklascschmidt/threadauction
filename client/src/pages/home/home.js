@@ -130,11 +130,11 @@ class Home extends Component {
           <div className='col-10 d-flex justify-content-around'>
             <div className='d-inline-block genderForm'>
               <span>Gender: </span>
-              <GenderForm className='d-inline-block' gender={this.state.gender} handleGenderChange={this.handleGenderChange.bind(this)}/>
+              <GenderForm className='d-inline-block gender-align' gender={this.state.gender} handleGenderChange={this.handleGenderChange.bind(this)}/>
             </div>
             <div className='d-inline-block categoryForm'>
               <span>Category: </span>
-              <CategoryForm className='d-inline-block' category={this.state.category} handleCategoryChange={this.handleCategoryChange.bind(this)}/>
+              <CategoryForm className='d-inline-block category-align' category={this.state.category} handleCategoryChange={this.handleCategoryChange.bind(this)}/>
             </div>
           </div>
         </div>
