@@ -2,11 +2,13 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import Product from '../../pages/product/product';
 import { calculateCreatedAt, calculateTimeRemaining, showDurationTimeRemaining } from '../timeConverter/timeConverter';
+import './productListing-style.css';
+
 
 class ProductListing extends React.Component {
 
   showTimeRemaining = (createdAt) => {
-    console.log('createdAt',createdAt);
+    // console.log('createdAt',createdAt);
     let momentTimeRemaining = calculateTimeRemaining(createdAt);
     let durationTimeRemainingObj = showDurationTimeRemaining(momentTimeRemaining);
 
@@ -18,17 +20,18 @@ class ProductListing extends React.Component {
   }
 
   render() {
-    console.log('this.props',this.props)
+    // console.log('this.props',this.props)
     return (
-      <div>
-        <Link to={`/product/${this.props.auctionId}`} component={Product}>
-          <img src={this.props.imgLink} height='150px' width='150px' alt=''/>
-        </Link>
-        <Link to={`/product/${this.props.auctionId}`} component={Product}>
-          <h3>Title: {this.props.title}</h3>
+      <div className='box-style'>
+
+        <Link to={`/product/${this.props.auctionId}`} component={Product} className='img-container'>
+          <img src={this.props.imgLink} alt='' className='center-block rounded img-custom blue'/>
         </Link>
 
-        <p>Description: {this.props.description}</p>
+        <Link to={`/product/${this.props.auctionId}`} component={Product}>
+          <h5 className='product-title'>{this.props.title}</h5>
+        </Link>
+
         <p>Gender: {this.props.gender}</p>
         <p>Category: {this.props.category}</p>
         <p>Starting Price: {this.props.startingPrice}</p>

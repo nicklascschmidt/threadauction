@@ -6,26 +6,29 @@ const PrettyHome = styled('div')`
         margin-right: auto;
         margin-left: auto;
 
-        display: flex;
+        display: inline-block;
         flex-direction: column;
-        align-items: center;
+        flex-wrap: wrap;
+        text-align: center;
+
         .genderForm {
-            width: 50%;
-            margin: 30px;
+            width: 20%;
             flex-basis: auto;
             @media(max-width: 700px) {
-        width: 80%;
-        margin-top: 20px;
-    }
+                width: 80%;
+                margin-top: 20px;
+            }
         }
         .categoryForm {
-            width: 50%;
-            margin-bottom: 30px;
+            width: 30%;
             flex-basis: auto;
             @media(max-width: 700px) {
-        width: 80%;
-        margin-top: 20px;
-    }
+                width: 80%;
+                margin-top: 20px;
+            }
+        }
+        .filter-margin {
+            margin: 0 0 20px 0;
         }
 `;
 

@@ -55,7 +55,7 @@ class OrderHistory extends React.Component {
         bidArray.map( (bid) => {
             auctionIdArray.push(bid.AuctionId);
         })
-        let removeDupes = (a) => [...new Set(a)];
+        const removeDupes = (a) => [...new Set(a)];
         const removeDupeArray = removeDupes(auctionIdArray);
 
         this.setState({
@@ -67,17 +67,19 @@ class OrderHistory extends React.Component {
     }
 
     displayBids = (bidArray,auctionArray) => {
-        console.log('displaying bids...',bidArray,auctionArray);
+        // console.log('displaying bids...',bidArray,auctionArray);
         const bidArrayMapped = bidArray.map( (bid) => {
             return (
                 <div key={bid.id}>
                     {this.findAuctionWithID(bid,auctionArray)}
-                    {/* <p>Bid Submitted At: {calculateCreatedAt(bid.bidSubmitTime)}</p>
-                    <p>Bid Amount: ${bid.bidAmount}</p> */}
                 </div>
             )
         })
         return <div>{bidArrayMapped}</div>
+    }
+
+    getBidStatus() {
+        
     }
 
     findAuctionWithID(bid,auctionArray) {
@@ -101,7 +103,7 @@ class OrderHistory extends React.Component {
     }
 
     loopAuctionsForProductInfo(auctionIdArray) {
-        console.log('Now, we\'re looping through the auction array and pulling data for each one. We\'ll map it after.');
+        // console.log('Now, we\'re looping through the auction array and pulling data for each one. We\'ll map it after.');
     
         const bidPromises = [];
         for (let n=0; n<auctionIdArray.length; n++) {
@@ -122,7 +124,7 @@ class OrderHistory extends React.Component {
           this.setState({
             auctionArray: filteredArray
           }, () => {
-            console.log("auctionArray has been set: ",this.state.auctionArray);
+            // console.log("auctionArray has been set: ",this.state.auctionArray);
           })
         }).catch(err => {
           console.log('an error occurred: ',err);
@@ -134,6 +136,8 @@ class OrderHistory extends React.Component {
         const params = { auctionId };
         return axios.get('/api/auction/id', { params })
     }
+
+
     
     
     render() {
@@ -149,7 +153,7 @@ class OrderHistory extends React.Component {
 }
 
 function mapStateToProps(state) {
-    console.log('OrderHistory: mapStateToProps state',state);
+    // console.log('OrderHistory: mapStateToProps state',state);
     return {
       username: state.username,
       userId: state.userId,

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import axios from 'axios';
 // import { calculateCreatedAt, calculateTimeRemaining, showDurationTimeRemaining } from '../timeConverter/timeConverter';
 
-class AuctionComplete extends React.Component {
+class IsAuctionComplete extends React.Component {
   constructor(props) {
     super(props)
 
@@ -15,6 +15,7 @@ class AuctionComplete extends React.Component {
       completedAuctionIdArray: [], // AuctionIDs of completed auctions
       userBidsArray: [],
       winningBidsArray: [],
+      userAuctionWinIdArray: [], // AuctionIDs of auctions the user won (auctions complete and user had max bid)
 
       loading: null,
       errorArray: [],
@@ -104,13 +105,24 @@ class AuctionComplete extends React.Component {
   }
 
   findUserAuctionWins(winningBidsArray) {
+    let userAuctionWinIds = [];
+
     for (let n=0; n<winningBidsArray.length; n++) {
-      console.log(winningBidsArray[n]);
-      console.log(this.props.userId)
+      // console.log('winningBidsArray[n]',winningBidsArray[n]);
+      // console.log('this.props.userId',this.props.userId)
       if (winningBidsArray[n].UserId === this.props.userId) {
         console.log('we have a winner: ',winningBidsArray[n].AuctionId,' for: ',winningBidsArray[n].bidAmount)
+        userAuctionWinIds.push(winningBidsArray[n].AuctionId);
       }
     }
+    
+    const removeDupes = (a) => [...new Set(a)];
+    const removeDupeArray = removeDupes(userAuctionWinIds);
+    this.setState({
+      userAuctionWinIdArray: removeDupeArray
+    }, () => {
+      console.log('this.state.userAuctionWinIdArray',this.state.userAuctionWinIdArray);
+    })
   }
 
   pullHighestBidFromDb(auctionId) {
@@ -126,20 +138,11 @@ class AuctionComplete extends React.Component {
         completedAuctionsBidArray: resp.data
       }, () => {
         console.log('this.state.completedAuctionsBidArray',this.state.completedAuctionsBidArray);
-        // this.buildUserBidsArray(this.state.completedAuctionsBidArray);
       })
     }).catch(err => {
         console.log(err);
     });
   }
-
-
-  // for all auction bids
-  // find the max for each Auction ID
-  // return the corresponding userId of that highest bid
-  // if the winning userId = userId from redux, then display notification saying you won the auction for [auctionId]
-  // search db for that auctionId and return product listing of it
-
 
 
   sendToReduxStore = (data) => {
@@ -181,4 +184,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(AuctionComplete);
+export default connect(mapStateToProps)(IsAuctionComplete);

@@ -85,6 +85,10 @@ module.exports = function(app) {
             console.log('~~ no filters ~~',whereObj);
             whereObj.where = {}
         }
+        whereObj.where.createdAt = {
+            [Op.gte]: moment().subtract(7, 'days').toDate()
+        }
+        console.log('whereObj',whereObj)
 
         db.Auction.findAll(whereObj)
         .then(data => {

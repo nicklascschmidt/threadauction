@@ -5,7 +5,6 @@ import PrettyHome from "./homeStyles";
 import axios from "axios";
 import ProductListing from '../../components/productListing/productListing';
 
-
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -20,8 +19,6 @@ class Home extends Component {
 
     this.handleGenderChange = this.handleGenderChange.bind(this);
     this.handleCategoryChange = this.handleCategoryChange.bind(this);
-    this.pullProductsFromDb = this.pullProductsFromDb.bind(this);
-    this.showProducts = this.showProducts.bind(this);
   }
 
   componentDidMount = () => {
@@ -36,57 +33,41 @@ class Home extends Component {
   };
 
   handleGenderChange = event => {
-    this.setState(
-      {
+    this.setState({
         gender: event.value
-      },
-      () => {
-        console.log(this.state);
+      }, () => {
         this.pullProductsFromDb();
       }
     );
   };
 
   handleCategoryChange = event => {
-    console.log(`~~~~~~~~~~~ event ~~~~~~~~~~~`,event);
-    this.setState(
-      {
+    this.setState({
         category: event.value
-      },
-      () => {
-        console.log(this.state);
+      }, () => {
         this.pullProductsFromDb();
       }
     );
   };
 
-  pullProductsFromDb = () => {
-    console.log("pulling filtered products from db...");
+
+  pullProductsFromDb() {
+    // console.log("pulling filtered products from db...");
 
     let filterObj = {
       gender: this.state.gender,
       category: this.state.category
     };
 
-    axios
-      .get("/api/auction", {
+    axios.get("/api/auction", {
         params: filterObj
       })
       .then(resp => {
-        console.log("resp.data", resp.data);
+        // console.log("resp.data", resp.data);
         if (resp.status === 200) {
-          console.log("success");
-
-          this.setState(
-            {
-              productObjectArray: resp.data
-            },
-            () => {
-              console.log("this.state", this.state);
-              this.showProducts();
-            }
-          );
-
+          this.setState({
+            productObjectArray: resp.data
+          })
           if (resp.data.length === 0) {
             console.log("resp.data is empty");
             this.setState({
@@ -109,20 +90,18 @@ class Home extends Component {
           console.log("front end /api/auction error");
         }
       })
-      .catch(err => {
+      .catch( (err) => {
+        console.log(err)
         this.setState({
           errorMsg: `Error loading products. Please reload the page.`,
           isError: true
         });
       });
-    }
-    
+  }
 
-  showProducts = () => {
+  showProducts() {
       console.log('showing products...');
       const productObjectArrayMapped = this.state.productObjectArray.map( (product) => {
-          // console.log('prod',product);
-
           return (
               <ProductListing
                   key={product.title}
@@ -145,19 +124,25 @@ class Home extends Component {
   render () {
     return (
       <PrettyHome>
-            <h3>Filter</h3>
-          <div className="genderForm">
-            <span>Gender: </span>
-            <GenderForm gender={this.state.gender} handleGenderChange={this.handleGenderChange.bind(this)}/>
-          </div>
+        <div className='row align-items-center filter-margin'>
+          <h3 className="col-2">Filter</h3>
 
-          <div className="categoryForm">
-            <span>Category: </span>
-            <CategoryForm category={this.state.category} handleCategoryChange={this.handleCategoryChange.bind(this)}/>
+          <div className='col-10 d-flex justify-content-around'>
+            <div className='d-inline-block genderForm'>
+              <span>Gender: </span>
+              <GenderForm className='d-inline-block' gender={this.state.gender} handleGenderChange={this.handleGenderChange.bind(this)}/>
+            </div>
+            <div className='d-inline-block categoryForm'>
+              <span>Category: </span>
+              <CategoryForm className='d-inline-block' category={this.state.category} handleCategoryChange={this.handleCategoryChange.bind(this)}/>
+            </div>
           </div>
+        </div>
       
         {this.state.isError ? this.state.errorMsg : ""}
-        {this.showProducts()}
+        <div className="d-flex justify-content-around align-items-start">
+          {this.showProducts()}
+        </div>
       </PrettyHome>
     );
   }

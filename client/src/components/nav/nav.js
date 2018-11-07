@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
 import HomeNav from './HomeNav';
 import ProfileNav from './ProfileNav';
-import AuctionComplete from '../notifications/auctionComplete';
+import IsAuctionComplete from '../notifications/isAuctionComplete';
 
 class Nav extends React.Component {
     constructor(props) {
@@ -27,7 +27,7 @@ class Nav extends React.Component {
                    <Link className='create' to='/create-auction'>Create Auction</Link>
                    <Link className='welcome' to='/order-history'>Order History</Link>
                    <Link className='welcome' to='/profile'>{this.props.username}'s Profile</Link>
-                   <Link className='welcome' to='/order-history'><AuctionComplete className='notification'/></Link>
+                   {/* <Link className='welcome' to='/order-history'><IsAuctionComplete className='notification'/></Link> */}
                    <Link className='logout' to='/' onClick={this.handleLogOut}>Log Out</Link>
                </ProfileNav>
            )
