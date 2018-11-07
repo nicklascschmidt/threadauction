@@ -1,12 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import * as Styles from './product-style';
-import moment from 'moment';
 import { validateUserInputs } from './bidValidation';
 import ErrorBox from '../../components/box/errorBox';
 import { calculateCreatedAt, calculateTimeRemaining, showDurationTimeRemaining } from '../../components/timeConverter/timeConverter';
-
+import Wrapper from './productStyles';
+import './product-style.css';
 
 class Product extends React.Component {
     constructor(props) {
@@ -37,8 +36,7 @@ class Product extends React.Component {
     }
 
     componentDidMount = () => {
-        console.log('auctionId from URL',this.props.match.params.auctionId);
-
+        // console.log('auctionId from URL',this.props.match.params.auctionId);
         this.setState({
             auctionId: this.props.match.params.auctionId,
             loading: true,
@@ -69,7 +67,7 @@ class Product extends React.Component {
                     loading: false
                 });
                 if (resp.data === null) {
-                    console.log('resp.data is null');
+                    console.log('resp.data is null - no auction data');
                     this.setState({
                         errorMsg: `We couldn't find the product. Please try again.`,
                         isDbError: true
@@ -115,20 +113,6 @@ class Product extends React.Component {
     }
 
     calculateTimeRemaining = (type) => {
-        // console.log('calculating time remaining...');
-
-        let createdAt = this.state.createdAt;
-
-        let momentCreatedAt = moment(new Date(createdAt));
-        let endDate = moment(createdAt).add(7,'days');
-        let momentEndDate = moment(new Date(endDate));
-        let momentNow = moment(new Date());
-        
-        let momentTimeRemaining = momentEndDate.diff(momentNow);
-        let durationTimeRemaining = moment.duration(momentTimeRemaining);
-
-        let displayCreatedAt = momentCreatedAt.format('MMMM Do YYYY, h:mm a');
-        
         if (type === 'durationTimeRemaining') {
             // console.log('~~~~ calc durationTimeRemaining',durationTimeRemaining);
             return this.showTimeRemaining(this.state.createdAt);
@@ -154,17 +138,17 @@ class Product extends React.Component {
 
     handlePlaceBid = (event) => {
         event.preventDefault();
-        console.log('placing bid...');
+        // console.log('placing bid...');
 
         this.setState({loading: true}, () => this.validateBid(this.state));
     }
 
 
     validateBid = (userBidObj) => {
-        console.log('validating bid...');
+        // console.log('validating bid...');
 
         let errorObj = validateUserInputs(userBidObj);
-        console.log('errorObj',errorObj);
+        // console.log('errorObj',errorObj);
         this.setState({
             errorArray: errorObj.errorArray,
             isValidationError: errorObj.isValidationError
@@ -179,24 +163,22 @@ class Product extends React.Component {
 
         // if validateBid returns an error, then show to the user. Else, run sendUserBidToDb.
         if (errorObj.isValidationError) {
-            console.log('WOAH we got an error. Do not send data to db');
+            // console.log('WOAH we got an error. Do not send data to db');
             this.setState({
                 loading: false
             });
         } else {
-            console.log('send that s h i t to the DB!');
+            // console.log('send that s h i t to the DB!');
             this.sendUserBidToDb(bidData);
         }
     }
 
     sendUserBidToDb = (data) => {
-        console.log('sending user data to db....');
-
+        // console.log('sending user data to db....');
         axios.post('/api/bid/create', data)
             .then(resp => {
-                console.log(resp.data);
+                // console.log(resp.data);
                 if (resp.status === 200) {
-                    console.log('success');
                     this.setState({
                         submitted: true,
                         loading: false,
@@ -212,7 +194,6 @@ class Product extends React.Component {
                     errorArray: ['There was a problem saving your bid.']
                 });
             });
-        
     }
 
     displayErrors = () => {
@@ -231,7 +212,7 @@ class Product extends React.Component {
     componentDidUpdate = () => {
         if (this.state.submitted) {
             // window.location = '/login';
-            console.log('~~~~~~SUBMITTED~~~~~~');
+            // console.log('~~~~~~ SUBMITTED ~~~~~~');
             this.setState({
                 userBid: '',
                 submitted: false
@@ -243,42 +224,45 @@ class Product extends React.Component {
     
     render() {
         return (
-            <Styles.Wrapper>
+            <div className='container'>
                 {this.state.isDbError ? <h3>{this.state.errorMsg}</h3> : (
-                    <div>
-                        <img src={this.state.imgLink} height='150px' width='150px' alt=''/>
-                        <h3>title: {this.state.title}</h3>
-                        <p>description: {this.state.description}</p>
-                        <p>gender: {this.state.gender}</p>
-                        <p>Category: {this.state.category}</p>
-                        <p>Starting Price: {this.state.startingPrice}</p>
-                        {this.state.currentHighestBid ? <p>Current Highest Bid: {this.state.currentHighestBid}</p> : ''}
-                        <p>Minimum Bid Increment: {this.state.minBidIncrement}</p>
-                        <p>Created At: {this.calculateTimeRemaining('createdAt')}</p>
-                        <p>{this.calculateTimeRemaining('durationTimeRemaining')}</p>
-                        
-                        {this.state.isValidationError ? <ErrorBox >{this.displayErrors()}</ErrorBox> : ''}
+                    <div className='row box-style-product'>
+                        <div className='col-4 img-container-product'>
+                            <img src={this.state.imgLink} height='300px' width='300px' alt='' className='center-block rounded img-custom-product'/>
+                        </div>
+                        <div className='col-8'>
+                            <h3>{this.state.title}</h3>
+                            <p>{this.state.description}</p>
+                            <p>Gender: {this.state.gender}</p>
+                            <p>Category: {this.state.category}</p>
+                            <p>Starting Price: {this.state.startingPrice}</p>
+                            {this.state.currentHighestBid ? <p>Current Highest Bid: {this.state.currentHighestBid}</p> : ''}
+                            <p>Minimum Bid Increment: {this.state.minBidIncrement}</p>
+                            <p>Created At: {this.calculateTimeRemaining('createdAt')}</p>
+                            <p>{this.calculateTimeRemaining('durationTimeRemaining')}</p>
 
-                        {this.props.username ?
-                            <form>
-                                <div>
-                                    <span>Bid Amount ($): </span>
-                                    <input
-                                        type="text"
-                                        name="userBid"
-                                        value={this.state.userBid}
-                                        onChange={event => this.handleChange(event)}
-                                    />
-                                </div>
-                                <button onClick={this.handlePlaceBid}>Place Bid</button>
-                            </form>
-                        :
-                            <h5>Please sign in to a place bid.</h5>
-                        }
+                            {this.props.username ?
+                                <form>
+                                    <div>
+                                        <span>Bid Amount ($): </span>
+                                        <input
+                                            type="text"
+                                            name="userBid"
+                                            value={this.state.userBid}
+                                            onChange={event => this.handleChange(event)}
+                                            />
+                                    </div>
+                                    <button onClick={this.handlePlaceBid}>Place Bid</button>
+                                </form>
+                            :
+                                <h5>Please sign in to a place bid.</h5>
+                            }
+                            {this.state.isValidationError ? <ErrorBox >{this.displayErrors()}</ErrorBox> : ''}
+                        </div>
                         
                     </div>
             )}
-            </Styles.Wrapper>
+            </div>
         )
     }
 }

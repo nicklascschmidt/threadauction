@@ -20,8 +20,7 @@ export const validateUserInputs = (data) => {
     }
 
     
-    let currentPrice = data.currentHighestBid > data.startingPrice ? data.currentHighestBid : data.startingPrice;
-    let minBidAmount = currentPrice + data.minBidIncrement;
+    let minBidAmount = data.currentHighestBid >= data.startingPrice ? data.currentHighestBid + data.minBidIncrement : data.startingPrice;
     if (userBidNum < minBidAmount) {
         errorArray.push('Please enter an amount higher than the current price + the minimum bid increment.');
         isValidationError = true;

@@ -23,20 +23,4 @@ const Wrapper = styled('section')`
     }
 `;
 
-const LoginCard = styled('div')`
-    background-color: darkgrey;
-    padding: 3rem;
-    width: 30%;
-    max-width: 15rem;
-    margin: 10vh auto;
-    text-align: center;
-`;
-
-const Input = styled('input')`
-    background-color: white;
-    padding: 5px;
-    width: 5rem;
-    margin: 10px;
-`;
-
-export { Wrapper, LoginCard, Input };
+export default Wrapper;

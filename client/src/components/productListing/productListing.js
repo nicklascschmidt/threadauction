@@ -25,7 +25,7 @@ class ProductListing extends React.Component {
       <div className='box-style'>
 
         <Link to={`/product/${this.props.auctionId}`} component={Product} className='img-container'>
-          <img src={this.props.imgLink} alt='' className='center-block rounded img-custom blue'/>
+          <img src={this.props.imgLink} alt='' className='center-block rounded img-custom'/>
         </Link>
 
         <Link to={`/product/${this.props.auctionId}`} component={Product}>
