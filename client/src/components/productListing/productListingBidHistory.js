@@ -34,7 +34,6 @@ class ProductListingBidHistory extends React.Component {
         </div>
 
         <div className='col-9 row'>
-
           <Link to={`/product/${this.props.auctionId}`} component={Product} className='col-7 text-left'>
             <h5 className='product-title'>{this.props.title}</h5>
           </Link>

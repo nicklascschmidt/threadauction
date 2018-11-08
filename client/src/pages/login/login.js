@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import axios from "axios";
 import Wrapper from "./login-style";
+import ErrorBox from '../../components/box/errorBox';
 
 class Login extends React.Component {
   constructor(props) {
@@ -136,6 +137,15 @@ class Login extends React.Component {
 
   render() {
     return (
+
+      <div>
+        {this.state.isError ? (
+          <ErrorBox>
+            <p>{this.state.errorMsg}</p>
+          </ErrorBox>
+        ) : (
+          ""
+        )}
     
         <Wrapper>
             <form>
@@ -161,15 +171,8 @@ class Login extends React.Component {
                 <button onClick={this.handleSubmit}>submit</button>
               )}
             </form>
-          {this.state.isError ? (
-            <div className="error-box">
-              <p>{this.state.errorMsg}</p>
-            </div>
-          ) : (
-            ""
-          )}
-        </Wrapper>
-      
+          </Wrapper>
+        </div>
     );
   }
 }

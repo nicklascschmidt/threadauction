@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import PrettyProfile from './profileStyles';
 import './userProfile-style.css';
 import axios from 'axios';
 import ProductListingProfile from "../../components/productListing/productListingProfile";
@@ -151,10 +150,10 @@ class UserProfile extends React.Component {
     }
 
     displayAuctions = (auctionArray) => {
-        console.log('displaying auctions...',auctionArray);
+        // console.log('displaying auctions...',auctionArray);
         
         const auctionArrayMapped = this.state.auctionArray.map( (auction) => {
-            console.log('auction',auction);
+            // console.log('auction',auction);
             return (
                 <ProductListingProfile
                     key={auction.title}
@@ -173,34 +172,44 @@ class UserProfile extends React.Component {
     
     render() {
         return(
-            <PrettyProfile>
+            <div className='container'>
                 {this.state.loading ? 
                     <h3>{this.state.isError ? this.state.errorMsg : 'Loading...'}</h3>
                 : (
-                <div>
-                    <div>
-                        <h2>My Profile</h2>
-                        <p>Username: {this.state.username}</p>
-                        <p>First name: {this.state.firstName}</p>
-                        <p>Last name: {this.state.lastName}</p>
-                        <p>Username: {this.state.username}</p>
-                        <p>Password: {this.state.password}</p>
-                        <p>Email: {this.state.email}</p>
-                        <p>Address: {this.state.address}</p>
-                        <p>City: {this.state.city}</p>
-                        <p>State: {this.state.stateUSA}</p>
-                        <p>Zip: {this.state.zip}</p>
+                <div className='row'>
+                    <div className='col-3'>
+                        <div className='user-info-style text-center'>
+                            <h2>My Profile</h2>
+                            <hr className='hr'></hr>
+                            <div className='text-left'>
+                                <p><strong>Username: </strong>{this.state.username}</p>
+                                <p><strong>Password: </strong>{this.state.password}</p>
+                                <p><strong>Email: </strong>{this.state.email}</p>
+                                <p><strong>First name: </strong>{this.state.firstName}</p>
+                                <p><strong>Last name: </strong>{this.state.lastName}</p>
+                                <p><strong>Address: </strong>{this.state.address}</p>
+                                <p><strong>City: </strong>{this.state.city}</p>
+                                <p><strong>State: </strong>{this.state.stateUSA}</p>
+                                <p><strong>Zip: </strong>{this.state.zip}</p>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <h2>My Posts</h2>
-                        {this.state.auctionArray.length > 0 ? <div>{this.displayAuctions()}</div> : <p>No posts to show.</p>}
+                    <div className='col-9'>
+                        <div className='text-center'>
+                            <div>
+                                <div className='user-post-style'>
+                                    <h2>My Posts</h2>
+                                </div>
+                                <div className="d-flex justify-content-around align-items-start">
+                                    {this.state.auctionArray.length > 0 ? <div>{this.displayAuctions()}</div> : <p>No posts to show.</p>}
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-
-
-                </div>)
+                </div>
+                )
                 }
-            </PrettyProfile>
+            </div>
         )
     }
 }

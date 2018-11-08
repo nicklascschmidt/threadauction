@@ -15,3 +15,11 @@
 .filter-margin {
   margin: 0 0 20px 0;
 }
+.filter-style {
+  border: 3px solid rgb(197, 97, 97);
+  margin: 10px;
+  padding: 10px 5px;
+  border-radius: 3px;
+  background-color: white;
+  margin: 0 auto 20px auto;
+}

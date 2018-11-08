@@ -7,7 +7,6 @@ import AuctionStyle from "./CreateAuctionStyle";
 import ErrorBox from '../../components/box/errorBox';
 
 
-
 class CreateAuction extends React.Component {
     constructor(props) {
         super(props)
@@ -174,12 +173,12 @@ class CreateAuction extends React.Component {
        
         return (
             <AuctionStyle>
-                <h3>Please fill out the information below.</h3>
                 {this.state.isError ? <ErrorBox >{this.displayErrors()}</ErrorBox> : ''}
-
                 <form>
                     <div className='theForm'>
-                        <h4>Item Info</h4>
+                        <div className='text-center'>
+                            <h4>Item Info</h4>
+                        </div>
                         <div className="title">
                             <span>Title: </span>
                             <input
@@ -208,7 +207,7 @@ class CreateAuction extends React.Component {
                         </div>
                         <div className="genderList">
                             <span>Gender: </span>
-                            <ul className="selectGender">
+                            <ul className="selectGender d-flex justify-content-around">
                                 <li>
                                     <label htmlFor="male">
                                         <input type="radio" id="male" name="gender" value="M" checked={this.state.gender === 'M'} onChange={event => this.handleRadioButtonChange(event)}/>
@@ -229,22 +228,21 @@ class CreateAuction extends React.Component {
                                 </li>
                             </ul>
                         </div>
-                        <div>
+                        <div className='extra-padding'>
                             <span>Category: </span>
                             <CategoryForm category={this.state.category} handleCategoryChange={this.handleCategoryChange.bind(this)}/>
                         </div>
                         <div>
                             <div>Starting Price: ${this.state.startingPrice}</div>
-                            <input type="range" min="1" max="300" value={this.state.startingPrice} className="slider" id="startingPrice" onChange={event => this.handleSliderChange(event)} />
+                            <input type="range" min="1" max="300" value={this.state.startingPrice} className="slider slider-width" id="startingPrice" onChange={event => this.handleSliderChange(event)} />
                         </div>
                         <div>
                             <div>Minimum Bid Increment: ${this.state.minBidIncrement}</div>
                             <input type="range" min="1" max="20" value={this.state.minBidIncrement} className="slider" id="minBidIncrement" onChange={event => this.handleSliderChange(event)} />
                         </div>
                     </div>
-                    <br></br>
                     <div className='AuctionSubmit'>
-                        {this.state.loading ? 'Loading...' : <button className='btn btn-primary submit-button' onClick={this.handleSubmit}>submit</button>}
+                        {this.state.loading ? 'Loading...' : <button className='btn btn-info submit-button' onClick={this.handleSubmit}>submit</button>}
                     </div>
                     
                 </form>

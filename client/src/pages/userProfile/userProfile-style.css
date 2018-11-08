@@ -1,4 +1,29 @@
-.test {
-  color: white;
-  background-color: red;
+
+.user-info-style {
+  border: 3px solid rgb(197, 97, 97);
+  margin: 10px;
+  padding: 20px;
+  border-radius: 3px;
+  background-color: white;
+  margin: 0 auto 20px auto;
+  position: fixed;
+}
+
+.user-post-style {
+  border: 3px solid rgb(197, 97, 97);
+  margin: 10px;
+  padding: 10px 5px;
+  border-radius: 3px;
+  background-color: white;
+  width: 300px;
+  margin: 0 auto 20px auto;
+}
+
+.hr {
+  border: 0;
+  clear: both;
+  display: block;
+  width: 96%;               
+  background-color: rgb(197, 97, 97);
+  height: 1px;
 }

@@ -4,8 +4,8 @@
   background-position: 50%;
   height: 18rem;
   width: 16rem;
-  border: 5px solid #f1f1f1;
-  border-radius: 3px;
+  border: 8px solid #d8b0b0;
+  border-radius: 5px;
 }
 
 .img-custom-product {
@@ -18,11 +18,12 @@
 .box-style-product {
   vertical-align: middle;
   border: 3px solid rgb(197, 97, 97);
-  margin: auto;
+  margin: 0 auto 300px auto;
   padding: 10px 15px;
   border-radius: 3px;
   align-items: center;
   width: 1000px;
+  background-color: white;
 }
 
 .button-style {
@@ -40,4 +41,14 @@
   width: 96%;               
   background-color: rgb(197, 97, 97);
   height: 1px;
+}
+
+hr {
+  border: 0;
+  clear: both;
+  display: block;
+  width: 96%;               
+  background-color: rgb(197, 97, 97);
+  height: 1px;
+  margin: 10px 0;
 }

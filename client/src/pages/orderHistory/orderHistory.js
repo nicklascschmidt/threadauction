@@ -143,7 +143,7 @@ class OrderHistory extends React.Component {
     render() {
         return(
             <div className='container center-content'>
-                <h2 className='margin-header'>My Bid History</h2>
+                <h2 className='margin-header bid-history-style'>My Bid History</h2>
                 
                 {this.state.bidArray.length > 0 ? <div>{this.displayBids(this.state.bidArray,this.state.auctionArray)}</div> : <p>No bids to show.</p>}
 

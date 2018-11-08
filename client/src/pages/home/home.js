@@ -124,7 +124,7 @@ class Home extends Component {
   render () {
     return (
       <div className='container'>
-        <div className='row align-items-center filter-margin'>
+        <div className='row align-items-center filter-margin filter-style'>
           <h3 className="col-2">Filter</h3>
 
           <div className='col-10 d-flex justify-content-around'>

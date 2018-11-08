@@ -4,7 +4,6 @@ import axios from 'axios';
 import { validateUserInputs } from './bidValidation';
 import ErrorBox from '../../components/box/errorBox';
 import { calculateCreatedAt, calculateTimeRemaining, showDurationTimeRemaining } from '../../components/timeConverter/timeConverter';
-import Wrapper from './productStyles';
 import './product-style.css';
 
 class Product extends React.Component {
@@ -228,28 +227,29 @@ class Product extends React.Component {
                 {this.state.isDbError ? <h3>{this.state.errorMsg}</h3> : (
                     <div className='box-style-product'>
                         <div className='row'>
-                            <div className='col-4'>
+                            <div className='col-4 d-flex align-content-center flex-wrap'>
                                 <div className='img-container-product'>
-                                <img src={this.state.imgLink} height='300px' width='300px' alt='' className='center-block rounded img-custom-product'/>
+                                <img src={this.state.imgLink} height='300px' width='300px' alt='' className='img-custom-product'/>
                                 </div>
                             </div>
                             <div className='col-8 row'>
                                 <h3>{this.state.title}</h3>
                                 <p>{this.state.description}</p>
+                                <hr></hr>
                                 <div className='col-7'>
                                     <p><strong>Gender: </strong>{this.state.gender}</p>
                                     <p><strong>Category: </strong>{this.state.category}</p>
                                     <p><strong>Starting Price: </strong>${this.state.startingPrice}</p>
-                                    {this.state.currentHighestBid ? <p><strong>Current Highest Bid: </strong>${this.state.currentHighestBid}</p> : ''}
                                     <p><strong>Minimum Bid Increment: </strong>${this.state.minBidIncrement}</p>
                                     <p><strong>Posted: </strong>{this.calculateTimeRemaining('createdAt')}</p>
                                     <p>{this.calculateTimeRemaining('durationTimeRemaining')}</p>
                                 </div>
                                 <div className='col-5'>
+                                {this.state.currentHighestBid ? <p><strong>Current Highest Bid: </strong>${this.state.currentHighestBid}</p> : ''}
                                     {this.props.username ?
                                         <form>
                                             <div>
-                                                <span>Bid Amount ($): </span>
+                                                <span><strong>Enter Bid ($): </strong></span>
                                                 <input
                                                     className='vertical-margin'
                                                     type="text"
