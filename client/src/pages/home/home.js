@@ -4,6 +4,7 @@ import CategoryForm from "../../components/form/CategoryForm";
 import axios from "axios";
 import ProductListing from '../../components/productListing/productListing';
 import './home-style.css';
+import ErrorBox from '../../components/box/errorBox';
 
 class Home extends Component {
   constructor(props) {
@@ -123,7 +124,7 @@ class Home extends Component {
 
   render () {
     return (
-      <div className='container'>
+      <div className='container margin-bottom'>
         <div className='row align-items-center filter-margin filter-style'>
           <h3 className="col-2">Filter</h3>
 
@@ -139,7 +140,7 @@ class Home extends Component {
           </div>
         </div>
       
-        {this.state.isError ? this.state.errorMsg : ""}
+        {this.state.isError ? <ErrorBox>{this.state.errorMsg}</ErrorBox> : ""}
         <div className="d-flex justify-content-around align-items-start">
           {this.showProducts()}
         </div>

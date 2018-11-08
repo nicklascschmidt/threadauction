@@ -168,7 +168,7 @@ class Login extends React.Component {
               {this.state.loading ? (
                 "Loading..."
               ) : (
-                <button onClick={this.handleSubmit}>submit</button>
+                <button onClick={this.handleSubmit} className='btn btn-info'>submit</button>
               )}
             </form>
           </Wrapper>

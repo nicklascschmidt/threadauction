@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import './userProfile-style.css';
 import axios from 'axios';
 import ProductListingProfile from "../../components/productListing/productListingProfile";
-
+import ErrorBox from '../../components/box/errorBox';
 
 class UserProfile extends React.Component {
     constructor(props) {
@@ -172,7 +172,7 @@ class UserProfile extends React.Component {
     
     render() {
         return(
-            <div className='container'>
+            <div className='container margin-bottom'>
                 {this.state.loading ? 
                     <h3>{this.state.isError ? this.state.errorMsg : 'Loading...'}</h3>
                 : (
@@ -201,7 +201,7 @@ class UserProfile extends React.Component {
                                     <h2>My Posts</h2>
                                 </div>
                                 <div className="d-flex justify-content-around align-items-start">
-                                    {this.state.auctionArray.length > 0 ? <div>{this.displayAuctions()}</div> : <p>No posts to show.</p>}
+                                    {this.state.auctionArray.length > 0 ? <div>{this.displayAuctions()}</div> : <ErrorBox>No posts to show.</ErrorBox>}
                                 </div>
                             </div>
                         </div>

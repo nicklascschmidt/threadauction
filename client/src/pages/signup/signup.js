@@ -180,7 +180,7 @@ class Signup extends React.Component {
                             <div>
                                 
                                 <input
-                                    type="text"
+                                    type="password"
                                     placeholder="Password"
                                     name="password"
                                     value={this.state.password}

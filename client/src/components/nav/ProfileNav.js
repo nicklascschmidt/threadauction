@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
 const ProfileNav = styled('div')`
- display: flex;
- font-size: 1.5rem;
- font-family: 'Space Mono', monospace;
- border-bottom: 2px solid black;
- align-items: baseline;
- justify-content: space-between;
+  display: flex;
+  font-size: 1.5rem;
+  font-family: 'Space Mono', monospace;
+  border-bottom: 2px solid black;
+  align-items: baseline;
+  justify-content: space-around;
  @media(max-width: 700px) {
      font-size: .5rem;
      margin-top: 30px;
