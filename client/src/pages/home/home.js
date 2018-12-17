@@ -64,7 +64,7 @@ class Home extends Component {
         params: filterObj
       })
       .then(resp => {
-        // console.log("resp.data", resp.data);
+        console.log("resp.data", resp.data);
         if (resp.status === 200) {
           this.setState({
             productObjectArray: resp.data

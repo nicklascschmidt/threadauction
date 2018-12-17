@@ -86,7 +86,8 @@ module.exports = function(app) {
             whereObj.where = {}
         }
         whereObj.where.createdAt = {
-            [Op.gte]: moment().subtract(7, 'days').toDate()
+            // [Op.gte]: moment().subtract(7, 'days').toDate()
+            [Op.gte]: moment('20181107').subtract(7, 'days').toDate() // snapshot of auction listings at Nov 7th
         }
         console.log('whereObj',whereObj)
 
