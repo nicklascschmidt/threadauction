@@ -703,7 +703,7 @@ ms@^2.1.1:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.1.tgz#30a5864eb3ebb0a66f2ebe6d727af06a09d86e0a"
   integrity sha512-tgp+dl5cGk28utYktBsrFqA7HKgrhgPsg6Z/EfhWI4gl1Hwq8B/GmY/0oXZ6nF8hDVesS/FpnYaD/kOWhYQvyg==
 
-mysql2@^1.6.4:
+mysql2@^1.6.1:
   version "1.6.4"
   resolved "https://registry.yarnpkg.com/mysql2/-/mysql2-1.6.4.tgz#5c7dba8b78525bd4f01c99b3f3327670df675e96"
   integrity sha512-ZYbYgK06HKfxU45tYYLfwW5gKt8BslfE7FGyULNrf2K2fh+DuEX+e0QKsd2ObpZkMILefaVn8hsakVsTFqravQ==
