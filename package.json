@@ -24,5 +24,6 @@
   "scripts": {
     "client-start": "cd client/ && yarn start",
     "client-build": "cd client/ && yarn build"
-  }
+  },
+  "heroku-run-build-script": true
 }
