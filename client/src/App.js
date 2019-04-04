@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
+import Background from './components/background/Background';
+
 // pages
 import UserProfile from './pages/userProfile';
 import Nav from './components/nav/nav';
@@ -11,7 +13,6 @@ import Signup from './pages/signup';
 import CreateAuction from './pages/createAuction';
 import Product from './pages/product';
 import OrderHistory from './pages/orderHistory';
-import './app-style.css';
 
 
 class App extends React.Component {
@@ -20,7 +21,7 @@ class App extends React.Component {
       <Router>
         <div>
           <Nav />
-          <div className='background-image container-padding'>
+          <Background>
             <Switch>
               <Route exact path="/" component={Home} />
               <Route path="/product/:auctionId" component={Product} />
@@ -32,7 +33,7 @@ class App extends React.Component {
 
               <Route component={NotFound} />
             </Switch>
-          </div>
+          </Background>
         </div>
       </Router>
     )

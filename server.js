@@ -26,11 +26,11 @@ app.use((req, res, next) => {
 
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
+  app.use(express.static(path.join(__dirname, 'client/build')));
 }
 
 // only force=true if we want to add columns or reset the data in the db
-const force = { force: false}
+const force = { force: false }
 
 db.sequelize.sync(force).then(function() {
   app.listen(PORT, function() {

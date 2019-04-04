@@ -1,6 +1,6 @@
 var db = require("../../models/");
 var moment = require('moment');
-const { Op } = require('sequelize')
+const { Op } = require('sequelize');
 
 
 module.exports = function(app) {
