@@ -1,33 +1,29 @@
+// Entry point of the application.
+// Set up server, import routes, sync DB.
+
+// Dependencies
 const express = require("express");
 const bodyParser = require("body-parser");
-const path = require('path');
 
+// Bring in routes, initialize express, define dev port
+const routes = require("./routes");
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-const db = require("./models");
-
+// Parse request body as JSON (for AJAX reqs) | body-parser for safety
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Static directory
-app.use('/static', express.static(path.join(__dirname, 'client/build/static')));
-
-// Routes
-require("./routes/api-routes/login-routes.js")(app);
-require("./routes/api-routes/signup-routes.js")(app);
-require("./routes/api-routes/profile-routes.js")(app);
-require("./routes/api-routes/auction-routes.js")(app);
-require("./routes/api-routes/auction-bid-routes.js")(app);
-
-app.use((req, res, next) => {
-	res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
-});
+app.use(express.static('client'));
+app.use(routes);
 
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, 'client/build')));
 }
+
+const db = require("./models");
 
 // only force=true if we want to add columns or reset the data in the db
 const force = { force: false }
