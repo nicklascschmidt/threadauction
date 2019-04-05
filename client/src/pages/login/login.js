@@ -20,44 +20,21 @@ class Login extends React.Component {
     };
   }
 
-  componentDidMount = () => {
-    this.setState({
-      loading: false,
-      submitted: false,
-      errorMsg: null,
-      isError: null,
-      sendToRedux: false,
-      sendToReduxData: null
-    });
-  };
-
   handleChange = event => {
     const { name, value } = event.target;
-    this.setState({
-      [name]: value
-    });
+    this.setState({ [name]: value });
   };
 
   handleSubmit = event => {
     event.preventDefault();
-
     const { username, password } = this.state;
-    const userData = {
-      username: username,
-      password: password
-    };
-    console.log("userData", userData);
-
-    this.setState({
-      loading: true
-    });
-
+    const userData = { username, password };
+    this.setState({ loading: true });
     this.checkDbForUsernameAndPassword(userData);
   };
 
   sendToReduxStore = data => {
-    console.log("sending to redux store...");
-
+    console.log('this hit')
     const userData = {
       username: data.username,
       userId: data.id
@@ -79,41 +56,26 @@ class Login extends React.Component {
   };
 
   componentDidUpdate = () => {
-    if (this.state.sendToRedux) {
-      this.sendToReduxStore(this.state.sendToReduxData);
-    }
+    this.state.sendToRedux && this.sendToReduxStore(this.state.sendToReduxData);
 
-    if (this.state.submitted) {
-      console.log("user data submitted");
-
-      // bring user to home page
-      window.location = '/';
-    }
+    // When submitted, bring user to home page
+    this.state.submitted && (window.location = '/');
   };
 
-  checkDbForUsernameAndPassword = data => {
+  checkDbForUsernameAndPassword = params => {
     axios
-      .get("/api/user/login", {
-        params: data
-      })
+      .get("/api/users/login", { params })
       .then(resp => {
-        console.log("resp.data", resp.data);
-
         if (resp.status === 200) {
-          console.log("success");
+          this.setState({ loading: false });
 
-          this.setState({
-            loading: false
-          });
-
+          // If resp is null, couldn't find the account. Else pass login info into redux store.
           if (resp.data === null) {
-            console.log("resp.data is null");
             this.setState({
               errorMsg: `We couldn't find your profile. Please check your username and password and try again.`,
               isError: true
             });
           } else {
-            // return an object to pass into redux
             this.setState({
               errorMsg: null,
               isError: false,
@@ -122,8 +84,6 @@ class Login extends React.Component {
             });
             return;
           }
-        } else {
-          console.log("front end /api/user/create error");
         }
       })
       .catch(err => {
@@ -131,48 +91,37 @@ class Login extends React.Component {
           errorMsg: `We ran into an issue trying to find your account.`,
           isError: true
         });
-        console.log(err);
       });
   };
 
   render() {
     return (
-
       <div>
-        {this.state.isError ? (
-          <ErrorBox>
-            <p>{this.state.errorMsg}</p>
-          </ErrorBox>
-        ) : (
-          ""
-        )}
-    
+        {this.state.isError && <ErrorBox><p>{this.state.errorMsg}</p></ErrorBox>}
         <Wrapper>
-            <form>
-              <label>Username: </label>
-              <input
-                type="text"
-                name="username"
-                value={this.state.username}
-                onChange={event => this.handleChange(event)}
-              />
-              <br />
-              <label>Password: </label>
-              <input
-                type="password"
-                name="password"
-                value={this.state.password}
-                onChange={event => this.handleChange(event)}
-              />
-              <br />
-              {this.state.loading ? (
-                "Loading..."
-              ) : (
-                <button onClick={this.handleSubmit} className='btn btn-info'>submit</button>
-              )}
-            </form>
-          </Wrapper>
-        </div>
+          <form>
+            <label>Username: </label>
+            <input
+              type="text"
+              name="username"
+              value={this.state.username}
+              onChange={event => this.handleChange(event)}
+            />
+            <br />
+            <label>Password: </label>
+            <input
+              type="password"
+              name="password"
+              value={this.state.password}
+              onChange={event => this.handleChange(event)}
+            />
+            <br />
+            {this.state.loading 
+              ? <p>Loading...</p>
+              : <button onClick={this.handleSubmit} className='btn btn-info'>submit</button>}
+          </form>
+        </Wrapper>
+      </div>
     );
   }
 }

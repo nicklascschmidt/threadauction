@@ -2,7 +2,7 @@ const db = require("../models");
 
 // Methods
 module.exports = {
-  // Add user
+  // Add user from signup page
   create: function(req,res) {
     db.User
       .create(req.body)
@@ -11,6 +11,7 @@ module.exports = {
   },
   // Check user login credentials
   findOne: function(req,res) {
+    console.log('req.query',req.query);
     db.User
       .findOne({ where: req.query })
       .then(dbUser => res.json(dbUser))
