@@ -11,7 +11,6 @@ module.exports = {
   },
   // Check user login credentials
   findOne: function(req,res) {
-    console.log('req.query',req.query);
     db.User
       .findOne({ where: req.query })
       .then(dbUser => res.json(dbUser))
