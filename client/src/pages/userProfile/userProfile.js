@@ -10,7 +10,7 @@ class UserProfile extends React.Component {
     super(props)
 
     this.state = {
-      userId: '',
+      userId: this.props.userId,
       firstName: '',
       lastName: '',
       username: '',
@@ -24,38 +24,19 @@ class UserProfile extends React.Component {
 
       loading: true,
       errorArray: [],
-      isError: null
+      isError: null,
     }
   }
 
   componentDidMount = () => {
-    this.setState({
-      userId: this.props.userId,
-      loading: true,
-      errorArray: [],
-      isError: null
-    }, () => {
-      this.pullUserDataFromDb(this.state.userId);
-      this.pullAuctionsFromDb(this.state.userId);
-    })
+    this.pullUserDataFromDb(this.state.userId);
+    // this.pullAuctionsFromDb(this.state.userId);
   }
 
   pullUserDataFromDb = (userId) => {
-    // console.log('userId',userId);
-
-    let userData = {
-      userId: userId
-    };
-
-    axios.get('/api/user/profile', {
-      params: userData
-    })
+    axios.get('/api/users/profile', { params: { userId } })
       .then(resp => {
-        // console.log('resp.data',resp.data);
-
         if (resp.status === 200) {
-          // console.log('success');
-
           this.setState({
             firstName: resp.data.firstName,
             lastName: resp.data.lastName,
@@ -68,26 +49,9 @@ class UserProfile extends React.Component {
             zip: resp.data.zip,
             loading: false
           });
-
-          if (resp.data === null) {
-            console.log('resp.data is null');
-            this.setState({
-              errorMsg: `We couldn't find your profile. Please reload the page.`,
-              isError: true
-            });
-          } else {
-            // return an object to pass into redux
-            this.setState({
-              errorMsg: null,
-              isError: false
-            });
-            return
-          }
-        } else {
-          console.log('front end /api/user/profile error');
         }
-
-      }).catch(err => {
+      })
+      .catch(err => {
         this.setState({
           errorMsg: `We ran into an issue trying to find your account. Please reload the page.`,
           isError: true

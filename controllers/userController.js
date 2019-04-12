@@ -10,9 +10,16 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   // Check user login credentials
-  findOne: function(req,res) {
+  findUser: function(req,res) {
     db.User
       .findOne({ where: req.query })
+      .then(dbUser => res.json(dbUser))
+      .catch(err => res.status(422).json(err));
+  },
+  // Load user info on profile page
+  findProfile: function(req,res) {
+    db.User
+      .findOne({ where: { id: req.query.userId }})
       .then(dbUser => res.json(dbUser))
       .catch(err => res.status(422).json(err));
   }
