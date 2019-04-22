@@ -34,7 +34,6 @@ class Login extends React.Component {
   };
 
   sendToReduxStore = data => {
-    console.log('this hit')
     const userData = {
       username: data.username,
       userId: data.id

@@ -2,6 +2,16 @@ const db = require("../models");
 
 // Methods
 module.exports = {
+  findAllWithUserId: function(req, res) {
+    db.Auction
+      .findAll({ where: { UserId: req.params.userId }})
+      .then(data => res.json(data))
+      .catch(err => res.sendStatus(422).json(err));
+  },
+
+
+
+  
   // Find movies (watched || unwatched), sort by most recently updated.
   findAll: function(req, res) {
     db.Movie

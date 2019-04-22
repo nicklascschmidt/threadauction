@@ -30,7 +30,7 @@ class UserProfile extends React.Component {
 
   componentDidMount = () => {
     this.pullUserDataFromDb(this.state.userId);
-    // this.pullAuctionsFromDb(this.state.userId);
+    this.pullAuctionsFromDb(this.state.userId);
   }
 
   pullUserDataFromDb = (userId) => {
@@ -56,83 +56,39 @@ class UserProfile extends React.Component {
           errorMsg: `We ran into an issue trying to find your account. Please reload the page.`,
           isError: true
         });
-        console.log(err);
       });
   }
 
-
   pullAuctionsFromDb = (userId) => {
-    console.log('userId', userId);
-
-    let userParams = {
-      userId: userId
-    };
-
-    console.log('userParams', userParams);
-
-    axios.get('/api/user/auctions', {
-      params: userParams
-    })
+    axios.get(`/api/auctions/${userId}`)
       .then(resp => {
-        console.log('resp.data', resp.data);
-
         if (resp.status === 200) {
-          console.log('success');
-
           this.setState({
-            auctionArray: resp.data
-          }, () => {
-            console.log('auction array state', this.state.auctionArray)
-            this.displayAuctions(this.state.auctionArray);
-          })
-
-          if (resp.data === null) {
-            console.log('resp.data is null');
-            this.setState({
-              errorMsg: `We couldn\'t find your profile. Please reload the page.`,
-              isError: true
-            });
-          } else {
-            // return an object to pass into redux
-            this.setState({
-              errorMsg: null,
-              isError: false
-            });
-            return
-          }
-        } else {
-          console.log('front end /api/user/profile error');
+            auctionArray: resp.data,
+            errorMsg: null,
+            isError: false
+          });
+          return
         }
-
       }).catch(err => {
         this.setState({
           errorMsg: `We ran into an issue trying to find your account. Please reload the page.`,
           isError: true
         });
-        console.log(err);
       });
   }
 
-  displayAuctions = (auctionArray) => {
-    // console.log('displaying auctions...',auctionArray);
-
-    const auctionArrayMapped = this.state.auctionArray.map((auction) => {
-      // console.log('auction',auction);
-      return (
-        <ProductListingProfile
-          key={auction.title}
-          auctionId={auction.id}
-          imgLink={auction.imgLink}
-          title={auction.title}
-          startingPrice={auction.startingPrice}
-          createdAt={auction.createdAt}
-        />
-      )
+  displayAuctions = () => {
+    return this.state.auctionArray.map((auction) => {
+      return <ProductListingProfile
+        key={auction.title}
+        auctionId={auction.id}
+        imgLink={auction.imgLink}
+        title={auction.title}
+        startingPrice={auction.startingPrice}
+        createdAt={auction.createdAt} />
     })
-
-    return <div>{auctionArrayMapped}</div>
   }
-
 
   render() {
     return (
@@ -141,9 +97,9 @@ class UserProfile extends React.Component {
           ? <h3>{this.state.isError ? this.state.errorMsg : 'Loading...'}</h3>
           : (
             <div className='row'>
-              <div className='col-3'>
-                <div className='user-info-style text-center'>
-                  <h2>My Profile</h2>
+              <div className='col-sm-12 col-md-4 col-lg-3'>
+                <div className='user-info-style'>
+                  <h2 className='text-center'>My Profile</h2>
                   <hr className='hr'></hr>
                   <div className='text-left'>
                     <p><strong>Username: </strong>{this.state.username}</p>
@@ -158,16 +114,14 @@ class UserProfile extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className='col-9'>
-                <div className='text-center'>
-                  <div>
-                    <div className='user-post-style'>
-                      <h2>My Posts</h2>
-                    </div>
-                    <div className="d-flex justify-content-around align-items-start">
-                      {this.state.auctionArray.length > 0 ? <div>{this.displayAuctions()}</div> : <ErrorBox>No posts to show.</ErrorBox>}
-                    </div>
-                  </div>
+              <div className='col-sm-12 col-md-8 col-lg-9 text-center'>
+                <div className='user-post-style'>
+                  <h2>My Posts</h2>
+                </div>
+                <div className="d-flex justify-content-around align-items-start">
+                  {(this.state.auctionArray.length > 0)
+                    ? <div>{this.displayAuctions()}</div>
+                    : <ErrorBox>No posts to show.</ErrorBox>}
                 </div>
               </div>
             </div>
@@ -179,7 +133,6 @@ class UserProfile extends React.Component {
 }
 
 function mapStateToProps(state) {
-  console.log('UserProfile: mapStateToProps state', state);
   return {
     username: state.username,
     userId: state.userId,

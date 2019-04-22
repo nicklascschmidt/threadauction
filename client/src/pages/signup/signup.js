@@ -54,14 +54,13 @@ class Signup extends React.Component {
 
     const errorObject = this.validateUserInputs(userData);
 
-    // if validateUserInputs returns an error, then show to the user. Else, run sendUserDataToDb.
+    // if validateUserInputs returns an error, then show to the user. Else, send data to DB.
     if (errorObject.isError) {
-      console.log('WOAH we got an error. Do not send data to db');
       this.setState({
         errorArray: errorObject.errorArray,
         isError: true,
         loading: false
-      }, () => console.log(this.state));
+      });
     } else {
       this.sendUserDataToDb(userData);
     }
@@ -107,7 +106,7 @@ class Signup extends React.Component {
     return (
       <SignupForm>
         <h3 className="fillOut">Please fill out the information below.</h3>
-        {this.state.isError ? <ErrorBox className='error-box'>{this.displayErrors()}</ErrorBox> : ''}
+        {this.state.isError && <ErrorBox className='error-box'>{this.displayErrors()}</ErrorBox>}
 
         <form>
           <div className="userInfo">

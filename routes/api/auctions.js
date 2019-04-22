@@ -1,11 +1,16 @@
 const router = require("express").Router();
 const auctionController = require("../../controllers/auctionController");
 
-// Matches with "/api/movies________"
+// Matches with "/api/auctions________"
 
 router.route("/")
   .get(auctionController.findAll);
 
+router.route("/:userId")
+  .get(auctionController.findAllWithUserId);
+
+
+  
 router.route("/add")
   .post(auctionController.create);
 

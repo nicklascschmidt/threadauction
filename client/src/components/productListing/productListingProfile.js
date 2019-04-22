@@ -1,16 +1,11 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import Product from '../../pages/product/product';
 import { calculateCreatedAt, calculateTimeRemaining, showDurationTimeRemaining } from '../timeConverter/timeConverter';
 import './productListingProfile-style.css';
 
 class ProductListingProfile extends React.Component {
-  constructor(props) {
-    super(props)
-  }
 
   showTimeRemaining = (createdAt) => {
-    // console.log('createdAt',createdAt);
     let momentTimeRemaining = calculateTimeRemaining(createdAt);
     let durationTimeRemainingObj = showDurationTimeRemaining(momentTimeRemaining);
 
@@ -22,17 +17,16 @@ class ProductListingProfile extends React.Component {
   }
 
   render() {
-    // console.log('this.props',this.props)
     return (
       <div className='row row-style'>
         <div className='col-3'>
-          <Link to={`/product/${this.props.auctionId}`} component={Product} className='img-container'>
-            <img src={this.props.imgLink} height='150px' width='150px' alt='' className='img-thumbnail rounded img-custom'/>
+          <Link to={`/product/${this.props.auctionId}`}>
+            <img src={this.props.imgLink} alt='' className='img-thumbnail img-custom' />
           </Link>
         </div>
 
         <div className='col-9 row'>
-          <Link to={`/product/${this.props.auctionId}`} component={Product} className='col-8 text-left'>
+          <Link to={`/product/${this.props.auctionId}`} className='col-8 text-left'>
             <h5 className='product-title'>{this.props.title}</h5>
           </Link>
           <div className='col-4 text-left'>

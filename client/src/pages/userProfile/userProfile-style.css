@@ -2,11 +2,9 @@
 .user-info-style {
   border: 3px solid rgb(197, 97, 97);
   margin: 10px;
-  padding: 20px;
+  padding: 10px;
   border-radius: 3px;
   background-color: white;
-  margin: 0 auto 20px auto;
-  position: fixed;
 }
 
 .user-post-style {

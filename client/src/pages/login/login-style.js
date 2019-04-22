@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Wrapper = styled('fragment')`
+const Wrapper = styled('div')`
   display: flex;
   margin-right: 30%;
   margin-left: 30%;

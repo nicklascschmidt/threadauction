@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import ProductListingBidHistory from "../../components/productListing/productListingBidHistory";
-// import PrettyProfile from './orderHistoryStyles';
 import './orderHistory-style.css';
 import ErrorBox from '../../components/box/errorBox';
 
