@@ -6,13 +6,14 @@ const auctionController = require("../../controllers/auctionController");
 router.route("/")
   .get(auctionController.findAll);
 
-router.route("/:userId")
-  .get(auctionController.findAllWithUserId);
+router.route("/:auctionId")
+  .get(auctionController.findOneAuction);
 
+router.route("/create")
+  .post(auctionController.create);
 
   
-router.route("/add")
-  .post(auctionController.create);
+  
 
 router.route("/find")
   .get(auctionController.findOne);

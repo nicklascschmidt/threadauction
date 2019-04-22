@@ -5,86 +5,58 @@ import ProductListingBidHistory from "../../components/productListing/productLis
 import './orderHistory-style.css';
 import ErrorBox from '../../components/box/errorBox';
 
+// TODO: clean this up - too busy
 class OrderHistory extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      userId: '',
-      username: '',
+      userId: this.props.userId,
+      username: this.props.username,
       bidArray: [], // every bid the user has cast
-      auctionIdArray: [], // auctionIds that the user has taken part in
       auctionArray: [], // array of auctions that the user has placed bids for
+      errorArray: [],
+      isError: null
     }
   }
 
+  // Pull auction bids with userId. Then get auction IDs (uniques). Then display each auction with the auctionId.
   componentDidMount = () => {
-    this.setState({
-      userId: this.props.userId,
-      username: this.props.username,
-      bidArray: [],
-      auctionArray: [],
-
-      errorArray: [],
-      isError: null
-    }, () => {
-      this.pullBidsFromDb(this.state.userId);
-    })
+    this.pullBidsFromDb(this.state.userId);
   }
 
-
+  // Pull bids (with userId), then get unique auctionIds from those bids.
   pullBidsFromDb = (userId) => {
-    // console.log('Pulling users bids from the DB with this ID: ',userId);
-    const params = { userId };
-    axios.get('/api/bid/auctionBids', { params })
+    axios.get(`/api/auctionBids/${userId}`)
       .then(resp => {
-        this.setState({
-          bidArray: resp.data,
-        }, () => {
-          // console.log('These are all the bids the user has placed: ',this.state.bidArray);
-          this.getAuctionIds(this.state.bidArray);
-        })
-      }).catch(err => {
-        console.log(err);
+        if (resp.status === 200) {
+          this.setState({ bidArray: resp.data });
+          this.getUniqueAuctionIds(resp.data);
+        }
       });
   }
 
-  getAuctionIds(bidArray) {
-    // console.log('getting auction IDs...');
-    let auctionIdArray = [];
-    bidArray.map((bid) => {
-      auctionIdArray.push(bid.AuctionId);
-    })
+  // Build auctionIdArray and remove dupes. Then loop auctions
+  getUniqueAuctionIds = (bidArray) => {
+    let auctionIdArray = bidArray.map((bid) => bid.AuctionId)
     const removeDupes = (a) => [...new Set(a)];
-    const removeDupeArray = removeDupes(auctionIdArray);
-
-    this.setState({
-      auctionIdArray: removeDupeArray
-    }, () => {
-      //   console.log('These are the IDs of the auctions: ',this.state.auctionIdArray);
-      this.loopAuctionsForProductInfo(this.state.auctionIdArray);
-    })
+    let newAuctionIdArray = removeDupes(auctionIdArray);
+    this.loopAuctionsForProductInfo(newAuctionIdArray);
   }
 
-  displayBids = (bidArray, auctionArray) => {
-    // console.log('displaying bids...',bidArray,auctionArray);
-    const bidArrayMapped = bidArray.map((bid) => {
+  displayBids = () => {
+    let { bidArray, auctionArray } = this.state;
+    return bidArray.map((bid) => {
       return (
         <div key={bid.id}>
           {this.findAuctionWithID(bid, auctionArray)}
         </div>
       )
     })
-    return <div>{bidArrayMapped}</div>
-  }
-
-  getBidStatus() {
-
   }
 
   findAuctionWithID(bid, auctionArray) {
-    // console.log('looking for the auction...',auctionID,auctionArray)
-    const auctionMapped = auctionArray.map((auction) => {
+    return auctionArray.map((auction) => {
       if (auction.id === bid.AuctionId) {
         return (
           <ProductListingBidHistory
@@ -98,14 +70,12 @@ class OrderHistory extends React.Component {
           />
         )
       }
-    })
-    return auctionMapped
+    });
   }
 
-  loopAuctionsForProductInfo(auctionIdArray) {
-    // console.log('Now, we\'re looping through the auction array and pulling data for each one. We\'ll map it after.');
-
-    const bidPromises = [];
+  // Pull data for each auction, then map after.
+  loopAuctionsForProductInfo = (auctionIdArray) => {
+    let bidPromises = [];
     for (let n = 0; n < auctionIdArray.length; n++) {
       bidPromises.push(new Promise((resolve, reject) => {
         this.fetchAuctionFromDb(auctionIdArray[n])
@@ -121,39 +91,28 @@ class OrderHistory extends React.Component {
       const filteredArray = bidPromiseData.filter((value) => {
         return value != '';
       })
-      this.setState({
-        auctionArray: filteredArray
-      }, () => {
-        // console.log("auctionArray has been set: ",this.state.auctionArray);
-      })
-    }).catch(err => {
-      console.log('an error occurred: ', err);
-    })
+      this.setState({ auctionArray: filteredArray });
+    });
   }
 
   // Returns a promise
-  fetchAuctionFromDb(auctionId) {
-    const params = { auctionId };
-    return axios.get('/api/auction/id', { params })
+  fetchAuctionFromDb = (auctionId) => {
+    return axios.get(`/api/auctions/${auctionId}`)
   }
-
-
-
 
   render() {
     return (
       <div className='container center-content margin-bottom'>
         <h2 className='margin-header bid-history-style'>My Bid History</h2>
-
-        {this.state.bidArray.length > 0 ? <div>{this.displayBids(this.state.bidArray, this.state.auctionArray)}</div> : <ErrorBox>No bids to show.</ErrorBox>}
-
+        {this.state.bidArray.length > 0
+          ? <div>{this.displayBids()}</div>
+          : <ErrorBox>No bids to show.</ErrorBox>}
       </div>
     )
   }
 }
 
 function mapStateToProps(state) {
-  // console.log('OrderHistory: mapStateToProps state',state);
   return {
     username: state.username,
     userId: state.userId,
