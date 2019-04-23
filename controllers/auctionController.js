@@ -52,4 +52,16 @@ module.exports = {
       .then(data => res.json(data))
       .catch(err => res.status(422).json(err));
   },
+  // Find only completed auctions - UNUSED as of now
+  findAllCompletedAuctions: function (req, res) {
+    let where = {
+      createdAt: {
+        [Op.lte]: moment().subtract(7, 'days').toDate()
+      }
+    };
+    db.Auction
+      .findAll({where})
+      .then(data => res.json(data))
+      .catch(err => res.status(422).json(err));
+  },
 };

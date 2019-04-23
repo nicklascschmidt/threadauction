@@ -15,18 +15,9 @@ router.route("/user/:userId")
 router.route("/create")
   .post(auctionController.create);
 
-  
+// Unused as of now
+router.route("/completed")
+  .get(auctionController.findAllCompletedAuctions);
 
-// router.route("/find")
-//   .get(auctionController.findOne);
-
-// router.route("/delete/:id")
-//   .delete(auctionController.remove);
-
-// router.route("/update-watched/:id")
-//   .put(auctionController.updateWatched);
-  
-// router.route("/update-rating/:id")
-//   .put(auctionController.updateRating);
 
 module.exports = router;
