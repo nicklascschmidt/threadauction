@@ -23,7 +23,7 @@ class UserProfile extends React.Component {
       auctionArray: [],
 
       loading: true,
-      errorArray: [],
+      errorMsg: '',
       isError: null,
     }
   }
@@ -60,7 +60,7 @@ class UserProfile extends React.Component {
   }
 
   pullAuctionsFromDb = (userId) => {
-    axios.get(`/api/auctions/${userId}`)
+    axios.get(`/api/auctions/user/${userId}`)
       .then(resp => {
         if (resp.status === 200) {
           this.setState({
@@ -68,7 +68,6 @@ class UserProfile extends React.Component {
             errorMsg: null,
             isError: false
           });
-          return
         }
       }).catch(err => {
         this.setState({

@@ -1,10 +1,8 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import Product from '../../pages/product/product';
 import { calculateCreatedAt, calculateTimeRemaining, showDurationTimeRemaining } from '../timeConverter/timeConverter';
 import './productListing-style.css';
 import axios from 'axios';
-
 
 class ProductListing extends React.Component {
   constructor(props) {
@@ -20,37 +18,22 @@ class ProductListing extends React.Component {
   }
 
   pullProductDataFromDb = (auctionId) => {
-    // console.log('auctionId',auctionId);
-    const params = { auctionId };
-
-    // pull bid data currentHighestBid
-    axios.get('/api/bid/highestBid', { params })
-    .then(resp => {
-        // console.log('front end -- resp.data',resp.data);
+    axios.get(`/api/auctionBids/highestBid/${auctionId}`)
+      .then(resp => {
         if (resp.status === 200) {
-            this.setState({
-              currentHighestBid: resp.data,
-            });
-            if (resp.data === null) {
-              console.log('no existing bids');
-              this.setState({
-                  currentHighestBid: '',
-              });
-            }
-        } else {
-          console.log('front end /api/auction/id error');
+          this.setState({
+            currentHighestBid: (resp.data !== null) ? resp.data : '',
+          });
         }
-    }).catch(err => {
+      }).catch(err => {
         this.setState({
-            errorMsg: `We ran into an issue trying to find the bid. Please reload the page.`,
-            isDbError: true
+          errorMsg: `We ran into an issue trying to find the bid. Please reload the page.`,
+          isDbError: true
         });
-        console.log(err);
-    });
+      });
   }
 
   showTimeRemaining = (createdAt) => {
-    // console.log('createdAt',createdAt);
     let momentTimeRemaining = calculateTimeRemaining(createdAt);
     let durationTimeRemainingObj = showDurationTimeRemaining(momentTimeRemaining);
 
@@ -62,15 +45,13 @@ class ProductListing extends React.Component {
   }
 
   render() {
-    // console.log('this.props',this.props)
     return (
       <div className='box-style'>
-
-        <Link to={`/product/${this.props.auctionId}`} component={Product} className='img-container'>
-          <img src={this.props.imgLink} alt='' className='center-block rounded img-custom'/>
+        <Link to={`/product/${this.props.auctionId}`} className='img-container'>
+          <img src={this.props.imgLink} alt='' className='center-block rounded img-custom' />
         </Link>
 
-        <Link to={`/product/${this.props.auctionId}`} component={Product}>
+        <Link to={`/product/${this.props.auctionId}`}>
           <h5 className='product-title'>{this.props.title}</h5>
         </Link>
 

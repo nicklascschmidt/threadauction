@@ -41,7 +41,6 @@ class Nav extends React.Component {
 }
 
 function mapStateToProps(state) {
-  console.log('Product: mapStateToProps state', state);
   return {
     username: state.username,
     isLoggedIn: true

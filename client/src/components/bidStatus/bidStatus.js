@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { calculateCreatedAt, calculateTimeRemaining, showDurationTimeRemaining } from '../timeConverter/timeConverter';
+import { calculateTimeRemaining, showDurationTimeRemaining } from '../timeConverter/timeConverter';
 
 class BidStatus extends React.Component {
   constructor(props) {
@@ -10,11 +10,6 @@ class BidStatus extends React.Component {
       bidResult: null,
     }
   }
-
-  // props--
-  // auctionId
-  // createdAt
-  // user bid amount
 
   componentDidMount() {
     this.isUserBidHighestBid(this.props.auctionId,this.props.bidAmount);
@@ -37,8 +32,6 @@ class BidStatus extends React.Component {
         });
     })
     winningBid.then( (data) => {
-      // console.log('winningBid: ',data, ' vs user bid: ',userBid);
-
       let bidResult = null;
       if (data === userBid) {
         bidResult = 'Auction won';
@@ -55,13 +48,10 @@ class BidStatus extends React.Component {
 
   // returns a promise
   getMaxBidAmountFromAuctionId(auctionId) {
-    const params = { auctionId };
-    return axios.get('/api/bid/completedAuctionHighestBid', { params })
+    return axios.get(`/api/auctionBids/highestBid/${auctionId}`)
   }
 
-
   render() {
-    // console.log('this.props',this.props);
     return (
       <div>
         <p><strong>Status: </strong>{this.getIsAuctionComplete(this.props.createdAt) ? 'Complete' : 'Ongoing'}</p>

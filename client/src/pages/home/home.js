@@ -12,71 +12,45 @@ class Home extends Component {
 
     this.state = {
       productObjectArray: [],
-      gender: null,
-      category: null,
-      errorMsg: null,
+      gender: '',
+      category: '',
+      errorMsg: '',
       isError: null
     };
-
-    this.handleGenderChange = this.handleGenderChange.bind(this);
-    this.handleCategoryChange = this.handleCategoryChange.bind(this);
   }
 
   componentDidMount = () => {
     this.pullProductsFromDb();
-    this.setState({
-      productObjectArray: [],
-      gender: "",
-      category: "",
-      errorMsg: "",
-      isError: null
-    });
   };
 
   handleGenderChange = event => {
     this.setState({
-        gender: event.value
-      }, () => {
-        this.pullProductsFromDb();
-      }
-    );
+      gender: event.value
+    }, () => this.pullProductsFromDb() );
   };
 
   handleCategoryChange = event => {
     this.setState({
-        category: event.value
-      }, () => {
-        this.pullProductsFromDb();
-      }
-    );
+      category: event.value
+    }, () => this.pullProductsFromDb() );
   };
 
-
   pullProductsFromDb() {
-    // console.log("pulling filtered products from db...");
-
-    let filterObj = {
+    let params = {
       gender: this.state.gender,
       category: this.state.category
     };
 
-    axios.get("/api/auction", {
-        params: filterObj
-      })
+    axios.get('/api/auctions/all', { params })
       .then(resp => {
-        console.log("resp.data", resp.data);
         if (resp.status === 200) {
-          this.setState({
-            productObjectArray: resp.data
-          })
+          this.setState({ productObjectArray: resp.data });
           if (resp.data.length === 0) {
-            console.log("resp.data is empty");
             this.setState({
               errorMsg: `No products to show. Please try filtering for other products.`,
               isError: true
             });
           } else if (resp.data === null) {
-            console.log("resp.data is null");
             this.setState({
               errorMsg: `We ran into an error loading the products. Please try again.`,
               isError: true
@@ -87,12 +61,9 @@ class Home extends Component {
               isError: false
             });
           }
-        } else {
-          console.log("front end /api/auction error");
         }
       })
-      .catch( (err) => {
-        console.log(err)
+      .catch((err) => {
         this.setState({
           errorMsg: `Error loading products. Please reload the page.`,
           isError: true
@@ -101,28 +72,22 @@ class Home extends Component {
   }
 
   showProducts() {
-      console.log('showing products...');
-      const productObjectArrayMapped = this.state.productObjectArray.map( (product) => {
-          return (
-              <ProductListing
-                  key={product.title}
-                  auctionId={product.id}
-                  imgLink={product.imgLink}
-                  title={product.title}
-                  description={product.description}
-                  gender={product.gender}
-                  category={product.category}
-                  startingPrice={product.startingPrice}
-                  minBidIncrement={product.minBidIncrement}
-                  createdAt={product.createdAt}
-              />
-          )
-      })
-      return <div>{productObjectArrayMapped}</div>
+    return this.state.productObjectArray.map((product) => {
+      return <ProductListing
+        key={product.title}
+        auctionId={product.id}
+        imgLink={product.imgLink}
+        title={product.title}
+        description={product.description}
+        gender={product.gender}
+        category={product.category}
+        startingPrice={product.startingPrice}
+        minBidIncrement={product.minBidIncrement}
+        createdAt={product.createdAt} />
+    })
   }
 
-
-  render () {
+  render() {
     return (
       <div className='container'>
         <div className='row align-items-center filter-margin filter-style'>
@@ -131,18 +96,18 @@ class Home extends Component {
           <div className='col-10 d-flex justify-content-around'>
             <div className='d-inline-block gender-form'>
               <span>Gender: </span>
-              <GenderForm className='d-inline-block gender-align' gender={this.state.gender} handleGenderChange={this.handleGenderChange.bind(this)}/>
+              <GenderForm className='d-inline-block gender-align' gender={this.state.gender} handleGenderChange={this.handleGenderChange} />
             </div>
             <div className='d-inline-block category-form'>
               <span>Category: </span>
-              <CategoryForm className='d-inline-block category-align' category={this.state.category} handleCategoryChange={this.handleCategoryChange.bind(this)}/>
+              <CategoryForm className='d-inline-block category-align' category={this.state.category} handleCategoryChange={this.handleCategoryChange} />
             </div>
           </div>
         </div>
-      
+
         {this.state.isError ? <ErrorBox>{this.state.errorMsg}</ErrorBox> : ""}
         <div className="d-flex justify-content-around align-items-start">
-          {this.showProducts()}
+          <div>{this.showProducts()}</div>
         </div>
       </div>
     );

@@ -1,18 +1,13 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import Product from '../../pages/product/product';
 import BidStatus from '../bidStatus/bidStatus';
 import { calculateCreatedAt, calculateTimeRemaining, showDurationTimeRemaining } from '../timeConverter/timeConverter';
 import './productListingBidHistory-style.css';
 
 
 class ProductListingBidHistory extends React.Component {
-  constructor(props) {
-    super(props)
-  }
 
   showTimeRemaining = (createdAt) => {
-    // console.log('createdAt',createdAt);
     let momentTimeRemaining = calculateTimeRemaining(createdAt);
     let durationTimeRemainingObj = showDurationTimeRemaining(momentTimeRemaining);
 
@@ -24,17 +19,16 @@ class ProductListingBidHistory extends React.Component {
   }
 
   render() {
-    // console.log('this.props',this.props)
     return (
       <div className='row row-style'>
         <div className='col-3'>
-          <Link to={`/product/${this.props.auctionId}`} component={Product} className='img-container'>
+          <Link to={`/product/${this.props.auctionId}`} className='img-container'>
             <img src={this.props.imgLink} height='150px' width='150px' alt='' className='img-thumbnail rounded img-custom'/>
           </Link>
         </div>
 
         <div className='col-9 row'>
-          <Link to={`/product/${this.props.auctionId}`} component={Product} className='col-7 text-left'>
+          <Link to={`/product/${this.props.auctionId}`} className='col-7 text-left'>
             <h5 className='product-title'>{this.props.title}</h5>
           </Link>
           <div className='col-5 text-left'>
